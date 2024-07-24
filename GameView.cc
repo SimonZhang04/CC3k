@@ -31,6 +31,14 @@ void GameView::displayAction()
 {
 }
 
-void GameView::displayFloor()
+void GameView::displayFloor(const Floor &f)
 {
+    for (int r = 0; r < 25; r++)
+    {
+        for (int c = 0; c < 79; c++)
+        {
+            std::cout << f.getTile(r, c).draw();
+        }
+        std::cout << std::endl;
+    }
 }

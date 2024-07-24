@@ -2,6 +2,8 @@
 
 class GameModel
 {
+public:
     int currentFloor;
-    Floor floors[5];
+    std::vector<Floor> floors;
+    GameModel();
 };

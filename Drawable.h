@@ -1,6 +1,11 @@
+#ifndef DRAWABLE
+#define DRAWABLE
+
 class Drawable
 {
 public:
-    virtual char getChar();
-    virtual ~Drawable();
+    virtual char getChar() = 0;
+    virtual ~Drawable(){};
 };
+
+#endif

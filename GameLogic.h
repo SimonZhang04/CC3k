@@ -3,6 +3,9 @@
 
 class GameLogic
 {
+    GameView gameView;
+    GameModel gameModel;
+
 public:
-    int main();
+    void playGame();
 };
