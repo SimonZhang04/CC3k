@@ -4,8 +4,8 @@
 class Drawable
 {
 public:
-    virtual char getChar() = 0;
-    virtual ~Drawable(){};
+    virtual char getChar() const = 0;
+    virtual ~Drawable() {};
 };
 
 #endif
