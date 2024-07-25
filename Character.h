@@ -12,5 +12,6 @@ protected:
 
 public:
    int hp, maxHp, baseAtk, baseDef;
-   virtual void recieveAttack(int dmg);
+   virtual void recieveAttack(int attackerAtk);
+   virtual Drawable *drawableToReplace() { return nullptr; }
 };

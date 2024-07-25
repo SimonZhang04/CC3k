@@ -3,5 +3,5 @@
 class Entity : public Drawable
 {
 public:
-   virtual Drawable drawableToReplace() = 0;
+   virtual Drawable *drawableToReplace() = 0;
 };
