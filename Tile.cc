@@ -38,3 +38,8 @@ bool Tile::isValid() const
 {
     return upper == nullptr && typeid(lower) == typeid(FloorTile);
 }
+
+void Tile::moveTo(Tile &t)
+{
+    t.upper = std::move(upper);
+};

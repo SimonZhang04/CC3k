@@ -18,6 +18,7 @@ public:
     void setNeighbors(Tile *n[]);
     char draw() const;
     bool isValid() const;
+    void moveTo(Tile &t);
 };
 
 #endif
