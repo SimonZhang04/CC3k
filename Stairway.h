@@ -9,12 +9,15 @@ class Stairway : public WalkEffectObject
 
 public:
    Stairway(std::function<void()> func) : onUse{func} {}
+   static const char CHAR = '\\';
+   static const char HIDDEN_CHAR = ' ';
+
    char getChar() const override
    {
       if (isRevealed)
-         return '\\';
+         return CHAR;
       else
-         return ' ';
+         return HIDDEN_CHAR;
    }
    // reveal is called by game logic
    void reveal() { isRevealed = true; };
