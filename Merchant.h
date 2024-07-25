@@ -2,9 +2,9 @@
 
 class Merchant : public Enemy
 {
-   const int BASE_HP = 30;
-   const int BASE_ATK = 70;
-   const int BASE_DEF = 5;
+   static const int BASE_HP = 30;
+   static const int BASE_ATK = 70;
+   static const int BASE_DEF = 5;
    static bool isAggro;
 
 public:
