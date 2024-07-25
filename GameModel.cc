@@ -69,6 +69,7 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], st
                 {
                 case Player::CHAR:
                     d = std::move(player);
+                    currentTile = &floors[f].getTile(r, c);
                     break;
                 case Vampire::CHAR:
                     d = std::make_unique<Vampire>(compassIdx == enemyCount ? std::move(compass) : nullptr);
