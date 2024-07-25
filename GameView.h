@@ -6,7 +6,7 @@ class GameView
 
 public:
     char displayRaces();
-    void displayData();
+    void displayData(const Player &p);
     void displayAction();
     void displayFloor(Floor &f);
     const char INVALID_PLAYER_RACE = ' ';

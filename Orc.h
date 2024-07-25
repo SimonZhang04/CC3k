@@ -10,5 +10,5 @@ class Orc : public Player
    const int GOLD_MODIFIER = 0.5;
 
 public:
-   Orc::Orc() : Player(BASE_HP, BASE_ATK, BASE_DEF, SCORE_MODIFIER, GOLD_MODIFIER) {}
+   Orc::Orc() : Player(BASE_HP, BASE_ATK, BASE_DEF, SCORE_MODIFIER, GOLD_MODIFIER, "Orc") {}
 };

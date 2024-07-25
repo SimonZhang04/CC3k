@@ -21,8 +21,12 @@ char GameView::displayRaces()
     }
 }
 
-void GameView::displayData()
+void GameView::Ide
+
+    void
+    GameView::displayData(const Player &p)
 {
+    std::cout << "Race: " +
 }
 
 void GameView::displayAction()
