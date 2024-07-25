@@ -7,6 +7,7 @@ class GameModel
 public:
     static const int ENEMIES_PER_FLOOR = 10;
     int currentFloor;
+    Tile *currentTile;
     std::vector<Floor> floors;
     GameModel();
     const Player &setupPlayer(char c);

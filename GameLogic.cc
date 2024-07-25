@@ -1,6 +1,15 @@
 #include "GameLogic.h"
 #include "Player.h"
+#include <algorithm>
 #include <fstream>
+#include <iostream>
+
+const std::vector<std::string> GameLogic::DIRECTIONS = {"no", "ne", "ea", "se", "so", "sw", "we", "nw"};
+
+const bool GameLogic::isDirection(const std::string &direction)
+{
+    return std::find(GameLogic::DIRECTIONS.begin(), GameLogic::DIRECTIONS.end(), direction) != GameLogic::DIRECTIONS.end();
+}
 
 void GameLogic::playGame(std::string mapFile)
 {
@@ -22,7 +31,38 @@ void GameLogic::playGame(std::string mapFile)
         // Do map generation
     }
 
-    gameView.displayFloor(gameModel.floors[gameModel.currentFloor]);
+    // Game loop
+    std::string action;
+    while (true)
+    {
+        gameView.displayFloor(gameModel.floors[gameModel.currentFloor]);
+        gameView.displayData(gameModel.getPlayer(), gameModel.currentFloor);
+        gameView.displayAction();
+        // Accept an action
+        std::cin >> action;
+        if (isDirection(action))
+        {
+            int row = gameModel.currentTile->getRow();
+            int col = gameModel.currentTile->getCol();
+            int dir = gameModel.floors[gameModel.currentFloor].directionMap[action];
+            gameModel.floors[gameModel.currentFloor].directionToCoordinate(row, col, dir);
+            // check if coord is in floor bounds
+            if (!gameModel.floors[gameModel.currentFloor].inBounds(row, col))
+            {
+                continue;
+            }
+            // check if tile is valid
+
+            if (!gameModel.floors[gameModel.currentFloor].getTile(row, col).isValid())
+            {
+                continue;
+            }
+
+            // move to the tile (update gameModel and currentTile)
+            gameModel.currentTile->moveTo(gameModel.floors[gameModel.currentFloor].getTile(row, col));
+            gameModel.currentTile = &gameModel.floors[gameModel.currentFloor].getTile(row, col);
+        };
+    }
 }
 
 void GameLogic::generateFloor(Floor &f)

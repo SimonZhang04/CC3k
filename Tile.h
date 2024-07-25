@@ -19,6 +19,8 @@ public:
     char draw() const;
     bool isValid() const;
     void moveTo(Tile &t);
+    int getRow() { return r; };
+    int getCol() { return c; };
 };
 
 #endif

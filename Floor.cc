@@ -1,13 +1,13 @@
 #include "Floor.h"
-#include "FloorTile.h"
-#include "VertWall.h"
-#include "HorizWall.h"
 #include "Door.h"
-#include "PassageWay.h"
 #include "EmptyTile.h"
-#include <random>
-
+#include "FloorTile.h"
+#include "HorizWall.h"
+#include "PassageWay.h"
+#include "VertWall.h"
+#include <algorithm>
 #include <memory>
+#include <random>
 
 static const std::string defaultLayout[Floor::FLOOR_ROWS] = {
     "|-----------------------------------------------------------------------------|",

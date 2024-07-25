@@ -1,6 +1,6 @@
-#include "GameView.h"
-#include "GameModel.h"
 #include "Enemy.h"
+#include "GameModel.h"
+#include "GameView.h"
 
 class GameLogic
 {
@@ -10,6 +10,8 @@ class GameLogic
     void generateFloor(Floor &f);
     Enemy *randomEnemy();
     void parseMapFile(std::string mapFile);
+    static const std::vector<std::string> DIRECTIONS;
+    static const bool isDirection(const std::string &direction);
 
 public:
     void playGame(std::string mapFile);
