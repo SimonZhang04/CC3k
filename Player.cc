@@ -29,3 +29,9 @@ int Player::getGold() const
 {
    return gold;
 }
+
+int Player::calculateAttack()
+{
+   return modifiedAttack->getStat();
+};
+

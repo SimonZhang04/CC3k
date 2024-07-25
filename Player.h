@@ -1,3 +1,6 @@
+#ifndef PLAYER
+#define PLAYER
+
 #include "Character.h"
 #include "PotionType.h"
 #include "Stat.h"
@@ -16,9 +19,10 @@ protected:
        : Character{maxHp, baseAtk, baseDef},
          gold{0}, scoreModifier{scoreModifer}, goldModifier{goldModifer}, race{race}
    {
-      modifiedAttack = std::make_unique<StatViewer>(baseAtk);
-      modifiedDefense = std::make_unique<StatViewer>(baseDef);
+      modifiedAttack = std::make_unique<StatViewer>(&baseAtk);
+      modifiedDefense = std::make_unique<StatViewer>(&baseDef);
    };
+   virtual int calculateAttack();
 
 public:
    static const char CHAR = '@';
@@ -32,3 +36,5 @@ public:
    int getGold() const;
    virtual void usePotion(PotionType, int amount);
 };
+
+#endif

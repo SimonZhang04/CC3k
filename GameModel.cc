@@ -10,6 +10,9 @@
 #include "Troll.h"
 #include "Vampire.h"
 #include "Werewolf.h"
+#include "Treasure.h"
+#include "Potion.h"
+#include <exception>
 
 GameModel::GameModel() : currentFloor{0}, floors{std::vector<Floor>{}}
 {
@@ -48,32 +51,58 @@ const Player &GameModel::getPlayer()
     return *player;
 }
 
-void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS])
+void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], std::function<void()> onCompassPickup)
 {
     for (int f = 0; f < 5; f++)
     {
+        int compassIdx = rand() % 20;
+        int enemyCount = 0;
+        std::unique_ptr<Compass> compass = std::make_unique<Compass>(onCompassPickup);
         for (int r = 0; r < Floor::FLOOR_ROWS; r++)
         {
             for (int c = 0; c < Floor::FLOOR_COLS; c++)
             {
                 Tile &t = floors[f].getTile(r, c);
-                Drawable *d;
+                std::unique_ptr<Drawable> d = nullptr;
                 switch (map[f][r][c])
                 {
                 case Vampire::CHAR:
-
+                    d = std::make_unique<Vampire>(compassIdx == enemyCount ? std::move(compass) : nullptr);
+                    enemyCount++;
                     break;
                 case Werewolf::CHAR:
+                    d = std::make_unique<Werewolf>(compassIdx == enemyCount ? std::move(compass) : nullptr);
+                    enemyCount++;
                     break;
                 case Goblin::CHAR:
+                    d = std::make_unique<Goblin>(compassIdx == enemyCount ? std::move(compass) : nullptr);
+                    enemyCount++;
                     break;
                 case Merchant::CHAR:
+                    // std::unique_ptr<Drawable> xd = std::make_unique<Treasure>(12, test);
+                    if (compassIdx == enemyCount)
+                    {
+                        d = std::make_unique<Merchant>(std::move(compass));
+                    }
+                    else
+                    {
+                        d = std::make_unique<Merchant>(std::make_unique<Treasure>(TreasureType::MerchantsHoard, [this](int g)
+                                                                                  { this->player->collectGold(g); }));
+                    }
+                    enemyCount++;
                     break;
                 case Dragon::CHAR:
+                    d = std::make_unique<Dragon>(compassIdx == enemyCount ? std::move(compass) : nullptr);
+                    enemyCount++;
                     break;
                 case Phoenix::CHAR:
+                    d = std::make_unique<Phoenix>(compassIdx == enemyCount ? std::move(compass) : nullptr);
+                    enemyCount++;
                     break;
                 case Troll::CHAR:
+                    d = std::make_unique<Troll>(compassIdx == enemyCount ? std::move(compass) : nullptr);
+                    enemyCount++;
+                    break;
                 case '0':
                 case '1':
                 case '2':
@@ -81,18 +110,34 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS])
                 case '4':
                 case '5':
                     // Potions
+                    d = std::make_unique<Potion>([this](PotionType p)
+                                                 { this->player->usePotion(p, 10); }, PotionType::BoostAtk);
                     break;
                 case '6':
                 case '7':
-                    // Treasure
+                    TreasureType t;
+                    switch (map[f][r][c])
+                    {
+                    case '6':
+                        t = TreasureType::NormalTreasure;
+                        break;
+                    case '7':
+                        t = TreasureType::SmallHoard;
+                        break;
+                    }
+                    d = std::make_unique<Treasure>(t, [this](int g)
+                                                   { this->player->collectGold(g); });
                     break;
                 case '8':
                 case '9':
                     // Protected Treasure
                     break;
                 default:
+                    continue;
                     break;
                 }
+
+                t.setUpperDrawable(std::move(d));
             }
         }
     }

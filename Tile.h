@@ -21,6 +21,7 @@ public:
     void moveTo(Tile &t);
     int getRow() { return r; };
     int getCol() { return c; };
+    void setUpperDrawable(std::unique_ptr<Drawable> newUpper);
 };
 
 #endif

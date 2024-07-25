@@ -12,6 +12,7 @@ class GameLogic
     void parseMapFile(std::string mapFile);
     static const std::vector<std::string> DIRECTIONS;
     static const bool isDirection(const std::string &direction);
+    void onCompassUsed();
 
 public:
     void playGame(std::string mapFile);

@@ -2,6 +2,7 @@
 #include "Player.h"
 #include <algorithm>
 #include <fstream>
+#include <functional>
 #include <iostream>
 
 const std::vector<std::string> GameLogic::DIRECTIONS = {"no", "ne", "ea", "se", "so", "sw", "we", "nw"};
@@ -13,7 +14,6 @@ const bool GameLogic::isDirection(const std::string &direction)
 
 void GameLogic::playGame(std::string mapFile)
 {
-
     char race = gameView.displayRaces();
     if (race == gameView.INVALID_PLAYER_RACE)
     {
@@ -113,5 +113,10 @@ void GameLogic::parseMapFile(std::string mapFile)
             map[f][r] = rowstr;
         }
     }
-    gameModel.createFloorsFromString(map);
+    gameModel.createFloorsFromString(map, [this]()
+                                     { this->onCompassUsed(); });
+}
+
+void GameLogic::onCompassUsed()
+{
 }
