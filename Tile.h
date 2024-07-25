@@ -19,6 +19,7 @@ public:
     char draw() const;
     bool isValid() const;
     void moveTo(Tile &t);
+    void setUpperDrawable(std::unique_ptr<Drawable> newUpper);
 };
 
 #endif

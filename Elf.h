@@ -10,6 +10,6 @@ class Elf : public Player
    const int GOLD_MODIFIER = 1;
 
 public:
-   Elf::Elf() : Player(BASE_HP, BASE_ATK, BASE_DEF, SCORE_MODIFIER, GOLD_MODIFIER) {}
+   Elf() : Player(BASE_HP, BASE_ATK, BASE_DEF, SCORE_MODIFIER, GOLD_MODIFIER) {}
    virtual void usePotion(PotionType, int amount) override;
 };

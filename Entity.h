@@ -1,7 +1,13 @@
+#ifndef ENTITY
+#define ENTITY
+
 #include "Drawable.h"
+#include <memory>
 
 class Entity : public Drawable
 {
 public:
-   virtual Drawable *drawableToReplace() = 0;
+   virtual std::unique_ptr<Drawable> drawableToReplace() = 0;
 };
+
+#endif

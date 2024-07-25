@@ -10,5 +10,5 @@ class Dwarf : public Player
    const int GOLD_MODIFIER = 2;
 
 public:
-   Dwarf::Dwarf() : Player(BASE_HP, BASE_ATK, BASE_DEF, SCORE_MODIFIER, GOLD_MODIFIER) {}
+   Dwarf() : Player(BASE_HP, BASE_ATK, BASE_DEF, SCORE_MODIFIER, GOLD_MODIFIER) {}
 };

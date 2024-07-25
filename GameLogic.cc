@@ -1,10 +1,10 @@
 #include "GameLogic.h"
 #include "Player.h"
 #include <fstream>
+#include <functional>
 
 void GameLogic::playGame(std::string mapFile)
 {
-
     char race = gameView.displayRaces();
     if (race == gameView.INVALID_PLAYER_RACE)
     {
@@ -73,5 +73,10 @@ void GameLogic::parseMapFile(std::string mapFile)
             map[f][r] = rowstr;
         }
     }
-    gameModel.createFloorsFromString(map);
+    gameModel.createFloorsFromString(map, [this]()
+                                     { this->onCompassUsed(); });
+}
+
+void GameLogic::onCompassUsed()
+{
 }

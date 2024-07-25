@@ -1,8 +1,13 @@
+#ifndef WALKEFFECTOBJECT
+#define WALKEFFECTOBJECT
+
 #include "EffectObject.h"
 
 class WalkEffectObject : public EffectObject
 {
 public:
-   virtual void onWalkedOn() = 0;
-   virtual Drawable *drawableToReplace() override { return nullptr; };
+   void onWalkedOn() { useEffect(); };
+   virtual std::unique_ptr<Drawable> drawableToReplace() override { return nullptr; };
 };
+
+#endif

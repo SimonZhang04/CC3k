@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
     std::string floorFile = "";
     if (argc > 1)
     {
-        floorFile = argv[0];
+        floorFile = argv[1];
     }
 
     gl.playGame(floorFile);

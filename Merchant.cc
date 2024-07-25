@@ -18,3 +18,5 @@ void Merchant::onDeath(Player &p)
    }
    p.collectGold(4);
 };
+
+bool Merchant::isAggro = false;

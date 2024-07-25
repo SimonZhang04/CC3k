@@ -10,6 +10,7 @@ class GameLogic
     void generateFloor(Floor &f);
     Enemy *randomEnemy();
     void parseMapFile(std::string mapFile);
+    void onCompassUsed();
 
 public:
     void playGame(std::string mapFile);

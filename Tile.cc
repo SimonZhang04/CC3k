@@ -43,3 +43,8 @@ void Tile::moveTo(Tile &t)
 {
     t.upper = std::move(upper);
 };
+
+void Tile::setUpperDrawable(std::unique_ptr<Drawable> newUpper)
+{
+    upper = std::move(newUpper);
+}

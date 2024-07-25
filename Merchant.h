@@ -8,7 +8,7 @@ class Merchant : public Enemy
    static bool isAggro;
 
 public:
-   Merchant::Merchant() : Enemy(BASE_HP, BASE_ATK, BASE_DEF) {};
+   Merchant(std::unique_ptr<Drawable> loot) : Enemy{BASE_HP, BASE_ATK, BASE_DEF, std::move(loot)} {};
    char getChar() const override { return CHAR; };
    static const char CHAR = 'M';
    virtual bool shouldAttack(Tile &playerTile) override;
