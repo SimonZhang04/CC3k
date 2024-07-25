@@ -2,7 +2,7 @@
 #include "Tile.h"
 #include <iostream>
 
-void GameView::displayRaces()
+char GameView::displayRaces()
 {
     std::cout << "Choose a race: h - human, e - elf, d - dwarf, o - orc";
     char c;
@@ -11,16 +11,13 @@ void GameView::displayRaces()
     switch (c)
     {
     case 'h':
-        break;
     case 'e':
-        break;
     case 'd':
-        break;
     case 'o':
-        break;
+        return c;
     default:
         std::cout << "Invalid race, terminating.";
-        break;
+        return INVALID_PLAYER_RACE;
     }
 }
 

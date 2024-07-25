@@ -116,6 +116,11 @@ Tile &Floor::randomTile(int chamber)
     return *t;
 }
 
+void Floor::RemoveTileFromChamber(Tile *t, int chamber)
+{
+    chambers[chamber].erase(t);
+}
+
 void Floor::directionToCoordinate(int &r, int &c, int dir)
 {
     switch (dir)
