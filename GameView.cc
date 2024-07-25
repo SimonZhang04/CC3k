@@ -1,6 +1,7 @@
 #include "GameView.h"
 #include "Tile.h"
 #include <iostream>
+#include <string>
 
 char GameView::displayRaces()
 {
@@ -21,16 +22,17 @@ char GameView::displayRaces()
     }
 }
 
-void GameView::Ide
-
-    void
-    GameView::displayData(const Player &p)
+void GameView::displayData(const Player &p, const int currentFloor)
 {
-    std::cout << "Race: " +
-}
+    std::cout << "Race: " + p.race + " Gold: " + std::to_string(p.getGold()) + "                       Floor " + std::to_string(currentFloor) << std::endl;
+    std::cout << "HP: " + p.hp << std::endl;
+    std::cout << "Atk: " + p.modifiedAttack->getStat() << std::endl;
+    std::cout << "Def: " + p.modifiedDefense->getStat() << std::endl;
+};
 
 void GameView::displayAction()
 {
+    std::cout << "Action: " << std::endl;
 }
 
 void GameView::displayFloor(Floor &f)
