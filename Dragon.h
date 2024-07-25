@@ -8,7 +8,8 @@ class Dragon : public Enemy
 
 public:
    Dragon::Dragon() : Enemy(BASE_HP, BASE_ATK, BASE_DEF) {};
-   char getChar() const override { return 'D'; };
+   static const char CHAR = 'D';
+   char getChar() const override { return CHAR; };
    virtual bool shouldMove() override;
    virtual void onDeath(Player &p) override;
    virtual bool shouldAttack(Tile &playerTile) override;
