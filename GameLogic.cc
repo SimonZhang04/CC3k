@@ -60,7 +60,7 @@ void GameLogic::playGame(std::string mapFile)
             {
                 getDirectionCoords(r, c, action, curFloor, curTile);
             }
-            catch (std::exception e)
+            catch (const std::exception &e)
             {
                 continue;
             }
@@ -71,14 +71,11 @@ void GameLogic::playGame(std::string mapFile)
             }
 
             // move to the tile (update gameModel and currentTile)
-            gameModel.currentTile->moveTo(gameModel.floors[gameModel.currentFloor].getTile(row, col));
-            gameModel.currentTile = &gameModel.floors[gameModel.currentFloor].getTile(row, col);
+            curTile.moveTo(curFloor.getTile(r, c));
+            gameModel.currentTile = &curFloor.getTile(r, c);
 
             // add action to playerActions
             playerActions += "moves " + gameModel.floors[gameModel.currentFloor].stringDirectionMap[action];
-        };
-            curTile.moveTo(curFloor.getTile(r, c));
-            gameModel.currentTile = &curFloor.getTile(r, c);
         }
         else if (isAttack(action))
         {
@@ -102,7 +99,7 @@ void GameLogic::playGame(std::string mapFile)
                     // Error: trying to attack something that isn't an enemy
                 }
                 // gameModel.getPlayer().useAttack(*e);
-                        }
+            }
             else
             {
                 // Error trying to attack invalid direction
