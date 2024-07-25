@@ -27,6 +27,7 @@ public:
     Tile &randomTile(int chamber);
     Tile &getTile(int r, int c);
     void RemoveTileFromChamber(Tile *t, int chamber);
+    Enemy *checkForEnemy(int r, int c);
     std::map<std::string, int> directionMap = {
         {"no", 0}, // north
         {"ne", 1}, // northeast

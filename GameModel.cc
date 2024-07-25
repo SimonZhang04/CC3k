@@ -47,7 +47,7 @@ std::unique_ptr<Player> GameModel::setupPlayer(char c)
     return p;
 }
 
-const Player &GameModel::getPlayer()
+Player &GameModel::getPlayer()
 {
     return *player;
 }
@@ -149,4 +149,9 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], st
             }
         }
     }
+}
+
+Floor &GameModel::getCurrentFloor()
+{
+    return floors[currentFloor];
 }

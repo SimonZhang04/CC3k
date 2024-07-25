@@ -12,6 +12,11 @@ const bool GameLogic::isDirection(const std::string &direction)
     return std::find(GameLogic::DIRECTIONS.begin(), GameLogic::DIRECTIONS.end(), direction) != GameLogic::DIRECTIONS.end();
 }
 
+const bool GameLogic::isAttack(const std::string &action)
+{
+    return action == "a";
+}
+
 void GameLogic::playGame(std::string mapFile)
 {
     char race = gameView.displayRaces();
@@ -35,34 +40,63 @@ void GameLogic::playGame(std::string mapFile)
     std::string action;
     while (true)
     {
-        gameView.displayFloor(gameModel.floors[gameModel.currentFloor]);
+        Floor &curFloor = gameModel.getCurrentFloor();
+        Tile &curTile = *gameModel.currentTile;
+
+        gameView.displayFloor(curFloor);
         gameView.displayData(gameModel.getPlayer(), gameModel.currentFloor);
         gameView.displayAction();
         // Accept an action
         std::cin >> action;
         if (isDirection(action))
         {
-            int row = gameModel.currentTile->getRow();
-            int col = gameModel.currentTile->getCol();
-
-            int dir = gameModel.floors[gameModel.currentFloor].directionMap[action];
-            gameModel.floors[gameModel.currentFloor].directionToCoordinate(row, col, dir);
-            // check if coord is in floor bounds
-            if (!gameModel.floors[gameModel.currentFloor].inBounds(row, col))
+            int r, c;
+            try
+            {
+                getDirectionCoords(r, c, action, curFloor, curTile);
+            }
+            catch (std::exception e)
             {
                 continue;
             }
-
             // check if tile is valid
-            if (!gameModel.floors[gameModel.currentFloor].getTile(row, col).isValidPlayer())
+            if (!curFloor.getTile(r, c).isValidPlayer())
             {
                 continue;
             }
 
             // move to the tile (update gameModel and currentTile)
-            gameModel.currentTile->moveTo(gameModel.floors[gameModel.currentFloor].getTile(row, col));
-            gameModel.currentTile = &gameModel.floors[gameModel.currentFloor].getTile(row, col);
-        };
+            curTile.moveTo(curFloor.getTile(r, c));
+            gameModel.currentTile = &curFloor.getTile(r, c);
+        }
+        else if (isAttack(action))
+        {
+            std::cin >> action;
+            if (isDirection(action))
+            {
+                int r, c;
+                try
+                {
+                    getDirectionCoords(r, c, action, curFloor, curTile);
+                }
+                catch (std::exception e)
+                {
+                    continue;
+                }
+
+                Enemy *e = curFloor.checkForEnemy(r, c);
+                if (e == nullptr)
+                {
+                    continue;
+                    // Error: trying to attack something that isn't an enemy
+                }
+                // gameModel.getPlayer().useAttack(*e);
+                        }
+            else
+            {
+                // Error trying to attack invalid direction
+            }
+        }
     }
 }
 
@@ -120,4 +154,18 @@ void GameLogic::parseMapFile(std::string mapFile, std::unique_ptr<Player> player
 
 void GameLogic::onCompassUsed()
 {
+}
+
+void GameLogic::getDirectionCoords(int &r, int &c, std::string &dirstr, Floor &curFloor, Tile &curTile)
+{
+    int row = curTile.getRow();
+    int col = curTile.getCol();
+
+    int dir = curFloor.directionMap[dirstr];
+    curFloor.directionToCoordinate(row, col, dir);
+    // check if coord is in floor bounds
+    if (!curFloor.inBounds(row, col))
+    {
+        throw std::exception();
+    }
 }
