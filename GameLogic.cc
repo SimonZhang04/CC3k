@@ -20,11 +20,11 @@ void GameLogic::playGame(std::string mapFile)
         return;
     }
 
-    const Player &player = gameModel.setupPlayer(race);
+    std::unique_ptr<Player> player{gameModel.setupPlayer(race)};
 
     if (!mapFile.empty())
     {
-        parseMapFile(mapFile);
+        parseMapFile(mapFile, std::move(player));
     }
     else
     {
@@ -100,7 +100,7 @@ int GameLogic::randomStairChamber(int playerChamber)
 Enemy *GameLogic::randomEnemy() {
 };
 
-void GameLogic::parseMapFile(std::string mapFile)
+void GameLogic::parseMapFile(std::string mapFile, std::unique_ptr<Player> player)
 {
     std::fstream filestream{mapFile};
     std::string rowstr;
@@ -113,7 +113,7 @@ void GameLogic::parseMapFile(std::string mapFile)
             map[f][r] = rowstr;
         }
     }
-    gameModel.createFloorsFromString(map, [this]()
+    gameModel.createFloorsFromString(map, std::move(player), [this]()
                                      { this->onCompassUsed(); });
 }
 

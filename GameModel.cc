@@ -22,7 +22,7 @@ GameModel::GameModel() : currentFloor{0}, floors{std::vector<Floor>{}}
     }
 };
 
-const Player &GameModel::setupPlayer(char c)
+std::unique_ptr<Player> GameModel::setupPlayer(char c)
 {
     std::unique_ptr<Player> p;
 
@@ -42,8 +42,9 @@ const Player &GameModel::setupPlayer(char c)
         break;
     }
 
-    player = std::move(p);
-    return getPlayer();
+    player = p.get();
+
+    return p;
 }
 
 const Player &GameModel::getPlayer()
@@ -51,7 +52,7 @@ const Player &GameModel::getPlayer()
     return *player;
 }
 
-void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], std::function<void()> onCompassPickup)
+void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], std::unique_ptr<Player> player, std::function<void()> onCompassPickup)
 {
     for (int f = 0; f < 5; f++)
     {
@@ -66,6 +67,9 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], st
                 std::unique_ptr<Drawable> d = nullptr;
                 switch (map[f][r][c])
                 {
+                case Player::CHAR:
+                    d = std::move(player);
+                    break;
                 case Vampire::CHAR:
                     d = std::make_unique<Vampire>(compassIdx == enemyCount ? std::move(compass) : nullptr);
                     enemyCount++;
