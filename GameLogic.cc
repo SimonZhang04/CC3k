@@ -44,6 +44,7 @@ void GameLogic::playGame(std::string mapFile)
         {
             int row = gameModel.currentTile->getRow();
             int col = gameModel.currentTile->getCol();
+
             int dir = gameModel.floors[gameModel.currentFloor].directionMap[action];
             gameModel.floors[gameModel.currentFloor].directionToCoordinate(row, col, dir);
             // check if coord is in floor bounds
@@ -53,7 +54,7 @@ void GameLogic::playGame(std::string mapFile)
             }
 
             // check if tile is valid
-            if (!gameModel.floors[gameModel.currentFloor].getTile(row, col).isValid())
+            if (!gameModel.floors[gameModel.currentFloor].getTile(row, col).isValidPlayer())
             {
                 continue;
             }

@@ -43,29 +43,32 @@ Floor::Floor() : tiles{std::vector<std::vector<Tile>>{}}
         tiles.push_back(std::vector<Tile>{});
         for (int c = 0; c < Floor::FLOOR_COLS; c++)
         {
-            std::unique_ptr<Drawable> d;
+            std::unique_ptr<Drawable> lower;
+            std::unique_ptr<Drawable> upper = nullptr;
             switch (defaultLayout[r][c])
             {
             case '.':
-                d = std::make_unique<FloorTile>();
+                lower = std::make_unique<FloorTile>();
                 break;
             case '|':
-                d = std::make_unique<VertWall>();
+                lower = std::make_unique<VertWall>();
+                upper = std::make_unique<VertWall>();
                 break;
             case '-':
-                d = std::make_unique<HorizWall>();
+                lower = std::make_unique<HorizWall>();
+                upper = std::make_unique<HorizWall>();
                 break;
             case '+':
-                d = std::make_unique<Door>();
+                lower = std::make_unique<Door>();
                 break;
             case '#':
-                d = std::make_unique<PassageWay>();
+                lower = std::make_unique<PassageWay>();
                 break;
             case ' ':
-                d = std::make_unique<EmptyTile>();
+                lower = std::make_unique<EmptyTile>();
             }
 
-            tiles[r].push_back(Tile{r, c, std::move(d), nullptr});
+            tiles[r].push_back(Tile{r, c, std::move(lower), std::move(upper)});
         }
     }
 

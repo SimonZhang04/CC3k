@@ -17,7 +17,8 @@ public:
     std::vector<Tile *> getValidNeighbors();
     void setNeighbors(Tile *n[]);
     char draw() const;
-    bool isValid() const;
+    bool isValidEnemy() const;
+    bool isValidPlayer() const;
     void moveTo(Tile &t);
     int getRow() { return r; };
     int getCol() { return c; };
