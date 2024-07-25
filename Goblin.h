@@ -8,5 +8,6 @@ class Goblin : public Enemy
 
 public:
    Goblin::Goblin() : Enemy(BASE_HP, BASE_ATK, BASE_DEF) {};
-   char getChar() const override { return 'N'; };
+   char getChar() const override { return CHAR; };
+   static const char CHAR = 'N';
 };

@@ -8,5 +8,6 @@ class Vampire : public Enemy
 
 public:
    Vampire::Vampire() : Enemy(BASE_HP, BASE_ATK, BASE_DEF) {};
-   char getChar() const override { return 'V'; };
+   char getChar() const override { return CHAR; };
+   static const char CHAR = 'V';
 };

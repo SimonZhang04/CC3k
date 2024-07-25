@@ -7,7 +7,7 @@ void Player::collectGold(int goldPickedUp)
 
 char Player::getChar() const
 {
-   return '@';
+   return CHAR;
 };
 
 int Player::getScore() const

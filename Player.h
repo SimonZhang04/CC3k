@@ -21,6 +21,8 @@ protected:
    };
 
 public:
+   static const char CHAR = '@';
+
    std::unique_ptr<Stat> modifiedAttack;
    std::unique_ptr<Stat> modifiedDefense;
 

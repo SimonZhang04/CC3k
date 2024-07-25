@@ -8,5 +8,6 @@ class Troll : public Enemy
 
 public:
    Troll::Troll() : Enemy(BASE_HP, BASE_ATK, BASE_DEF) {};
-   char getChar() const override { return 'T'; };
+   char getChar() const override { return CHAR; };
+   static const char CHAR = 'T';
 };
