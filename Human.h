@@ -9,5 +9,5 @@ class Human : public Player
    const int GOLD_MODIFIER = 1;
 
 public:
-   Human() : Player(BASE_HP, BASE_ATK, BASE_DEF, SCORE_MODIFIER, GOLD_MODIFIER) {}
+   Human::Human() : Player(BASE_HP, BASE_ATK, BASE_DEF, SCORE_MODIFIER, GOLD_MODIFIER, "Human") {}
 };

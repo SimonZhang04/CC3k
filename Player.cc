@@ -25,7 +25,13 @@ void Player::useAttack(Character &c)
    c.recieveAttack(modifiedAttack->getStat());
 }
 
+int Player::getGold() const
+{
+   return gold;
+}
+
 int Player::calculateAttack()
 {
    return modifiedAttack->getStat();
 };
+

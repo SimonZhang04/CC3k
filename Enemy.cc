@@ -45,6 +45,7 @@ void Enemy::act(Player &p, Tile &playerTile)
    {
       Tile &moveTile = determineMoveTile();
       occupyingTile->moveTo(moveTile);
+      occupyingTile = &moveTile;
    }
 };
 

@@ -42,7 +42,9 @@ bool Tile::isValid() const
 void Tile::moveTo(Tile &t)
 {
     t.upper = std::move(upper);
+    upper = nullptr;
 };
+
 
 void Tile::setUpperDrawable(std::unique_ptr<Drawable> newUpper)
 {
