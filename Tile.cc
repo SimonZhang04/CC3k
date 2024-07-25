@@ -1,7 +1,6 @@
 #include "Tile.h"
 #include "FloorTile.h"
 #include <vector>
-#include <iostream>
 
 const int Tile::NUM_NEIGHBORS = 8;
 
@@ -47,9 +46,7 @@ bool Tile::isValidPlayer() const
 
 void Tile::moveTo(Tile &t)
 {
-    std::cout << draw() << std::endl;
     t.upper = std::move(upper);
-    // std::cout << t.upper->getChar() << std::endl;
     upper = nullptr;
 };
 

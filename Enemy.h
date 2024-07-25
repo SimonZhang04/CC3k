@@ -12,7 +12,7 @@ class Enemy : public Character
    std::unique_ptr<Drawable> loot = nullptr;
 
 protected:
-   Enemy(int maxHp, int baseAtk, int baseDef, std::unique_ptr<Drawable> loot) : Character{maxHp, baseAtk, baseDef}, loot{std::move(loot)} {};
+   Enemy(int maxHp, int baseAtk, int baseDef, Tile *occupyingTile, std::unique_ptr<Drawable> loot) : Character{maxHp, baseAtk, baseDef}, occupyingTile{occupyingTile}, loot{std::move(loot)} {};
    virtual int calculateAttack() const override;
    virtual bool shouldAttack(Tile &playerTile);
 

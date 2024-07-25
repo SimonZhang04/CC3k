@@ -7,7 +7,7 @@ class Dragon : public Enemy
    static const int BASE_DEF = 20;
 
 public:
-   Dragon(std::unique_ptr<Drawable> loot) : Enemy{BASE_HP, BASE_ATK, BASE_DEF, std::move(loot)} {};
+   Dragon(Tile *occupyingTile, std::unique_ptr<Drawable> loot) : Enemy{BASE_HP, BASE_ATK, BASE_DEF, occupyingTile, std::move(loot)} {};
    static const char CHAR = 'D';
    char getChar() const override { return CHAR; };
    virtual bool shouldMove() override;

@@ -75,40 +75,39 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], st
                     }
                     break;
                 case Vampire::CHAR:
-                    d = std::make_unique<Vampire>(compassIdx == enemyCount ? std::move(compass) : nullptr);
+                    d = std::make_unique<Vampire>(&t, compassIdx == enemyCount ? std::move(compass) : nullptr);
                     enemyCount++;
                     break;
                 case Werewolf::CHAR:
-                    d = std::make_unique<Werewolf>(compassIdx == enemyCount ? std::move(compass) : nullptr);
+                    d = std::make_unique<Werewolf>(&t, compassIdx == enemyCount ? std::move(compass) : nullptr);
                     enemyCount++;
                     break;
                 case Goblin::CHAR:
-                    d = std::make_unique<Goblin>(compassIdx == enemyCount ? std::move(compass) : nullptr);
+                    d = std::make_unique<Goblin>(&t, compassIdx == enemyCount ? std::move(compass) : nullptr);
                     enemyCount++;
                     break;
                 case Merchant::CHAR:
-                    // std::unique_ptr<Drawable> xd = std::make_unique<Treasure>(12, test);
                     if (compassIdx == enemyCount)
                     {
-                        d = std::make_unique<Merchant>(std::move(compass));
+                        d = std::make_unique<Merchant>(&t, std::move(compass));
                     }
                     else
                     {
-                        d = std::make_unique<Merchant>(std::make_unique<Treasure>(TreasureType::MerchantsHoard, [this](int g)
-                                                                                  { this->player->collectGold(g); }));
+                        d = std::make_unique<Merchant>(&t, std::make_unique<Treasure>(TreasureType::MerchantsHoard, [this](int g)
+                                                                                      { this->player->collectGold(g); }));
                     }
                     enemyCount++;
                     break;
                 case Dragon::CHAR:
-                    d = std::make_unique<Dragon>(compassIdx == enemyCount ? std::move(compass) : nullptr);
+                    d = std::make_unique<Dragon>(&t, compassIdx == enemyCount ? std::move(compass) : nullptr);
                     enemyCount++;
                     break;
                 case Phoenix::CHAR:
-                    d = std::make_unique<Phoenix>(compassIdx == enemyCount ? std::move(compass) : nullptr);
+                    d = std::make_unique<Phoenix>(&t, compassIdx == enemyCount ? std::move(compass) : nullptr);
                     enemyCount++;
                     break;
                 case Troll::CHAR:
-                    d = std::make_unique<Troll>(compassIdx == enemyCount ? std::move(compass) : nullptr);
+                    d = std::make_unique<Troll>(&t, compassIdx == enemyCount ? std::move(compass) : nullptr);
                     enemyCount++;
                     break;
                 case '0':

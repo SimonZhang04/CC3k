@@ -7,7 +7,7 @@ class Vampire : public Enemy
    static const int BASE_DEF = 25;
 
 public:
-   Vampire(std::unique_ptr<Drawable> loot) : Enemy{BASE_HP, BASE_ATK, BASE_DEF, std::move(loot)} {};
+   Vampire(Tile *occupyingTile, std::unique_ptr<Drawable> loot) : Enemy{BASE_HP, BASE_ATK, BASE_DEF, occupyingTile, std::move(loot)} {};
    char getChar() const override { return CHAR; };
    static const char CHAR = 'V';
 };

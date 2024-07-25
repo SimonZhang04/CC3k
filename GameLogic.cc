@@ -113,19 +113,19 @@ void GameLogic::playGame(std::string mapFile)
         std::unordered_set<Enemy *> actedEnemies;
 
         // iterate through all tiles on the floor
-        for (int row = 0; row < curFloor.FLOOR_ROWS; row++)
+        for (int row = 0; row < Floor::FLOOR_ROWS; row++)
         {
-            for (int col = 0; col < curFloor.FLOOR_COLS; col++)
+            for (int col = 0; col < Floor::FLOOR_COLS; col++)
             {
                 // check if tile upper is an enemy
-                Enemy *enemyTile = curFloor.checkForEnemy(row, col);
-                if (enemyTile != nullptr)
+                Enemy *enemy = curFloor.checkForEnemy(row, col);
+                if (enemy != nullptr)
                 {
                     // check if the Enemy is in Hashset
-                    if (actedEnemies.find(enemyTile) == actedEnemies.end())
+                    if (actedEnemies.find(enemy) == actedEnemies.end())
                     {
-                        enemyTile->act(gameModel.getPlayer(), *gameModel.currentTile);
-                        actedEnemies.insert(enemyTile);
+                        enemy->act(gameModel.getPlayer(), *gameModel.currentTile);
+                        actedEnemies.insert(enemy);
                     }
                 }
             }
