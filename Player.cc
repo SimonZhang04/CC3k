@@ -1,5 +1,5 @@
 #include "Player.h"
-
+#include <iostream>
 void Player::collectGold(int goldPickedUp)
 {
    gold += goldPickedUp * goldModifier;
@@ -22,7 +22,8 @@ void Player::usePotion(PotionType, int amount) {
 
 void Player::useAttack(Character &c)
 {
-   c.recieveAttack(modifiedAttack->getStat());
+   std::cout << "Player attacK: " << calculateAttack();
+   c.recieveAttack(calculateAttack());
 }
 
 int Player::getGold() const
@@ -30,8 +31,17 @@ int Player::getGold() const
    return gold;
 }
 
-int Player::calculateAttack()
+int Player::calculateAttack() const
 {
    return modifiedAttack->getStat();
 };
 
+int Player::getAttack() const
+{
+   return calculateAttack();
+};
+
+int Player::getDefense() const
+{
+   return modifiedDefense->getStat();
+};

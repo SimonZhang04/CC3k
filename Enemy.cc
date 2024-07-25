@@ -58,7 +58,7 @@ void Enemy::onDeath(Player &p)
    p.collectGold(1);
 }
 
-int Enemy::calculateAttack()
+int Enemy::calculateAttack() const
 {
    return baseAtk;
 };

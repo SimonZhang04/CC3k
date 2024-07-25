@@ -98,7 +98,7 @@ void GameLogic::playGame(std::string mapFile)
                     continue;
                     // Error: trying to attack something that isn't an enemy
                 }
-                // gameModel.getPlayer().useAttack(*e);
+                gameModel.getPlayer().useAttack(*e);
             }
             else
             {
@@ -166,13 +166,13 @@ void GameLogic::onCompassUsed()
 
 void GameLogic::getDirectionCoords(int &r, int &c, std::string &dirstr, Floor &curFloor, Tile &curTile)
 {
-    int row = curTile.getRow();
-    int col = curTile.getCol();
+    r = curTile.getRow();
+    c = curTile.getCol();
 
     int dir = curFloor.directionMap[dirstr];
-    curFloor.directionToCoordinate(row, col, dir);
+    curFloor.directionToCoordinate(r, c, dir);
     // check if coord is in floor bounds
-    if (!curFloor.inBounds(row, col))
+    if (!curFloor.inBounds(r, c))
     {
         throw std::exception();
     }
