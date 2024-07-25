@@ -106,6 +106,12 @@ Tile &Floor::getTile(int r, int c)
     return tiles[r][c];
 }
 
+Enemy *Floor::checkForEnemy(int r, int c)
+{
+    Drawable *d = getTile(r, c).getUpper();
+    return dynamic_cast<Enemy *>(d);
+}
+
 Tile &Floor::randomTile(int chamber)
 {
     int idx = rand() % chambers[chamber].size();

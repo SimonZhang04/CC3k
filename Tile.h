@@ -20,8 +20,9 @@ public:
     bool isValidEnemy() const;
     bool isValidPlayer() const;
     void moveTo(Tile &t);
-    int getRow() { return r; };
-    int getCol() { return c; };
+    int getRow() const { return r; };
+    int getCol() const { return c; };
+    Drawable *getUpper() { return upper.get(); };
     void setUpperDrawable(std::unique_ptr<Drawable> newUpper);
 };
 
