@@ -51,8 +51,8 @@ void GameLogic::playGame(std::string mapFile)
             {
                 continue;
             }
-            // check if tile is valid
 
+            // check if tile is valid
             if (!gameModel.floors[gameModel.currentFloor].getTile(row, col).isValid())
             {
                 continue;
