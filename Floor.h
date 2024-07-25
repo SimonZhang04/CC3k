@@ -37,6 +37,16 @@ public:
         {"we", 6}, // west
         {"nw", 7}  // northwest
     };
+    std::map<std::string, std::string> stringDirectionMap = {
+        {"no", "North"},     // north
+        {"ne", "Northeast"}, // northeast
+        {"ea", "East"},      // east
+        {"se", "Southeast"}, // southeast
+        {"so", "South"},     // south
+        {"sw", "Southwest"}, // southwest
+        {"we", "West"},      // west
+        {"nw", "Northwest"}  // northwest
+    };
 };
 
 #endif

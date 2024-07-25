@@ -24,15 +24,20 @@ char GameView::displayRaces()
 
 void GameView::displayData(const Player &p, const int currentFloor)
 {
-    std::cout << "Race: " + p.race + " Gold: " + std::to_string(p.getGold()) + "                       Floor " + std::to_string(currentFloor) << std::endl;
+    std::cout << "Race: " + p.race + " Gold: " + std::to_string(p.getGold()) + "                                                  Floor " + std::to_string(currentFloor) << std::endl;
     std::cout << "HP: " + std::to_string(p.hp) << std::endl;
     std::cout << "Atk: " + std::to_string(p.modifiedAttack->getStat()) << std::endl;
     std::cout << "Def: " + std::to_string(p.modifiedDefense->getStat()) << std::endl;
 };
 
-void GameView::displayAction()
+void GameView::displayAction(std::string playerActions, std::string enemyActions)
 {
-    std::cout << "Action: " << std::endl;
+    std::cout << "Action: " << playerActions << ".";
+    if (enemyActions.length() != 0)
+    {
+        std::cout << enemyActions << ".";
+    }
+    std::cout << std::endl;
 }
 
 void GameView::displayFloor(Floor &f)

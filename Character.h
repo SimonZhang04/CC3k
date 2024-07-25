@@ -15,7 +15,7 @@ protected:
 
 public:
    int hp, maxHp, baseAtk, baseDef;
-   virtual void recieveAttack(int attackerAtk);
+   virtual int recieveAttack(int attackerAtk);
    virtual std::unique_ptr<Drawable> drawableToReplace() override { return nullptr; }
 };
 

@@ -17,7 +17,7 @@ protected:
    virtual bool shouldAttack(Tile &playerTile);
 
 public:
-   void act(Player &p, Tile &playerTile);
+   std::string act(Player &p, Tile &playerTile);
    virtual void onDeath(Player &p);
    virtual std::unique_ptr<Drawable> drawableToReplace() override { return std::move(loot); };
 };

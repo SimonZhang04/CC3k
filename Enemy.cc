@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include <random>
+#include <string>
 
 bool Enemy::shouldAttack(Tile &playerTile)
 {
@@ -34,18 +35,20 @@ Tile &Enemy::determineMoveTile()
    return *selectedTile;
 }
 
-void Enemy::act(Player &p, Tile &playerTile)
+std::string Enemy::act(Player &p, Tile &playerTile)
 {
    if (shouldAttack(playerTile))
    {
       // attack
-      p.recieveAttack(calculateAttack());
+      int damageDone = p.recieveAttack(calculateAttack());
+      return this->getChar() + " deals " + std::to_string(damageDone) + " damage to PC";
    }
    else if (shouldMove())
    {
       Tile &moveTile = determineMoveTile();
       occupyingTile->moveTo(moveTile);
       occupyingTile = &moveTile;
+      return "";
    }
 };
 

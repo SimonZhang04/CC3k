@@ -33,18 +33,21 @@ void GameLogic::playGame(std::string mapFile)
 
     // Game loop
     std::string action;
+    std::string playerActions = "Player character has spawned";
+    std::string enemyActions = "";
     while (true)
     {
         gameView.displayFloor(gameModel.floors[gameModel.currentFloor]);
         gameView.displayData(gameModel.getPlayer(), gameModel.currentFloor);
-        gameView.displayAction();
+        gameView.displayAction(playerActions, enemyActions);
+        playerActions = "PC ";
+        enemyActions = "";
         // Accept an action
         std::cin >> action;
         if (isDirection(action))
         {
             int row = gameModel.currentTile->getRow();
             int col = gameModel.currentTile->getCol();
-
             int dir = gameModel.floors[gameModel.currentFloor].directionMap[action];
             gameModel.floors[gameModel.currentFloor].directionToCoordinate(row, col, dir);
             // check if coord is in floor bounds
@@ -62,6 +65,9 @@ void GameLogic::playGame(std::string mapFile)
             // move to the tile (update gameModel and currentTile)
             gameModel.currentTile->moveTo(gameModel.floors[gameModel.currentFloor].getTile(row, col));
             gameModel.currentTile = &gameModel.floors[gameModel.currentFloor].getTile(row, col);
+
+            // add action to playerActions
+            playerActions += "moves " + gameModel.floors[gameModel.currentFloor].stringDirectionMap[action];
         };
     }
 }
