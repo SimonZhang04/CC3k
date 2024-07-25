@@ -4,6 +4,8 @@
 #include <fstream>
 #include <functional>
 #include <iostream>
+#include <memory>
+#include <unordered_set>
 
 const std::vector<std::string> GameLogic::DIRECTIONS = {"no", "ne", "ea", "se", "so", "sw", "we", "nw"};
 
@@ -75,7 +77,7 @@ void GameLogic::playGame(std::string mapFile)
             gameModel.currentTile = &curFloor.getTile(r, c);
 
             // add action to playerActions
-            playerActions += "moves " + gameModel.floors[gameModel.currentFloor].stringDirectionMap[action];
+            playerActions += "moves " + curFloor.stringDirectionMap[action];
         }
         else if (isAttack(action))
         {
@@ -105,6 +107,29 @@ void GameLogic::playGame(std::string mapFile)
                 // Error trying to attack invalid direction
             }
         }
+
+        // Enemies act
+        // Hash set to keep track of enemies that have acted
+        std::unordered_set<Enemy *> actedEnemies;
+
+        // iterate through all tiles on the floor
+        for (int row = 0; row < curFloor.FLOOR_ROWS; row++)
+        {
+            for (int col = 0; col < curFloor.FLOOR_COLS; col++)
+            {
+                // check if tile upper is an enemy
+                Enemy *enemyTile = curFloor.checkForEnemy(row, col);
+                if (enemyTile != nullptr)
+                {
+                    // check if the Enemy is in Hashset
+                    if (actedEnemies.find(enemyTile) == actedEnemies.end())
+                    {
+                        enemyTile->act(gameModel.getPlayer(), *gameModel.currentTile);
+                        actedEnemies.insert(enemyTile);
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -117,7 +142,7 @@ void GameLogic::generateFloor(Floor &f)
     int stairChamber = randomStairChamber(playerChamber);
     // deal with this
 
-    // gameModel.floors[gameModel.currentFloor]
+    // curFloor
 
     for (int i = 0; i < GameModel::ENEMIES_PER_FLOOR; i++)
     {
