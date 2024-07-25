@@ -12,5 +12,9 @@ bool Merchant::shouldAttack(Tile &playerTile)
 // drop merchant horde and set to aggro if it isn't
 void Merchant::onDeath(Player &p)
 {
+   if (!isAggro)
+   {
+      isAggro = true;
+   }
    p.collectGold(4);
 };
