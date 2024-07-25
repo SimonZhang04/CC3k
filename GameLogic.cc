@@ -38,6 +38,8 @@ void GameLogic::playGame(std::string mapFile)
 
     // Game loop
     std::string action;
+    std::string playerActions = "Player character has spawned";
+    std::string enemyActions = "";
     while (true)
     {
         Floor &curFloor = gameModel.getCurrentFloor();
@@ -45,11 +47,14 @@ void GameLogic::playGame(std::string mapFile)
 
         gameView.displayFloor(curFloor);
         gameView.displayData(gameModel.getPlayer(), gameModel.currentFloor);
-        gameView.displayAction();
+        gameView.displayAction(playerActions, enemyActions);
+        playerActions = "PC ";
+        enemyActions = "";
         // Accept an action
         std::cin >> action;
         if (isDirection(action))
         {
+
             int r, c;
             try
             {
@@ -66,6 +71,12 @@ void GameLogic::playGame(std::string mapFile)
             }
 
             // move to the tile (update gameModel and currentTile)
+            gameModel.currentTile->moveTo(gameModel.floors[gameModel.currentFloor].getTile(row, col));
+            gameModel.currentTile = &gameModel.floors[gameModel.currentFloor].getTile(row, col);
+
+            // add action to playerActions
+            playerActions += "moves " + gameModel.floors[gameModel.currentFloor].stringDirectionMap[action];
+        };
             curTile.moveTo(curFloor.getTile(r, c));
             gameModel.currentTile = &curFloor.getTile(r, c);
         }
