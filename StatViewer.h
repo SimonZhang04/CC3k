@@ -5,10 +5,10 @@
 
 class StatViewer : public Stat
 {
-   int *baseStat;
+   const int &baseStat;
 
 public:
-   StatViewer(int *baseStat) : Stat{}, baseStat{baseStat} {}
+   StatViewer(const int &baseStat) : Stat{}, baseStat{baseStat} {}
    int getStat() const override;
 };
 

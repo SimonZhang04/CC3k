@@ -18,7 +18,7 @@ protected:
    float goldModifier;
    Player(int maxHp, int baseAtk, int baseDef, float scoreModifer, float goldModifer, std::string race)
        : Character{maxHp, baseAtk, baseDef},
-         gold{0}, scoreModifier{scoreModifer}, goldModifier{goldModifer}, race{race}, modifiedAttack{std::make_unique<StatViewer>(&baseAtk)}, modifiedDefense{std::make_unique<StatViewer>(&baseDef)} {};
+         gold{0}, scoreModifier{scoreModifer}, goldModifier{goldModifer}, race{race}, modifiedAttack{std::make_unique<StatViewer>(this->baseAtk)}, modifiedDefense{std::make_unique<StatViewer>(this->baseDef)} {};
    virtual int calculateAttack();
 
 public:
