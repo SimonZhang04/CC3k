@@ -2,5 +2,5 @@
 class EmptyTile : public Drawable
 {
 public:
-    char getChar() override { return ' '; };
+    char getChar() const override { return ' '; };
 };

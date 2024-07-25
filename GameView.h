@@ -2,9 +2,11 @@
 
 class GameView
 {
+    std::string formatColor(char c);
+
 public:
     void displayRaces();
     void displayData();
     void displayAction();
-    void displayFloor(const Floor &f);
+    void displayFloor(Floor &f);
 };

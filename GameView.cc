@@ -1,4 +1,5 @@
 #include "GameView.h"
+#include "Tile.h"
 #include <iostream>
 
 void GameView::displayRaces()
@@ -31,14 +32,35 @@ void GameView::displayAction()
 {
 }
 
-void GameView::displayFloor(const Floor &f)
+void GameView::displayFloor(Floor &f)
 {
-    for (int r = 0; r < 25; r++)
+    for (int r = 0; r < Floor::FLOOR_ROWS; r++)
     {
-        for (int c = 0; c < 79; c++)
+        for (int c = 0; c < Floor::FLOOR_COLS; c++)
         {
-            std::cout << f.getTile(r, c).draw();
+            bool didPrint = false;
+            Tile &t{f.getTile(r, c)};
+            for (int i = 0; i < 5; i++)
+            {
+                // if (f.chambers[i].count(&t))
+                // {
+                //     std::cout << formatColor(f.getTile(r, c).draw());
+                //     didPrint = true;
+                //     break;
+                // }
+            }
+            if (!didPrint)
+            {
+                std::cout << f.getTile(r, c).draw();
+            }
         }
         std::cout << std::endl;
     }
+}
+
+std::string GameView::formatColor(char c)
+{
+    std::string s = "\033[31mbold" + c;
+    s += "\033[0m\n";
+    return s;
 }
