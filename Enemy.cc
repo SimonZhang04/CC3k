@@ -1,30 +1,50 @@
 #include "Enemy.h"
+#include <random>
 
-// check for attack condition using player and player tile
-bool Enemy::shouldAttack(Player &p, Tile &playerTile)
+bool Enemy::shouldAttack(Tile &playerTile)
 {
-   if (p.occupyingTile)
-};
+   // Check if playerTile is in any neighbor tiles of the enemy
+   for (Tile *neighbor : occupyingTile->getValidNeighbors())
+   {
+      if (neighbor == &playerTile)
+      {
+         return true;
+      }
+   }
+   return false;
+}
 
 bool Enemy::shouldMove()
 {
    return true;
 };
 
-Tile Enemy::determineMoveTile() {
+Tile &Enemy::determineMoveTile()
+{
+   std::vector<Tile *> validNeighbors = occupyingTile->getValidNeighbors();
 
-};
+   if (validNeighbors.empty())
+   {
+      return *occupyingTile;
+   }
+
+   int idx = rand() % validNeighbors.size();
+   Tile *selectedTile = validNeighbors[idx];
+
+   return *selectedTile;
+}
 
 void Enemy::act(Player &p, Tile &playerTile)
 {
-   if (shouldAttack(p))
+   if (shouldAttack(playerTile))
    {
       // attack
-      attack(p);
+      p.recieveAttack(calculateAttack());
    }
    else if (shouldMove())
    {
-      // move
+      Tile &moveTile = determineMoveTile();
+      occupyingTile->moveTo(moveTile);
    }
 };
 
