@@ -36,7 +36,7 @@ std::vector<Tile *> Tile::getValidNeighbors()
 
 bool Tile::isValid() const
 {
-    return upper == nullptr && typeid(lower) == typeid(FloorTile);
+    return upper == nullptr && typeid(*lower) == typeid(FloorTile);
 }
 
 void Tile::moveTo(Tile &t)
