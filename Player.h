@@ -6,6 +6,7 @@
 #include "Stat.h"
 #include "StatViewer.h"
 #include <memory>
+#include <string>
 
 class Player : public Character
 {

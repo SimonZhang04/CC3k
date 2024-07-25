@@ -20,7 +20,7 @@ void GameLogic::playGame(std::string mapFile)
         return;
     }
 
-    const Player &player = gameModel.getPlayer();
+    const Player &player = gameModel.setupPlayer(race);
 
     if (!mapFile.empty())
     {
