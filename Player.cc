@@ -16,7 +16,7 @@ int Player::getScore() const
 };
 
 // implement later
-void Player::usePotion(PotionType){
+void Player::usePotion(PotionType, int amount) {
 
 };
 

@@ -28,5 +28,5 @@ public:
    void collectGold(int goldPickedUp);
    char getChar() const override;
    int getScore() const;
-   virtual void usePotion(PotionType);
+   virtual void usePotion(PotionType, int amount);
 };
