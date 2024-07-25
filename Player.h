@@ -6,7 +6,6 @@
 
 class Player : public Character
 {
-
    void useAttack(Character &c);
 
 protected:
