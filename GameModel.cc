@@ -12,7 +12,7 @@
 #include "Werewolf.h"
 #include "Treasure.h"
 #include "Randomizer.h"
-#include "Potion.h"
+#include "StatPotion.h"
 #include "DragonHoard.h"
 #include "BarrierSuit.h"
 #include <exception>
@@ -128,6 +128,8 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], st
         std::vector<std::tuple<Tile &, int, int>> dragons;
 
         std::unique_ptr<Compass> compass = std::make_unique<Compass>(onCompassPickup);
+
+        Player *playerPtr = player.get();
         for (int r = 0; r < Floor::FLOOR_ROWS; r++)
         {
             for (int c = 0; c < Floor::FLOOR_COLS; c++)
@@ -137,9 +139,9 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], st
                 switch (map[f][r][c])
                 {
                 case Player::CHAR:
-                    d = std::move(player);
                     if (f == currentFloor)
                     {
+                        d = std::move(player);
                         currentTile = &t;
                     }
                     break;
@@ -179,14 +181,22 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], st
                     break;
                 }
                 case '0':
+                    d = std::make_unique<StatPotion>(*playerPtr, StatType::Health, 10);
+                    break;
                 case '1':
+                    d = std::make_unique<StatPotion>(*playerPtr, StatType::Attack, 10);
+                    break;
                 case '2':
+                    d = std::make_unique<StatPotion>(*playerPtr, StatType::Defense, 10);
+                    break;
                 case '3':
+                    d = std::make_unique<StatPotion>(*playerPtr, StatType::Health, -10);
+                    break;
                 case '4':
+                    d = std::make_unique<StatPotion>(*playerPtr, StatType::Attack, -10);
+                    break;
                 case '5':
-                    // Potions
-                    d = std::make_unique<Potion>([this](PotionType p)
-                                                 { this->player->usePotion(p, 10); }, PotionType::BoostAtk);
+                    d = std::make_unique<StatPotion>(*playerPtr, StatType::Defense, -10);
                     break;
                 case '6':
                 case '7':

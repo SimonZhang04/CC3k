@@ -5,6 +5,7 @@
 #include "HorizWall.h"
 #include "PassageWay.h"
 #include "VertWall.h"
+#include "Potion.h"
 #include <algorithm>
 #include <memory>
 #include <random>
@@ -110,6 +111,12 @@ Enemy *Floor::checkForEnemy(int r, int c)
 {
     Drawable *d = getTile(r, c).getUpper();
     return dynamic_cast<Enemy *>(d);
+}
+
+Potion *Floor::checkForPotion(int r, int c)
+{
+    Drawable *d = getTile(r, c).getUpper();
+    return dynamic_cast<Potion *>(d);
 }
 
 Tile &Floor::randomTile(int chamber)

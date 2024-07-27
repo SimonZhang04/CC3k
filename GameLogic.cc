@@ -1,5 +1,6 @@
 #include "GameLogic.h"
 #include "Player.h"
+#include "Potion.h"
 #include <algorithm>
 #include <fstream>
 #include <functional>
@@ -19,9 +20,14 @@ const bool GameLogic::isDirection(const std::string &direction)
     return std::find(GameLogic::DIRECTIONS.begin(), GameLogic::DIRECTIONS.end(), direction) != GameLogic::DIRECTIONS.end();
 }
 
-const bool GameLogic::isAttack(const std::string &action)
+const bool GameLogic::isAttackAction(const std::string &action)
 {
     return action == "a";
+}
+
+const bool GameLogic::isUsePotionAction(const std::string &action)
+{
+    return action == "u";
 }
 
 void GameLogic::playGame(std::string mapFile)
@@ -91,7 +97,7 @@ void GameLogic::playGame(std::string mapFile)
             // add action to playerActions
             playerActions += "moves " + curFloor.stringDirectionMap[action];
         }
-        else if (isAttack(action))
+        else if (isAttackAction(action))
         {
             std::cin >> action;
             if (isDirection(action))
@@ -113,6 +119,34 @@ void GameLogic::playGame(std::string mapFile)
                     // Error: trying to attack something that isn't an enemy
                 }
                 gameModel.getPlayer().useAttack(*e);
+            }
+            else
+            {
+                // Error trying to attack invalid direction
+            }
+        }
+        else if (isUsePotionAction(action))
+        {
+            std::cin >> action;
+            if (isDirection(action))
+            {
+                int r, c;
+                try
+                {
+                    getDirectionCoords(r, c, action, curFloor, curTile);
+                }
+                catch (std::exception e)
+                {
+                    continue;
+                }
+
+                Potion *p = curFloor.checkForPotion(r, c);
+                if (p == nullptr)
+                {
+                    continue;
+                    // Error: trying to attack something that isn't an enemy
+                }
+                p->consumePotion();
             }
             else
             {

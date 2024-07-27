@@ -2,5 +2,4 @@
 
 StatDecorator::~StatDecorator()
 {
-   delete next;
 }

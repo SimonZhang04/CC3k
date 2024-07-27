@@ -57,13 +57,14 @@ void Player::modifyStat(StatType type, int amount)
    {
    case StatType::Attack:
    {
-      std::unique_ptr<Stat> newInc = std::make_unique<StatIncrementer>(amount, modifiedAttack);
+      std::unique_ptr<Stat> newInc = std::make_unique<StatIncrementer>(amount, std::move(modifiedAttack));
+
       modifiedAttack = std::move(newInc);
       break;
    }
    case StatType::Defense:
    {
-      std::unique_ptr<Stat> newInc = std::make_unique<StatIncrementer>(amount, modifiedDefense);
+      std::unique_ptr<Stat> newInc = std::make_unique<StatIncrementer>(amount, std::move(modifiedDefense));
       modifiedDefense = std::move(newInc);
    }
    break;

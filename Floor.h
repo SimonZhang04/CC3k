@@ -8,6 +8,8 @@
 #include <string>
 #include <vector>
 
+class Potion;
+
 class Floor
 {
     std::vector<std::vector<Tile>> tiles;
@@ -28,6 +30,7 @@ public:
     Tile &getTile(int r, int c);
     void RemoveTileFromChamber(Tile *t, int chamber);
     Enemy *checkForEnemy(int r, int c);
+    Potion *checkForPotion(int r, int c);
     std::map<std::string, int> directionMap = {
         {"no", 0}, // north
         {"ne", 1}, // northeast
