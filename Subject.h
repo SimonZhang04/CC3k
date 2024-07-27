@@ -2,11 +2,12 @@
 #define SUBJECT
 
 #include "Observer.h"
+#include <algorithm>
 #include <vector>
 
 class Subject
 {
-   vector<Observer *> observers;
+   std::vector<Observer *> observers;
 
 public:
    void atttach(Observer *o)
@@ -17,6 +18,14 @@ public:
    void detach(Observer *o)
    {
       observers.erase(std::remove(observers.begin(), observers.end(), o), observers.end());
+   }
+
+   void notifyObservers()
+   {
+      for (auto p : observers)
+      {
+         p->notify(*this);
+      }
    }
 
    virtual ~Subject() = default;

@@ -9,6 +9,11 @@
 
 const std::vector<std::string> GameLogic::DIRECTIONS = {"no", "ne", "ea", "se", "so", "sw", "we", "nw"};
 
+void GameLogic::notify(Subject &entity)
+{
+    // We know the specific entity since its passed in by reference
+}
+
 const bool GameLogic::isDirection(const std::string &direction)
 {
     return std::find(GameLogic::DIRECTIONS.begin(), GameLogic::DIRECTIONS.end(), direction) != GameLogic::DIRECTIONS.end();

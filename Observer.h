@@ -1,10 +1,12 @@
-#ifndef SUBJECT
-#define SUBJECT
+#ifndef OBSERVER
+#define OBSERVER
+
+class Subject;
 
 class Observer
 {
 public:
-   virtual void notify() = 0;
+   virtual void notify(Subject &entity) = 0;
    virtual ~Observer() {};
 };
 
