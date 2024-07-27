@@ -67,14 +67,21 @@ void GameLogic::playGame(std::string mapFile)
                 continue;
             }
             // check if tile is valid
-            if (!curFloor.getTile(r, c).isValidPlayer())
+            Tile &t = curFloor.getTile(r, c);
+            if (!t.isValidPlayer())
             {
+                // check if occupied by walkEffectObject
+                WalkEffectObject *wo = dynamic_cast<WalkEffectObject *>(t.getUpper());
+                if (wo != nullptr)
+                {
+                    wo->onWalkedOn();
+                }
                 continue;
             }
 
             // move to the tile (update gameModel and currentTile)
-            curTile.moveTo(curFloor.getTile(r, c));
-            gameModel.currentTile = &curFloor.getTile(r, c);
+            curTile.moveTo(t);
+            gameModel.currentTile = &t;
 
             // add action to playerActions
             playerActions += "moves " + curFloor.stringDirectionMap[action];

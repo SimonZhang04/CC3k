@@ -3,7 +3,7 @@
 
 #include "Entity.h"
 
-class EffectObject : public Entity
+class EffectObject : public virtual Entity
 {
 protected:
    virtual void useEffect() = 0;

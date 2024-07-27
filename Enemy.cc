@@ -48,10 +48,9 @@ std::string Enemy::act(Player &p, Tile &playerTile)
    return "";
 };
 
-// drop 1 gold, make sure to check if the enemy holds a compass, notify
-void Enemy::onDeath(Player &p)
+// make sure to check if the enemy holds a compass, notify
+void Enemy::onDeath()
 {
-   p.collectGold(1);
 }
 
 int Enemy::calculateAttack() const

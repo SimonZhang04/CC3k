@@ -45,3 +45,7 @@ int Player::getDefense() const
 {
    return modifiedDefense->getStat();
 };
+
+void Player::onDeath()
+{
+}

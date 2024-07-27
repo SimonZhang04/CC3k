@@ -1,15 +1,16 @@
 #include "ProtectedTreasure.h"
 #include "Treasure.h"
 #include <functional>
-
-class DragonHoard : public ProtectedTreasure, public Treasure
+#include <iostream>
+class DragonHoard : public virtual ProtectedTreasure, public virtual Treasure
 {
-   int gold = 6;
    std::function<void(int)> onUse;
-   void unlockedEffect() { onUse(gold); };
+   void unlockedEffect() { Treasure::useEffect(); };
 
 public:
-   DragonHoard(std::function<void(int)> func) : Treasure{func} {}
+   DragonHoard(TreasureType treasureType, std::function<void(int)> func) : Treasure{treasureType, func}, ProtectedTreasure{}
+   {
+   }
 
 protected:
    void useEffect() override

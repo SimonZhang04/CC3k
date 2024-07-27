@@ -1,12 +1,23 @@
-#include "WalkEffectObject.h"
+#ifndef PROTECTEDTREASURE
+#define PROTECTEDTREASURE
 
-class ProtectedTreasure : public WalkEffectObject
+#include "WalkEffectObject.h"
+#include <iostream>
+
+class ProtectedTreasure : public virtual WalkEffectObject
 {
    virtual void unlockedEffect() = 0;
 
 protected:
-   bool isLocked = true;
+   bool isLocked;
+   ProtectedTreasure() : isLocked{true} {};
 
 public:
-   void unlock() { isLocked = false; }
+   void unlock()
+   {
+      std::cout << "UNLOCK" << std::endl;
+      isLocked = false;
+   }
 };
+
+#endif

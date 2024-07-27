@@ -3,7 +3,7 @@
 
 #include "EffectObject.h"
 
-class WalkEffectObject : public EffectObject
+class WalkEffectObject : public virtual EffectObject
 {
 public:
    void onWalkedOn() { useEffect(); };

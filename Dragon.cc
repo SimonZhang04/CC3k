@@ -1,5 +1,4 @@
 #include "Dragon.h"
-
 bool Dragon::shouldMove()
 {
    return false;
@@ -12,6 +11,7 @@ bool Dragon::shouldAttack(Tile &playerTile)
 }
 
 // update later
-void Dragon::onDeath(Player &p) {
-
+void Dragon::onDeath()
+{
+   protectedTreasure->unlock();
 };

@@ -12,6 +12,7 @@ class Player : public Character
 {
    std::unique_ptr<Stat> modifiedAttack;
    std::unique_ptr<Stat> modifiedDefense;
+   void onDeath() override;
 
 protected:
    int gold;

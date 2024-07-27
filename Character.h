@@ -12,6 +12,7 @@ protected:
 
    Character(int maxHp, int baseAtk, int baseDef) : hp{maxHp}, maxHp{maxHp}, baseAtk{baseAtk}, baseDef{baseDef} {};
    virtual int calculateAttack() const = 0;
+   virtual void onDeath() = 0;
 
 public:
    int hp, maxHp, baseAtk, baseDef;

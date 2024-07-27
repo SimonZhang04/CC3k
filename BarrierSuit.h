@@ -8,7 +8,7 @@ class BarrierSuit : public ProtectedTreasure
    void unlockedEffect() { onUse(); };
 
 public:
-   BarrierSuit(std::function<void()> func) : onUse{func} {}
+   BarrierSuit(std::function<void()> func) : ProtectedTreasure{}, onUse{func} {}
    static const char CHAR = 'B';
    char getChar() const override { return CHAR; };
 

@@ -13,7 +13,10 @@
 #include "Treasure.h"
 #include "Randomizer.h"
 #include "Potion.h"
+#include "DragonHoard.h"
+#include "BarrierSuit.h"
 #include <exception>
+#include <iostream>
 
 const std::map<char, int> GameModel::ENEMY_SPAWN_WEIGHTS = {{Werewolf::CHAR, 4}, {Vampire::CHAR, 3}, {Goblin::CHAR, 5}, {Troll::CHAR, 2}, {Phoenix::CHAR, 2}, {Merchant::CHAR, 2}};
 
@@ -121,6 +124,9 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], st
     {
         int compassIdx = rand() % 20;
         int enemyCount = 0;
+
+        std::vector<std::tuple<Tile &, int, int>> dragons;
+
         std::unique_ptr<Compass> compass = std::make_unique<Compass>(onCompassPickup);
         for (int r = 0; r < Floor::FLOOR_ROWS; r++)
         {
@@ -150,9 +156,28 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], st
                     break;
                 }
                 case Dragon::CHAR:
-                    d = std::make_unique<Dragon>(&t, compassIdx == enemyCount ? std::move(compass) : nullptr);
-                    enemyCount++;
+                {
+                    int treasurer = 0;
+                    int treasurec = 0;
+                    for (int i = 0; i < Tile::NUM_NEIGHBORS; i++)
+                    {
+                        int nr = t.getRow();
+                        int nc = t.getCol();
+                        Floor::directionToCoordinate(nr, nc, i);
+                        if (Floor::inBounds(nr, nc))
+                        {
+                            if (map[f][nr][nc] == '9' || map[f][nr][nc] == '8')
+                            {
+
+                                treasurer = nr;
+                                treasurec = nc;
+                            }
+                        }
+                    }
+
+                    dragons.push_back(std::tuple<Tile &, int, int>{t, treasurer, treasurec});
                     break;
+                }
                 case '0':
                 case '1':
                 case '2':
@@ -180,7 +205,9 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], st
                     break;
                 case '8':
                 case '9':
-                    // Protected Treasure
+                    std::cout << "HOARD " << r << " " << c << std::endl;
+                    d = std::make_unique<DragonHoard>(TreasureType::DragonHoard, [this](int g)
+                                                      { this->player->collectGold(g); });
                     break;
                 default:
                     continue;
@@ -189,6 +216,20 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], st
 
                 t.setUpperDrawable(std::move(d));
             }
+        }
+
+        for (std::tuple<Tile &, int, int> dragonData : dragons)
+        {
+            Tile &t = std::get<0>(dragonData);
+            int treasurer = std::get<1>(dragonData);
+            int treasurec = std::get<2>(dragonData);
+            std::cout << treasurer << " " << treasurec << std::endl;
+            std::cout << floors[f].getTile(treasurer, treasurec).draw() << std::endl;
+            ProtectedTreasure *pt = dynamic_cast<ProtectedTreasure *>(floors[f].getTile(treasurer, treasurec).getUpper());
+            std::cout << pt << std::endl;
+            std::unique_ptr<Dragon> d = std::make_unique<Dragon>(&t, compassIdx == enemyCount ? std::move(compass) : nullptr, pt);
+            t.setUpperDrawable(std::move(d));
+            enemyCount++;
         }
     }
 }
