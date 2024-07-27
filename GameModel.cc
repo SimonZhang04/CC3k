@@ -253,22 +253,22 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], st
                                                       { this->player->modifyStat(stat, f); });
                     break;
                 case '0':
-                    d = std::make_unique<StatPotion>(*playerPtr, StatType::Health, 10);
+                    d = std::make_unique<StatPotion>(*playerPtr, PotionType::RestoreHealth, StatType::Health, 10);
                     break;
                 case '1':
-                    d = std::make_unique<StatPotion>(*playerPtr, StatType::Attack, 10);
+                    d = std::make_unique<StatPotion>(*playerPtr, PotionType::BoostAtk, StatType::Attack, 10);
                     break;
                 case '2':
-                    d = std::make_unique<StatPotion>(*playerPtr, StatType::Defense, 10);
+                    d = std::make_unique<StatPotion>(*playerPtr, PotionType::BoostDef, StatType::Defense, 10);
                     break;
                 case '3':
-                    d = std::make_unique<StatPotion>(*playerPtr, StatType::Health, -10);
+                    d = std::make_unique<StatPotion>(*playerPtr, PotionType::PoisonHealth, StatType::Health, -10);
                     break;
                 case '4':
-                    d = std::make_unique<StatPotion>(*playerPtr, StatType::Attack, -10);
+                    d = std::make_unique<StatPotion>(*playerPtr, PotionType::WoundAtk, StatType::Attack, -10);
                     break;
                 case '5':
-                    d = std::make_unique<StatPotion>(*playerPtr, StatType::Defense, -10);
+                    d = std::make_unique<StatPotion>(*playerPtr, PotionType::WoundDef, StatType::Defense, -10);
                     break;
                 case '6':
                 case '7':

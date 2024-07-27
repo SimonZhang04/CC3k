@@ -180,6 +180,8 @@ void GameLogic::mainLoop()
                     // Error: trying to attack something that isn't an enemy
                 }
                 p->consumePotion();
+                // add action to player Actions
+                playerActions += "uses " + p->getPotionType();
             }
             else
             {

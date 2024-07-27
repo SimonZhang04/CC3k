@@ -1,6 +1,6 @@
+#include "Player.h"
 #include "Potion.h"
 #include "PotionType.h"
-#include "Player.h"
 #include "StatType.h"
 #include <functional>
 #include <iostream>
@@ -10,7 +10,7 @@ class StatPotion : public Potion
     int amount;
 
 public:
-    StatPotion(Player &p, StatType stat, int amount) : Potion{p}, stat{stat}, amount{amount} {}
+    StatPotion(Player &p, PotionType type, StatType stat, int amount) : Potion{p, type}, stat{stat}, amount{amount} {}
 
 protected:
     void useEffect() override

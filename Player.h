@@ -13,6 +13,7 @@ class Player : public Character
 {
    std::unique_ptr<Stat> modifiedAttack;
    std::unique_ptr<Stat> modifiedDefense;
+   std::unique_ptr<Stat> receivedDamageMultiplier;
    void onDeath() override;
 
 protected:
@@ -36,7 +37,6 @@ protected:
 public:
    static const char CHAR = '@';
    const std::string race;
-   std::unique_ptr<Stat> receivedDamageMultiplier;
    void collectGold(int goldPickedUp);
    char getChar() const override;
    int getScore() const;
