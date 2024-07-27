@@ -4,8 +4,8 @@
 #include "Character.h"
 #include "PotionType.h"
 #include "Stat.h"
-#include "StatViewer.h"
 #include "StatType.h"
+#include "StatViewer.h"
 #include <memory>
 #include <string>
 
@@ -19,16 +19,24 @@ protected:
    int gold;
    float scoreModifier;
    float goldModifier;
-   Player(int maxHp, int baseAtk, int baseDef, float scoreModifer, float goldModifer, std::string race)
+   Player(int maxHp, int baseAtk, int baseDef, float scoreModifier, float goldModifier, std::string race)
        : Character{maxHp, baseAtk, baseDef},
-         gold{0}, scoreModifier{scoreModifer}, goldModifier{goldModifer}, race{race}, modifiedAttack{std::make_unique<StatViewer>(this->baseAtk)}, modifiedDefense{std::make_unique<StatViewer>(this->baseDef)} {};
+         gold{0},
+         scoreModifier{scoreModifier},
+         goldModifier{goldModifier},
+         race{race},
+         modifiedAttack{std::make_unique<StatViewer>(static_cast<float>(baseAtk))},
+         modifiedDefense{std::make_unique<StatViewer>(static_cast<float>(baseDef))},
+         receivedDamageMultiplier{std::make_unique<StatViewer>(1.0f)}
+   {
+   }
+
    virtual int calculateAttack() const;
-   void modifyStat(StatType type, int amount);
 
 public:
    static const char CHAR = '@';
    const std::string race;
-
+   std::unique_ptr<Stat> receivedDamageMultiplier;
    void collectGold(int goldPickedUp);
    char getChar() const override;
    int getScore() const;
@@ -37,6 +45,8 @@ public:
    int getDefense() const;
    void useAttack(Character &c);
    virtual void useStatPotion(StatType type, int amount);
+   void modifyStat(StatType type, float amount);
+   virtual int receiveAttack(int attackerAtk) override;
 };
 
 #endif

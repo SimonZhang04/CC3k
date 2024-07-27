@@ -2,14 +2,14 @@
 #define STATVIEWER
 
 #include "Stat.h"
-
+#include <iostream>
 class StatViewer : public Stat
 {
-   const int &baseStat;
+   const float baseStat;
 
 public:
-   StatViewer(const int &baseStat) : Stat{}, baseStat{baseStat} {}
-   int getStat() const override;
+   StatViewer(const float baseStat) : Stat{}, baseStat{baseStat} {}
+   float getStat() const override;
 };
 
 #endif

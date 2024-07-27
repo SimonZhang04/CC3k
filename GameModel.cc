@@ -236,7 +236,7 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], st
                         Floor::directionToCoordinate(nr, nc, i);
                         if (Floor::inBounds(nr, nc))
                         {
-                            if (map[f][nr][nc] == '9' || map[f][nr][nc] == '8')
+                            if (map[f][nr][nc] == '9' || map[f][nr][nc] == BarrierSuit::CHAR)
                             {
 
                                 treasurer = nr;
@@ -248,6 +248,10 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], st
                     dragons.push_back(std::tuple<Tile &, int, int>{t, treasurer, treasurec});
                     break;
                 }
+                case BarrierSuit::CHAR:
+                    d = std::make_unique<BarrierSuit>([this](StatType stat, float f)
+                                                      { this->player->modifyStat(stat, f); });
+                    break;
                 case '0':
                     d = std::make_unique<StatPotion>(*playerPtr, StatType::Health, 10);
                     break;
@@ -282,6 +286,9 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], st
                                                    { this->player->collectGold(g); });
                     break;
                 case '8':
+                    d = std::make_unique<Treasure>(TreasureType::MerchantsHoard, [this](int g)
+                                                   { this->player->collectGold(g); });
+                    break;
                 case '9':
                     d = std::make_unique<DragonHoard>(TreasureType::DragonHoard, [this](int g)
                                                       { this->player->collectGold(g); });
@@ -306,6 +313,7 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], st
             int treasurec = std::get<2>(dragonData);
             ProtectedTreasure *pt = dynamic_cast<ProtectedTreasure *>(floors[f].getTile(treasurer, treasurec).getUpper());
             std::unique_ptr<Dragon> d = std::make_unique<Dragon>(&t, compassIdx == enemyCount ? std::move(compass) : nullptr, pt, treasurer, treasurec);
+            d->attach(gameLogic);
             t.setUpperDrawable(std::move(d));
             enemyCount++;
         }

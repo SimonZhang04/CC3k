@@ -1,6 +1,6 @@
 #include "StatIncrementer.h"
 
-int StatIncrementer::getStat() const
+float StatIncrementer::getStat() const
 {
    return next->getStat() + increment;
 };
