@@ -15,7 +15,7 @@ public:
 protected:
    void useEffect() override
    {
-      notifyObservers();
       onUse();
+      notifyObservers();
    };
 };

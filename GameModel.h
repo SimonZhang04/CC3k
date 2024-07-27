@@ -2,7 +2,6 @@
 #include "Floor.h"
 #include "Observer.h"
 #include "Stairway.h"
-#include <map>
 #include <functional>
 #include <map>
 class GameModel

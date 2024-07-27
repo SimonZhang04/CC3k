@@ -12,7 +12,7 @@ public:
    char getChar() const override { return CHAR; };
    void consumePotion()
    {
-      notifyObservers();
       useEffect();
+      notifyObservers();
    };
 };

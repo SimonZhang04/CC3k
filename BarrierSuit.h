@@ -7,8 +7,8 @@ class BarrierSuit : public ProtectedTreasure
    std::function<void()> onUse;
    void unlockedEffect()
    {
-      notifyObservers();
       onUse();
+      notifyObservers();
    };
 
 public:

@@ -14,8 +14,8 @@ class Treasure : public virtual WalkEffectObject
 protected:
    void useEffect() override
    {
-      notifyObservers();
       onUse(gold);
+      notifyObservers();
    };
 
 public:

@@ -105,8 +105,10 @@ std::unique_ptr<Enemy> GameModel::instantiateEnemy(char enemy, Tile *t, std::uni
         }
         else
         {
-            e = std::make_unique<Merchant>(t, std::make_unique<Treasure>(TreasureType::MerchantsHoard, [this](int g)
-                                                                         { this->player->collectGold(g); }));
+            std::unique_ptr<Treasure> merchantLoot = std::make_unique<Treasure>(TreasureType::MerchantsHoard, [this](int g)
+                                                                                { this->player->collectGold(g); });
+            merchantLoot->attach(gameLogic);
+            e = std::make_unique<Merchant>(t, std::move(merchantLoot));
         }
         break;
     case Phoenix::CHAR:
@@ -115,7 +117,6 @@ std::unique_ptr<Enemy> GameModel::instantiateEnemy(char enemy, Tile *t, std::uni
     case Troll::CHAR:
         e = std::make_unique<Troll>(t, compass ? std::move(compass) : nullptr);
     }
-    e->attach(gameLogic);
     return e;
 }
 
@@ -129,6 +130,7 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], st
         std::vector<std::tuple<Tile &, int, int>> dragons;
 
         std::unique_ptr<Compass> compass = std::make_unique<Compass>(onCompassPickup);
+        compass->attach(gameLogic);
 
         Player *playerPtr = player.get();
         for (int r = 0; r < Floor::FLOOR_ROWS; r++)
@@ -141,7 +143,7 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], st
                     std::cout << r << " " << c << std::endl;
                 }
                 Tile &t = floors[f].getTile(r, c);
-                std::unique_ptr<Drawable> d = nullptr;
+                std::unique_ptr<Entity> d = nullptr;
                 switch (map[f][r][c])
                 {
                 case Player::CHAR:
@@ -242,6 +244,10 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], st
                 default:
                     continue;
                     break;
+                }
+                if (d != nullptr)
+                {
+                    d->attach(gameLogic);
                 }
 
                 t.setUpperDrawable(std::move(d));
