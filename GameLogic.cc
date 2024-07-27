@@ -11,7 +11,10 @@
 #include <vector>
 
 const std::vector<std::string> GameLogic::DIRECTIONS = {"no", "ne", "ea", "se", "so", "sw", "we", "nw"};
-
+const std::string GameLogic::ATTACK_COMMAND = "a";
+const std::string GameLogic::USE_POTION_COMMAND = "u";
+const std::string GameLogic::QUIT_COMMAND = "q";
+const std::string GameLogic::RESTART_COMMAND = "r";
 void GameLogic::notify(Subject &entity)
 {
     std::cout << "Game Logic notified about death entity" << std::endl;
@@ -41,16 +44,6 @@ std::pair<int, int> GameLogic::determineEntityLocation(Entity &entity, Floor &cu
 const bool GameLogic::isDirection(const std::string &direction)
 {
     return std::find(GameLogic::DIRECTIONS.begin(), GameLogic::DIRECTIONS.end(), direction) != GameLogic::DIRECTIONS.end();
-}
-
-const bool GameLogic::isAttackAction(const std::string &action)
-{
-    return action == "a";
-}
-
-const bool GameLogic::isUsePotionAction(const std::string &action)
-{
-    return action == "u";
 }
 
 void GameLogic::playGame(std::string mapFile)
@@ -120,7 +113,7 @@ void GameLogic::playGame(std::string mapFile)
             // add action to playerActions
             playerActions += "moves " + curFloor.stringDirectionMap[action];
         }
-        else if (isAttackAction(action))
+        else if (action == ATTACK_COMMAND)
         {
             std::cin >> action;
             if (isDirection(action))
@@ -148,7 +141,7 @@ void GameLogic::playGame(std::string mapFile)
                 // Error trying to attack invalid direction
             }
         }
-        else if (isUsePotionAction(action))
+        else if (action == USE_POTION_COMMAND)
         {
             std::cin >> action;
             if (isDirection(action))
@@ -175,6 +168,10 @@ void GameLogic::playGame(std::string mapFile)
             {
                 // Error trying to attack invalid direction
             }
+        }
+        else if (action == QUIT_COMMAND)
+        {
+            return;
         }
 
         // Enemies act
