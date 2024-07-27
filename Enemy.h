@@ -20,6 +20,7 @@ protected:
 public:
    std::string act(Player &p, Tile &playerTile);
    virtual std::unique_ptr<Drawable> drawableToReplace() override { return std::move(loot); };
+   int getHp() const;
 };
 
 #endif

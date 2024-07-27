@@ -43,7 +43,7 @@ public:
    int getGold() const;
    int getAttack() const;
    int getDefense() const;
-   void useAttack(Character &c);
+   int useAttack(Character &c); // Return the damage dealt
    virtual void useStatPotion(StatType type, int amount);
    void modifyStat(StatType type, float amount);
    virtual int receiveAttack(int attackerAtk) override;

@@ -19,10 +19,9 @@ int Player::getScore() const
    return gold * scoreModifier;
 };
 
-void Player::useAttack(Character &c)
+int Player::useAttack(Character &c)
 {
-   std::cout << "Player attack: " << calculateAttack();
-   c.receiveAttack(calculateAttack());
+   return c.receiveAttack(calculateAttack());
 }
 
 int Player::getGold() const

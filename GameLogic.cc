@@ -6,6 +6,7 @@
 #include <functional>
 #include <iostream>
 #include <memory>
+#include <string>
 #include <unordered_set>
 #include <utility>
 #include <vector>
@@ -151,7 +152,8 @@ void GameLogic::mainLoop()
                     continue;
                     // Error: trying to attack something that isn't an enemy
                 }
-                gameModel.getPlayer().useAttack(*e);
+                int damageDealt = gameModel.getPlayer().useAttack(*e);
+                playerActions += "deals " + std::to_string(damageDealt) + " damage to Enemy " + e->getChar() + " (" + std::to_string(e->getHp()) + ")";
             }
             else
             {
