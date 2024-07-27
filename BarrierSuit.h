@@ -5,7 +5,11 @@ class BarrierSuit : public ProtectedTreasure
 {
 
    std::function<void()> onUse;
-   void unlockedEffect() { onUse(); };
+   void unlockedEffect()
+   {
+      notifyObservers();
+      onUse();
+   };
 
 public:
    BarrierSuit(std::function<void()> func) : ProtectedTreasure{}, onUse{func} {}

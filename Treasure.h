@@ -1,8 +1,8 @@
 #ifndef TREASURE
 #define TREASURE
 
-#include "WalkEffectObject.h"
 #include "TreasureType.h"
+#include "WalkEffectObject.h"
 #include <functional>
 
 class Treasure : public virtual WalkEffectObject
@@ -14,6 +14,7 @@ class Treasure : public virtual WalkEffectObject
 protected:
    void useEffect() override
    {
+      notifyObservers();
       onUse(gold);
    };
 

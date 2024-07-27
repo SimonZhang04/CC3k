@@ -15,7 +15,7 @@ public:
 protected:
    void useEffect() override
    {
-      std::cout << "COMPASS EFFECT" << std::endl;
+      notifyObservers();
       onUse();
    };
 };
