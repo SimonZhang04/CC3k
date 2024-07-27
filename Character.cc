@@ -8,7 +8,6 @@ int Character::receiveAttack(int attackerAtk)
    hp -= takenDamage;
    if (hp <= 0)
    {
-      std::cout << "Enemy died. " << std::endl;
       onDeath();
       notifyObservers();
    }

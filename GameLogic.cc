@@ -152,8 +152,17 @@ void GameLogic::mainLoop()
                     continue;
                     // Error: trying to attack something that isn't an enemy
                 }
+                char enemyType = e->getChar();
                 int damageDealt = gameModel.getPlayer().useAttack(*e);
-                playerActions += "deals " + std::to_string(damageDealt) + " damage to Enemy " + e->getChar() + " (" + std::to_string(e->getHp()) + ")";
+                // if the enemy is dead, no more access to it
+                if (curFloor.checkForEnemy(r, c))
+                {
+                    playerActions += "deals " + std::to_string(damageDealt) + " damage to Enemy " + enemyType + " (" + std::to_string(e->getHp()) + ")";
+                }
+                else
+                {
+                    playerActions += "kills Enemy " + enemyType; // this doesn't run for some reason
+                }
             }
             else
             {
