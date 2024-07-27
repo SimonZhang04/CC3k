@@ -12,7 +12,7 @@
 #include <random>
 #include <vector>
 
-static const std::string defaultLayout[Floor::FLOOR_ROWS] = {
+const std::string Floor::DEFAULT_LAYOUT[Floor::FLOOR_ROWS] = {
     "|-----------------------------------------------------------------------------|",
     "|                                                                             |",
     "| |--------------------------|        |-----------------------|               |",
@@ -48,7 +48,7 @@ Floor::Floor() : tiles{std::vector<std::vector<Tile>>{}}, chambers{std::vector<s
         {
             std::unique_ptr<Drawable> lower;
             std::unique_ptr<Drawable> upper = nullptr;
-            switch (defaultLayout[r][c])
+            switch (DEFAULT_LAYOUT[r][c])
             {
             case '.':
                 lower = std::make_unique<FloorTile>();
@@ -121,7 +121,7 @@ Potion *Floor::checkForPotion(int r, int c)
     return dynamic_cast<Potion *>(d);
 }
 
-Tile &Floor::randomTile(int chamber)
+Tile &Floor::popRandomTile(int chamber)
 {
     int idx = rand() % chambers[chamber].size();
     auto it = chambers[chamber].begin();
@@ -131,6 +131,7 @@ Tile &Floor::randomTile(int chamber)
     }
 
     Tile *t = *it;
+    chambers[chamber].erase(t);
     return *t;
 }
 

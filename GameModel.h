@@ -10,7 +10,12 @@ class GameModel
 
 public:
     static const int ENEMIES_PER_FLOOR = 10;
+    static const int POTIONS_PER_FLOOR = 10;
+    static const int TREASURE_PER_FLOOR = 10;
     static const std::map<char, int> ENEMY_SPAWN_WEIGHTS;
+    static const std::map<char, int> TREASURE_SPAWN_WEIGHTS;
+    static const std::map<char, int> POTION_SPAWN_WEIGHTS;
+
     int currentFloor;
     Tile *currentTile;
     std::vector<Floor> floors;
@@ -22,6 +27,7 @@ public:
     Player &getPlayer();
     std::unique_ptr<Enemy> instantiateEnemy(char enemy, Tile *t, std::unique_ptr<Compass> &compass, Observer *gameLogic);
     void createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], std::unique_ptr<Player> player, std::function<void()> onCompassUsed, std::function<void()> onStairsUsed, Observer *gameLogic);
-    void generateFloor(Floor &f, std::function<void()> onCompassPickup);
+    void generateMap(std::unique_ptr<Player> player, std::function<void()> onCompassUsed, std::function<void()> onStairsUsed, Observer *gameLogic);
+    void placeInChamber(char c, int chamber, Floor &floor, std::string (&map)[Floor::FLOOR_ROWS]);
     int randomStairChamber(int playerChamber);
 };
