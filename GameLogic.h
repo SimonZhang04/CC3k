@@ -23,6 +23,7 @@ class GameLogic : public Observer
     void onStairsUsed();
     void notify(Subject &entity) override;
     std::pair<int, int> determineEntityLocation(Entity &entity, Floor &curFloor);
+    void mainLoop();
 
 public:
     void playGame(std::string mapFile);

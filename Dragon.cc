@@ -7,7 +7,10 @@ bool Dragon::shouldMove()
 // update later
 bool Dragon::shouldAttack(Tile &playerTile)
 {
-   return Enemy::shouldAttack(playerTile);
+   int rDiff = abs(playerTile.getRow() - protectedTreasureRow);
+   int cDiff = abs(playerTile.getCol() - protectedTreasureCol);
+
+   return rDiff <= 1 && cDiff <= 1;
 }
 
 // update later

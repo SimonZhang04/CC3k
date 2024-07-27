@@ -8,9 +8,15 @@ class Dragon : public Enemy
    static const int BASE_DEF = 20;
    ProtectedTreasure *protectedTreasure;
    virtual void onDeath() override;
+   int protectedTreasureRow;
+   int protectedTreasureCol;
 
 public:
-   Dragon(Tile *occupyingTile, std::unique_ptr<Drawable> loot, ProtectedTreasure *protectedTreasure) : Enemy{BASE_HP, BASE_ATK, BASE_DEF, occupyingTile, std::move(loot)}, protectedTreasure{protectedTreasure} {};
+   Dragon(Tile *occupyingTile, std::unique_ptr<Drawable> loot, ProtectedTreasure *protectedTreasure, int ptrow, int ptcol)
+       : Enemy{BASE_HP, BASE_ATK, BASE_DEF, occupyingTile, std::move(loot)},
+         protectedTreasure{protectedTreasure},
+         protectedTreasureRow{ptrow},
+         protectedTreasureCol{ptcol} {};
    static const char CHAR = 'D';
    char getChar() const override { return CHAR; };
    virtual bool shouldMove() override;

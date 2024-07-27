@@ -20,12 +20,13 @@ class Floor
 public:
     static const int FLOOR_ROWS = 25;
     static const int FLOOR_COLS = 79;
+    static const std::string DEFAULT_LAYOUT[FLOOR_ROWS];
     static void directionToCoordinate(int &r, int &c, int dir);
     static bool inBounds(int r, int c);
 
     Floor();
 
-    Tile &randomTile(int chamber);
+    Tile &popRandomTile(int chamber);
     Tile &getTile(int r, int c);
     void RemoveTileFromChamber(Tile *t, int chamber);
     void replaceEntity(int r, int c, std::unique_ptr<Drawable> newUpper);

@@ -48,6 +48,7 @@ const bool GameLogic::isDirection(const std::string &direction)
 
 void GameLogic::playGame(std::string mapFile)
 {
+    gameModel = GameModel{};
     char race = gameView.displayRaces();
     if (race == gameView.INVALID_PLAYER_RACE)
     {
@@ -62,9 +63,16 @@ void GameLogic::playGame(std::string mapFile)
     }
     else
     {
-        // Do map generation
+        gameModel.generateMap(std::move(player), [this]()
+                              { this->onCompassUsed(); }, [this]()
+                              { this->onStairsUsed(); }, this);
     }
 
+    mainLoop();
+}
+
+void GameLogic::mainLoop()
+{
     // Game loop
     std::string action;
     std::string playerActions = "Player character has spawned";
@@ -102,8 +110,17 @@ void GameLogic::playGame(std::string mapFile)
                 if (wo != nullptr)
                 {
                     wo->onWalkedOn();
+
+                    // If tile is now valid after effect, move to it
+                    if (!t.isValidPlayer())
+                    {
+                        continue;
+                    }
                 }
-                continue;
+                else
+                {
+                    continue;
+                }
             }
 
             // move to the tile (update gameModel and currentTile)
@@ -168,6 +185,10 @@ void GameLogic::playGame(std::string mapFile)
             {
                 // Error trying to attack invalid direction
             }
+        }
+        else if (action == RESTART_COMMAND)
+        {
+            playGame("");
         }
         else if (action == QUIT_COMMAND)
         {
