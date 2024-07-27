@@ -1,11 +1,11 @@
 #include "Stat.h"
-
+#include <memory>
 class StatDecorator : public Stat
 {
 protected:
-   Stat *next;
+   std::unique_ptr<Stat> next;
 
 public:
-   StatDecorator(Stat *s) : next{s} {}
+   StatDecorator(std::unique_ptr<Stat> s) : next{std::move(s)} {}
    virtual ~StatDecorator();
 };

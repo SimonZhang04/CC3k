@@ -11,5 +11,5 @@ class Elf : public Player
 
 public:
    Elf() : Player{BASE_HP, BASE_ATK, BASE_DEF, SCORE_MODIFIER, GOLD_MODIFIER, "Elf"} {}
-   virtual void usePotion(PotionType, int amount) override;
+   virtual void useStatPotion(StatType type, int amount) override;
 };

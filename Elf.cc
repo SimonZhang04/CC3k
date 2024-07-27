@@ -2,6 +2,7 @@
 
 // implement later
 
-void Elf::usePotion(PotionType, int amount) {
-
+void Elf::useStatPotion(StatType type, int amount)
+{
+    Player::useStatPotion(type, abs(amount));
 };

@@ -5,6 +5,6 @@ class StatIncrementer : public StatDecorator
    int increment;
 
 public:
-   StatIncrementer(const int &increment, Stat *s) : StatDecorator{s}, increment{increment} {}
+   StatIncrementer(const int increment, std::unique_ptr<Stat> s) : StatDecorator{std::move(s)}, increment{increment} {}
    int getStat() const override;
 };

@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "StatIncrementer.h"
 #include <iostream>
 void Player::collectGold(int goldPickedUp)
 {
@@ -13,11 +14,6 @@ char Player::getChar() const
 int Player::getScore() const
 {
    return gold * scoreModifier;
-};
-
-// implement later
-void Player::usePotion(PotionType, int amount) {
-
 };
 
 void Player::useAttack(Character &c)
@@ -48,4 +44,31 @@ int Player::getDefense() const
 
 void Player::onDeath()
 {
+}
+
+void Player::useStatPotion(StatType type, int amount)
+{
+   modifyStat(type, amount);
+}
+
+void Player::modifyStat(StatType type, int amount)
+{
+   switch (type)
+   {
+   case StatType::Attack:
+   {
+      std::unique_ptr<Stat> newInc = std::make_unique<StatIncrementer>(amount, modifiedAttack);
+      modifiedAttack = std::move(newInc);
+      break;
+   }
+   case StatType::Defense:
+   {
+      std::unique_ptr<Stat> newInc = std::make_unique<StatIncrementer>(amount, modifiedDefense);
+      modifiedDefense = std::move(newInc);
+   }
+   break;
+   case StatType::Health:
+      hp += amount;
+      break;
+   }
 }

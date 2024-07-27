@@ -5,6 +5,7 @@
 #include "PotionType.h"
 #include "Stat.h"
 #include "StatViewer.h"
+#include "StatType.h"
 #include <memory>
 #include <string>
 
@@ -22,6 +23,7 @@ protected:
        : Character{maxHp, baseAtk, baseDef},
          gold{0}, scoreModifier{scoreModifer}, goldModifier{goldModifer}, race{race}, modifiedAttack{std::make_unique<StatViewer>(this->baseAtk)}, modifiedDefense{std::make_unique<StatViewer>(this->baseDef)} {};
    virtual int calculateAttack() const;
+   void modifyStat(StatType type, int amount);
 
 public:
    static const char CHAR = '@';
@@ -34,7 +36,7 @@ public:
    int getAttack() const;
    int getDefense() const;
    void useAttack(Character &c);
-   virtual void usePotion(PotionType, int amount);
+   virtual void useStatPotion(StatType type, int amount);
 };
 
 #endif
