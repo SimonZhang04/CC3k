@@ -187,11 +187,6 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], st
         {
             for (int c = 0; c < Floor::FLOOR_COLS; c++)
             {
-
-                if (f == 0 && compassIdx == enemyCount)
-                { // TODO: REMOVE
-                    std::cout << r << " " << c << std::endl;
-                }
                 Tile &t = floors[f].getTile(r, c);
                 std::unique_ptr<Entity> d = nullptr;
                 switch (map[f][r][c])

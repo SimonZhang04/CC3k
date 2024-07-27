@@ -13,6 +13,7 @@ public:
         {
             sum += pair.second;
             lookup[count] = std::pair<T, int>{pair.first, sum};
+            count++;
         }
         int r = rand() % sum;
 
@@ -20,6 +21,7 @@ public:
         {
             if (r < lookup[i].second)
             {
+                std::cout << r << " " << lookup[i].first << std::endl;
                 return lookup[i].first;
             }
         }

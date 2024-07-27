@@ -110,8 +110,17 @@ void GameLogic::mainLoop()
                 if (wo != nullptr)
                 {
                     wo->onWalkedOn();
+
+                    // If tile is now valid after effect, move to it
+                    if (!t.isValidPlayer())
+                    {
+                        continue;
+                    }
                 }
-                continue;
+                else
+                {
+                    continue;
+                }
             }
 
             // move to the tile (update gameModel and currentTile)
