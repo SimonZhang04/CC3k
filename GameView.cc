@@ -28,6 +28,7 @@ void GameView::displayData(const Player &p, const int currentFloor)
     std::cout << "HP: " + std::to_string(p.hp) << std::endl;
     std::cout << "Atk: " + std::to_string(p.getAttack()) << std::endl;
     std::cout << "Def: " + std::to_string(p.getDefense()) << std::endl;
+    std::cout << "Damage Taken Modifier: " + std::to_string(p.receivedDamageMultiplier->getStat()) << std::endl;
 };
 
 void GameView::displayAction(std::string playerActions, std::string enemyActions)

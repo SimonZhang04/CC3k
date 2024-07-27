@@ -1,6 +1,6 @@
 #include "StatViewer.h"
 
-int StatViewer::getStat() const
+float StatViewer::getStat() const
 {
    return baseStat;
 }

@@ -11,6 +11,7 @@ int Character::receiveAttack(int attackerAtk)
    {
       std::cout << "Enemy died. " << std::endl;
       onDeath();
+      notifyObservers();
    }
    return takenDamage;
 }

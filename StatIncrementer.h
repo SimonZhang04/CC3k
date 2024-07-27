@@ -1,10 +1,11 @@
 #include "StatDecorator.h"
+#include <memory>
 
 class StatIncrementer : public StatDecorator
 {
-   int increment;
+   float increment;
 
 public:
-   StatIncrementer(const int increment, std::unique_ptr<Stat> s) : StatDecorator{std::move(s)}, increment{increment} {}
-   int getStat() const override;
+   StatIncrementer(const float increment, std::unique_ptr<Stat> s) : StatDecorator{std::move(s)}, increment{increment} {}
+   float getStat() const override;
 };

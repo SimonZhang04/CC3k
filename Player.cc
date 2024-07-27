@@ -1,6 +1,9 @@
 #include "Player.h"
 #include "StatIncrementer.h"
+#include "StatMultiplier.h"
+#include <cmath>
 #include <iostream>
+
 void Player::collectGold(int goldPickedUp)
 {
    gold += goldPickedUp * goldModifier;
@@ -29,7 +32,7 @@ int Player::getGold() const
 
 int Player::calculateAttack() const
 {
-   return modifiedAttack->getStat();
+   return static_cast<int>(modifiedAttack->getStat());
 };
 
 int Player::getAttack() const
@@ -39,8 +42,19 @@ int Player::getAttack() const
 
 int Player::getDefense() const
 {
-   return modifiedDefense->getStat();
+   return static_cast<int>(modifiedDefense->getStat());
 };
+
+int Player::receiveAttack(int attackerAtk)
+{
+   int takenDamage = std::ceil(100.0 / (100.0 + baseDef)) * attackerAtk * receivedDamageMultiplier->getStat();
+   hp -= takenDamage;
+   if (hp <= 0)
+   {
+      onDeath();
+   }
+   return takenDamage;
+}
 
 void Player::onDeath()
 {
@@ -51,7 +65,7 @@ void Player::useStatPotion(StatType type, int amount)
    modifyStat(type, amount);
 }
 
-void Player::modifyStat(StatType type, int amount)
+void Player::modifyStat(StatType type, float amount)
 {
    switch (type)
    {
@@ -66,10 +80,18 @@ void Player::modifyStat(StatType type, int amount)
    {
       std::unique_ptr<Stat> newInc = std::make_unique<StatIncrementer>(amount, std::move(modifiedDefense));
       modifiedDefense = std::move(newInc);
+      break;
    }
-   break;
    case StatType::Health:
+   {
       hp += amount;
       break;
+   }
+   case StatType::ReceivedDamageMultiplier:
+   {
+      std::unique_ptr<Stat> newMult = std::make_unique<StatMultiplier>(amount, std::move(receivedDamageMultiplier));
+      receivedDamageMultiplier = std::move(newMult);
+      break;
+   }
    }
 }

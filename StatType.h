@@ -5,7 +5,8 @@ enum class StatType
 {
     Attack,
     Defense,
-    Health
+    Health,
+    ReceivedDamageMultiplier
 };
 
 #endif

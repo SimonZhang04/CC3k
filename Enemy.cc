@@ -50,7 +50,6 @@ std::string Enemy::act(Player &p, Tile &playerTile)
 
 void Enemy::onDeath()
 {
-   notifyObservers();
 }
 
 int Enemy::calculateAttack() const
