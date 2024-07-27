@@ -11,10 +11,14 @@
 #include "Vampire.h"
 #include "Werewolf.h"
 #include "Treasure.h"
+#include "Randomizer.h"
 #include "Potion.h"
 #include <exception>
 
-GameModel::GameModel() : currentFloor{0}, floors{std::vector<Floor>{}}
+const std::map<char, int> GameModel::ENEMY_SPAWN_WEIGHTS = {{Werewolf::CHAR, 4}, {Vampire::CHAR, 3}, {Goblin::CHAR, 5}, {Troll::CHAR, 2}, {Phoenix::CHAR, 2}, {Merchant::CHAR, 2}};
+
+GameModel::GameModel() : currentFloor{0},
+                         floors{std::vector<Floor>{}}
 {
     for (int i = 0; i < 5; i++)
     {
@@ -52,6 +56,65 @@ Player &GameModel::getPlayer()
     return *player;
 }
 
+void GameModel::generateFloor(Floor &f, std::function<void()> onCompassPickup)
+{
+    int playerChamber = rand() % 5;
+    Tile &t = f.randomTile(playerChamber);
+    f.RemoveTileFromChamber(&t, playerChamber);
+
+    int stairChamber = randomStairChamber(playerChamber);
+    // deal with this
+
+    // curFloor
+
+    std::unique_ptr<Compass> compass = std::make_unique<Compass>(onCompassPickup);
+
+    // TODO: consider just generating a map using strings and re-using generation from text
+
+    // for (int i = 0; i < GameModel::ENEMIES_PER_FLOOR; i++)
+    // {
+    //     char enemy = Randomizer<char>::determineRandom(ENEMY_SPAWN_WEIGHTS);
+    //     int randChamber = rand() % 5;
+    //     Tile &t = f.randomTile(randChamber);
+    //     std::unique_ptr<Enemy> e = instantiateEnemy(enemy, t, )
+    // }
+}
+
+std::unique_ptr<Enemy> GameModel::instantiateEnemy(char enemy, Tile *t, std::unique_ptr<Compass> &compass)
+{
+    std::unique_ptr<Enemy> e;
+    switch (enemy)
+    {
+    case Vampire::CHAR:
+        e = std::make_unique<Vampire>(t, compass ? std::move(compass) : nullptr);
+        break;
+    case Werewolf::CHAR:
+        e = std::make_unique<Werewolf>(t, compass ? std::move(compass) : nullptr);
+        break;
+    case Goblin::CHAR:
+        e = std::make_unique<Goblin>(t, compass ? std::move(compass) : nullptr);
+        break;
+    case Merchant::CHAR:
+        if (compass)
+        {
+            e = std::make_unique<Merchant>(t, compass ? std::move(compass) : nullptr);
+        }
+        else
+        {
+            e = std::make_unique<Merchant>(t, std::make_unique<Treasure>(TreasureType::MerchantsHoard, [this](int g)
+                                                                         { this->player->collectGold(g); }));
+        }
+        break;
+    case Phoenix::CHAR:
+        e = std::make_unique<Phoenix>(t, compass ? std::move(compass) : nullptr);
+        break;
+    case Troll::CHAR:
+        e = std::make_unique<Troll>(t, compass ? std::move(compass) : nullptr);
+    }
+
+    return e;
+}
+
 void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], std::unique_ptr<Player> player, std::function<void()> onCompassPickup)
 {
     for (int f = 0; f < 5; f++)
@@ -75,39 +138,19 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], st
                     }
                     break;
                 case Vampire::CHAR:
-                    d = std::make_unique<Vampire>(&t, compassIdx == enemyCount ? std::move(compass) : nullptr);
-                    enemyCount++;
-                    break;
                 case Werewolf::CHAR:
-                    d = std::make_unique<Werewolf>(&t, compassIdx == enemyCount ? std::move(compass) : nullptr);
-                    enemyCount++;
-                    break;
                 case Goblin::CHAR:
-                    d = std::make_unique<Goblin>(&t, compassIdx == enemyCount ? std::move(compass) : nullptr);
-                    enemyCount++;
-                    break;
                 case Merchant::CHAR:
-                    if (compassIdx == enemyCount)
-                    {
-                        d = std::make_unique<Merchant>(&t, std::move(compass));
-                    }
-                    else
-                    {
-                        d = std::make_unique<Merchant>(&t, std::make_unique<Treasure>(TreasureType::MerchantsHoard, [this](int g)
-                                                                                      { this->player->collectGold(g); }));
-                    }
+                case Phoenix::CHAR:
+                case Troll::CHAR:
+                {
+                    std::unique_ptr<Compass> comp = compassIdx == enemyCount ? std::move(compass) : nullptr;
+                    d = instantiateEnemy(map[f][r][c], &t, comp);
                     enemyCount++;
                     break;
+                }
                 case Dragon::CHAR:
                     d = std::make_unique<Dragon>(&t, compassIdx == enemyCount ? std::move(compass) : nullptr);
-                    enemyCount++;
-                    break;
-                case Phoenix::CHAR:
-                    d = std::make_unique<Phoenix>(&t, compassIdx == enemyCount ? std::move(compass) : nullptr);
-                    enemyCount++;
-                    break;
-                case Troll::CHAR:
-                    d = std::make_unique<Troll>(&t, compassIdx == enemyCount ? std::move(compass) : nullptr);
                     enemyCount++;
                     break;
                 case '0':
@@ -153,4 +196,19 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], st
 Floor &GameModel::getCurrentFloor()
 {
     return floors[currentFloor];
+}
+
+int GameModel::randomStairChamber(int playerChamber)
+{
+    int stairchambers[4];
+    int cur = 0;
+    for (int i = 0; i < 5; i++)
+    {
+        if (i != playerChamber)
+        {
+            stairchambers[cur] = i;
+            cur++;
+        }
+    }
+    return stairchambers[rand() % 4];
 }

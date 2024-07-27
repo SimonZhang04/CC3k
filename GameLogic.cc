@@ -133,41 +133,6 @@ void GameLogic::playGame(std::string mapFile)
     }
 }
 
-void GameLogic::generateFloor(Floor &f)
-{
-    int playerChamber = rand() % 5;
-    Tile &t = f.randomTile(playerChamber);
-    f.RemoveTileFromChamber(&t, playerChamber);
-
-    int stairChamber = randomStairChamber(playerChamber);
-    // deal with this
-
-    // curFloor
-
-    for (int i = 0; i < GameModel::ENEMIES_PER_FLOOR; i++)
-    {
-        Enemy *e = randomEnemy();
-    }
-}
-
-int GameLogic::randomStairChamber(int playerChamber)
-{
-    int stairchambers[4];
-    int cur = 0;
-    for (int i = 0; i < 5; i++)
-    {
-        if (i != playerChamber)
-        {
-            stairchambers[cur] = i;
-            cur++;
-        }
-    }
-    return stairchambers[rand() % 4];
-}
-
-Enemy *GameLogic::randomEnemy() {
-};
-
 void GameLogic::parseMapFile(std::string mapFile, std::unique_ptr<Player> player)
 {
     std::fstream filestream{mapFile};
