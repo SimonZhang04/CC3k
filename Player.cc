@@ -22,8 +22,8 @@ void Player::usePotion(PotionType, int amount) {
 
 void Player::useAttack(Character &c)
 {
-   std::cout << "Player attacK: " << calculateAttack();
-   c.recieveAttack(calculateAttack());
+   std::cout << "Player attack: " << calculateAttack();
+   c.receiveAttack(calculateAttack());
 }
 
 int Player::getGold() const

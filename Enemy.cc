@@ -1,18 +1,14 @@
 #include "Enemy.h"
 #include <random>
 #include <string>
+#include <iostream>
 
 bool Enemy::shouldAttack(Tile &playerTile)
 {
-   // Check if playerTile is in any neighbor tiles of the enemy
-   for (Tile *neighbor : occupyingTile->getValidNeighbors())
-   {
-      if (neighbor == &playerTile)
-      {
-         return true;
-      }
-   }
-   return false;
+   // Check if playerTile is in within 1 tile of enemy
+   int cdiff = abs(occupyingTile->getCol() - playerTile.getCol());
+   int rdiff = abs(occupyingTile->getRow() - playerTile.getRow());
+   return cdiff <= 1 && rdiff <= 1;
 }
 
 bool Enemy::shouldMove()
@@ -40,16 +36,16 @@ std::string Enemy::act(Player &p, Tile &playerTile)
    if (shouldAttack(playerTile))
    {
       // attack
-      int damageDone = p.recieveAttack(calculateAttack());
-      return this->getChar() + " deals " + std::to_string(damageDone) + " damage to PC";
+      int damageDone = p.receiveAttack(calculateAttack());
+      return getChar() + " deals " + std::to_string(damageDone) + " damage to PC";
    }
    else if (shouldMove())
    {
       Tile &moveTile = determineMoveTile();
       occupyingTile->moveTo(moveTile);
       occupyingTile = &moveTile;
-      return "";
    }
+   return "";
 };
 
 // drop 1 gold, make sure to check if the enemy holds a compass, notify

@@ -19,4 +19,10 @@ void Merchant::onDeath(Player &p)
    p.collectGold(4);
 };
 
+int Merchant::receiveAttack(int attackerAtk)
+{
+   isAggro = true;
+   return Enemy::receiveAttack(attackerAtk);
+}
+
 bool Merchant::isAggro = false;

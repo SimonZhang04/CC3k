@@ -2,7 +2,7 @@
 #include <cmath>
 #include <iostream>
 
-int Character::recieveAttack(int attackerAtk)
+int Character::receiveAttack(int attackerAtk)
 {
    int takenDamage = std::ceil(100.0 / (100.0 + baseDef)) * attackerAtk;
    hp -= takenDamage;
