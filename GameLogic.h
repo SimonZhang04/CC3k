@@ -18,6 +18,7 @@ class GameLogic : public Observer
     static const bool isUsePotionAction(const std::string &action);
     void getDirectionCoords(int &r, int &c, std::string &dir, Floor &curFloor, Tile &curTile);
     void onCompassUsed();
+    void onStairsUsed();
     void notify(Subject &entity) override;
     std::pair<int, int> determineEntityLocation(Entity &entity, Floor &curFloor);
 

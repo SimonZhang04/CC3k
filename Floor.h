@@ -23,8 +23,6 @@ public:
     static void directionToCoordinate(int &r, int &c, int dir);
     static bool inBounds(int r, int c);
 
-    Enemy *compassHolder;
-
     Floor();
 
     Tile &randomTile(int chamber);

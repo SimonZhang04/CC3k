@@ -1,5 +1,6 @@
 #include "WalkEffectObject.h"
 #include <functional>
+#include <iostream>
 
 class Compass : public WalkEffectObject
 {
@@ -14,6 +15,7 @@ public:
 protected:
    void useEffect() override
    {
+      std::cout << "COMPASS EFFECT" << std::endl;
       onUse();
    };
 };

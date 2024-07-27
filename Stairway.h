@@ -10,7 +10,7 @@ class Stairway : public WalkEffectObject
 public:
    Stairway(std::function<void()> func) : onUse{func} {}
    static const char CHAR = '\\';
-   static const char HIDDEN_CHAR = ' ';
+   static const char HIDDEN_CHAR = '.';
 
    char getChar() const override
    {

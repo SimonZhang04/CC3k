@@ -39,7 +39,7 @@ static const std::string defaultLayout[Floor::FLOOR_ROWS] = {
     "|                                                                             |",
     "|-----------------------------------------------------------------------------|"};
 
-Floor::Floor() : tiles{std::vector<std::vector<Tile>>{}}
+Floor::Floor() : tiles{std::vector<std::vector<Tile>>{}}, chambers{std::vector<std::set<Tile *>>{}}
 {
     for (int r = 0; r < Floor::FLOOR_ROWS; r++)
     {

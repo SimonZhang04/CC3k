@@ -119,13 +119,13 @@ std::unique_ptr<Enemy> GameModel::instantiateEnemy(char enemy, Tile *t, std::uni
     return e;
 }
 
-void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], std::unique_ptr<Player> player, std::function<void()> onCompassPickup, Observer *gameLogic)
+void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], std::unique_ptr<Player> player, std::function<void()> onCompassPickup, std::function<void()> onStairsUsed, Observer *gameLogic)
 {
     for (int f = 0; f < 5; f++)
     {
         int compassIdx = rand() % 20;
         int enemyCount = 0;
-
+        std::cout << "COMPASS IDX " << compassIdx << std::endl;
         std::vector<std::tuple<Tile &, int, int>> dragons;
 
         std::unique_ptr<Compass> compass = std::make_unique<Compass>(onCompassPickup);
@@ -135,16 +135,36 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], st
         {
             for (int c = 0; c < Floor::FLOOR_COLS; c++)
             {
+
+                if (f == 0 && compassIdx == enemyCount)
+                { // TODO: REMOVE
+                    std::cout << r << " " << c << std::endl;
+                }
                 Tile &t = floors[f].getTile(r, c);
                 std::unique_ptr<Drawable> d = nullptr;
                 switch (map[f][r][c])
                 {
                 case Player::CHAR:
+                    startTiles[f] = &t;
                     if (f == currentFloor)
                     {
                         d = std::move(player);
                         currentTile = &t;
                     }
+                    break;
+                case Stairway::CHAR:
+                {
+                    std::unique_ptr<Stairway> s = std::make_unique<Stairway>(onStairsUsed);
+                    stairs[f] = s.get();
+                    d = std::move(s);
+                    break;
+                }
+                case Compass::CHAR:
+                    // if (compassIdx < enemyCount)
+                    // {
+                    d = std::move(compass);
+                    compassIdx = -1;
+                    // }
                     break;
                 case Vampire::CHAR:
                 case Werewolf::CHAR:
@@ -216,7 +236,6 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], st
                     break;
                 case '8':
                 case '9':
-                    std::cout << "HOARD " << r << " " << c << std::endl;
                     d = std::make_unique<DragonHoard>(TreasureType::DragonHoard, [this](int g)
                                                       { this->player->collectGold(g); });
                     break;
@@ -234,10 +253,7 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], st
             Tile &t = std::get<0>(dragonData);
             int treasurer = std::get<1>(dragonData);
             int treasurec = std::get<2>(dragonData);
-            std::cout << treasurer << " " << treasurec << std::endl;
-            std::cout << floors[f].getTile(treasurer, treasurec).draw() << std::endl;
             ProtectedTreasure *pt = dynamic_cast<ProtectedTreasure *>(floors[f].getTile(treasurer, treasurec).getUpper());
-            std::cout << pt << std::endl;
             std::unique_ptr<Dragon> d = std::make_unique<Dragon>(&t, compassIdx == enemyCount ? std::move(compass) : nullptr, pt);
             t.setUpperDrawable(std::move(d));
             enemyCount++;

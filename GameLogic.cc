@@ -216,11 +216,20 @@ void GameLogic::parseMapFile(std::string mapFile, std::unique_ptr<Player> player
         }
     }
     gameModel.createFloorsFromString(map, std::move(player), [this]()
-                                     { this->onCompassUsed(); }, this);
+                                     { this->onCompassUsed(); }, [this]()
+                                     { this->onStairsUsed(); }, this);
 }
 
 void GameLogic::onCompassUsed()
 {
+    gameModel.stairs[gameModel.currentFloor]->reveal();
+}
+
+void GameLogic::onStairsUsed()
+{
+    gameModel.currentFloor++;
+    gameModel.currentTile->moveTo(*gameModel.startTiles[gameModel.currentFloor]);
+    gameModel.currentTile = gameModel.startTiles[gameModel.currentFloor];
 }
 
 void GameLogic::getDirectionCoords(int &r, int &c, std::string &dirstr, Floor &curFloor, Tile &curTile)
