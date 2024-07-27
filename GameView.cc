@@ -1,17 +1,17 @@
 #include "GameView.h"
-#include "Tile.h"
-#include "Werewolf.h"
-#include "Vampire.h"
-#include "Goblin.h"
-#include "Troll.h"
-#include "Phoenix.h"
-#include "Merchant.h"
-#include "Dragon.h"
-#include "Treasure.h"
 #include "BarrierSuit.h"
 #include "Compass.h"
-#include "Stairway.h"
+#include "Dragon.h"
+#include "Goblin.h"
+#include "Merchant.h"
+#include "Phoenix.h"
 #include "Potion.h"
+#include "Stairway.h"
+#include "Tile.h"
+#include "Treasure.h"
+#include "Troll.h"
+#include "Vampire.h"
+#include "Werewolf.h"
 #include <iostream>
 #include <string>
 
@@ -44,10 +44,10 @@ void GameView::displayData(const Player &p, const int currentFloor)
 
 void GameView::displayAction(std::string playerActions, std::string enemyActions)
 {
-    std::cout << "Action: " << playerActions << ".";
+    std::cout << "Action: " << playerActions << ". ";
     if (enemyActions.length() != 0)
     {
-        std::cout << enemyActions << ".";
+        std::cout << enemyActions;
     }
     std::cout << std::endl;
 }

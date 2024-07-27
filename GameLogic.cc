@@ -224,7 +224,7 @@ void GameLogic::mainLoop()
                     // check if the Enemy is in Hashset
                     if (actedEnemies.find(enemy) == actedEnemies.end())
                     {
-                        enemy->act(gameModel.getPlayer(), *gameModel.currentTile);
+                        enemyActions += enemy->act(gameModel.getPlayer(), *gameModel.currentTile);
                         actedEnemies.insert(enemy);
                     }
                 }
