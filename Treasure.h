@@ -1,9 +1,10 @@
-#ifndef TREASURE
-#define TREASURE
+#ifndef TREASURECLASS
+#define TREASURECLASS
 
 #include "TreasureType.h"
 #include "WalkEffectObject.h"
 #include <functional>
+#include <map>
 
 class Treasure : public virtual WalkEffectObject
 {
@@ -23,7 +24,5 @@ public:
    static const char CHAR = 'G';
    char getChar() const override { return CHAR; };
 };
-
-const std::map<TreasureType, int> Treasure::GOLD_MAP = {{TreasureType::NormalTreasure, 1}, {TreasureType::SmallHoard, 2}, {TreasureType::MerchantsHoard, 4}, {TreasureType::DragonHoard, 6}};
 
 #endif

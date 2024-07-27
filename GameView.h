@@ -1,8 +1,21 @@
 #include "Floor.h"
+#include "Treasure.h"
+
+enum class Color
+{
+    Red,
+    Yellow,
+    Blue,
+    Green,
+    Cyan,
+    Magenta,
+    None
+};
 
 class GameView
 {
     std::string formatColor(char c);
+    Color charToColor(char c);
 
 public:
     char displayRaces();
