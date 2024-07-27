@@ -9,10 +9,6 @@ bool Merchant::shouldAttack(Tile &playerTile)
    }
 };
 
-// drop merchant horde
-void Merchant::onDeath() {
-};
-
 int Merchant::receiveAttack(int attackerAtk)
 {
    isAggro = true;

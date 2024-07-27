@@ -1,5 +1,5 @@
-#ifndef CHARCTER
-#define CHARCTER
+#ifndef CHARACTER
+#define CHARACTER
 
 #include "Entity.h"
 #include "Tile.h"

@@ -1,20 +1,21 @@
 #include "GameModel.h"
+#include "BarrierSuit.h"
 #include "Dragon.h"
+#include "DragonHoard.h"
 #include "Dwarf.h"
 #include "Elf.h"
 #include "Goblin.h"
 #include "Human.h"
 #include "Merchant.h"
+#include "Observer.h"
 #include "Orc.h"
 #include "Phoenix.h"
+#include "Randomizer.h"
+#include "StatPotion.h"
+#include "Treasure.h"
 #include "Troll.h"
 #include "Vampire.h"
 #include "Werewolf.h"
-#include "Treasure.h"
-#include "Randomizer.h"
-#include "StatPotion.h"
-#include "DragonHoard.h"
-#include "BarrierSuit.h"
 #include <exception>
 #include <iostream>
 
@@ -83,7 +84,7 @@ void GameModel::generateFloor(Floor &f, std::function<void()> onCompassPickup)
     // }
 }
 
-std::unique_ptr<Enemy> GameModel::instantiateEnemy(char enemy, Tile *t, std::unique_ptr<Compass> &compass)
+std::unique_ptr<Enemy> GameModel::instantiateEnemy(char enemy, Tile *t, std::unique_ptr<Compass> &compass, Observer *gameLogic)
 {
     std::unique_ptr<Enemy> e;
     switch (enemy)
@@ -114,11 +115,11 @@ std::unique_ptr<Enemy> GameModel::instantiateEnemy(char enemy, Tile *t, std::uni
     case Troll::CHAR:
         e = std::make_unique<Troll>(t, compass ? std::move(compass) : nullptr);
     }
-
+    e->attach(gameLogic);
     return e;
 }
 
-void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], std::unique_ptr<Player> player, std::function<void()> onCompassPickup)
+void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], std::unique_ptr<Player> player, std::function<void()> onCompassPickup, Observer *gameLogic)
 {
     for (int f = 0; f < 5; f++)
     {
@@ -153,7 +154,7 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], st
                 case Troll::CHAR:
                 {
                     std::unique_ptr<Compass> comp = compassIdx == enemyCount ? std::move(compass) : nullptr;
-                    d = instantiateEnemy(map[f][r][c], &t, comp);
+                    d = instantiateEnemy(map[f][r][c], &t, comp, gameLogic);
                     enemyCount++;
                     break;
                 }

@@ -7,12 +7,35 @@
 #include <iostream>
 #include <memory>
 #include <unordered_set>
+#include <utility>
+#include <vector>
 
 const std::vector<std::string> GameLogic::DIRECTIONS = {"no", "ne", "ea", "se", "so", "sw", "we", "nw"};
 
 void GameLogic::notify(Subject &entity)
 {
-    // We know the specific entity since its passed in by reference
+    std::cout << "Game Logic notified about death entity" << std::endl;
+    Floor &curFloor = gameModel.getCurrentFloor();
+    // type cast entity
+    Entity *entityPtr = dynamic_cast<Entity *>(&entity);
+
+    std::pair<int, int> entityCoords = determineEntityLocation(*entityPtr, curFloor);
+    curFloor.replaceEntity(entityCoords.first, entityCoords.second, entityPtr->drawableToReplace());
+}
+
+std::pair<int, int> GameLogic::determineEntityLocation(Entity &entity, Floor &curFloor)
+{
+    for (int row = 0; row < curFloor.FLOOR_ROWS; ++row)
+    {
+        for (int col = 0; col < curFloor.FLOOR_COLS; ++col)
+        {
+            if (curFloor.getTile(row, col).getUpper() == &entity)
+            {
+                return std::make_pair(row, col);
+            }
+        }
+    }
+    return std::make_pair(-1, -1); // entity not found
 }
 
 const bool GameLogic::isDirection(const std::string &direction)
@@ -193,7 +216,7 @@ void GameLogic::parseMapFile(std::string mapFile, std::unique_ptr<Player> player
         }
     }
     gameModel.createFloorsFromString(map, std::move(player), [this]()
-                                     { this->onCompassUsed(); });
+                                     { this->onCompassUsed(); }, this);
 }
 
 void GameLogic::onCompassUsed()

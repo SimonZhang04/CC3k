@@ -1,7 +1,8 @@
-#include "Floor.h"
 #include "Compass.h"
-#include <map>
+#include "Floor.h"
+#include "Observer.h"
 #include <functional>
+#include <map>
 class GameModel
 {
     Player *player;
@@ -16,8 +17,8 @@ public:
     std::unique_ptr<Player> setupPlayer(char c);
     Floor &getCurrentFloor();
     Player &getPlayer();
-    std::unique_ptr<Enemy> instantiateEnemy(char enemy, Tile *t, std::unique_ptr<Compass> &compass);
-    void createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], std::unique_ptr<Player> player, std::function<void()>);
+    std::unique_ptr<Enemy> instantiateEnemy(char enemy, Tile *t, std::unique_ptr<Compass> &compass, Observer *gameLogic);
+    void createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], std::unique_ptr<Player> player, std::function<void()>, Observer *gameLogic);
     void generateFloor(Floor &f, std::function<void()> onCompassPickup);
     int randomStairChamber(int playerChamber);
 };

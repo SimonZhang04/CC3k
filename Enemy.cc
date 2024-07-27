@@ -1,7 +1,7 @@
 #include "Enemy.h"
+#include <iostream>
 #include <random>
 #include <string>
-#include <iostream>
 
 bool Enemy::shouldAttack(Tile &playerTile)
 {
@@ -48,9 +48,9 @@ std::string Enemy::act(Player &p, Tile &playerTile)
    return "";
 };
 
-// make sure to check if the enemy holds a compass, notify
 void Enemy::onDeath()
 {
+   notifyObservers();
 }
 
 int Enemy::calculateAttack() const

@@ -1,6 +1,7 @@
 #ifndef FLOOR
 #define FLOOR
 
+#include "Drawable.h"
 #include "Enemy.h"
 #include "Tile.h"
 #include <map>
@@ -29,6 +30,7 @@ public:
     Tile &randomTile(int chamber);
     Tile &getTile(int r, int c);
     void RemoveTileFromChamber(Tile *t, int chamber);
+    void replaceEntity(int r, int c, std::unique_ptr<Drawable> newUpper);
     Enemy *checkForEnemy(int r, int c);
     Potion *checkForPotion(int r, int c);
     std::map<std::string, int> directionMap = {

@@ -13,5 +13,4 @@ public:
    static const char CHAR = 'M';
    virtual int receiveAttack(int attackerAtk) override;
    virtual bool shouldAttack(Tile &playerTile) override;
-   virtual void onDeath() override;
 };

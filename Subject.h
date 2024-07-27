@@ -10,7 +10,7 @@ class Subject
    std::vector<Observer *> observers;
 
 public:
-   void atttach(Observer *o)
+   void attach(Observer *o)
    {
       observers.emplace_back(o);
    }

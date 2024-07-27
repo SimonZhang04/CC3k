@@ -3,6 +3,7 @@
 #include "GameModel.h"
 #include "GameView.h"
 #include "Observer.h"
+#include <utility>
 #include <vector>
 
 class GameLogic : public Observer
@@ -18,6 +19,7 @@ class GameLogic : public Observer
     void getDirectionCoords(int &r, int &c, std::string &dir, Floor &curFloor, Tile &curTile);
     void onCompassUsed();
     void notify(Subject &entity) override;
+    std::pair<int, int> determineEntityLocation(Entity &entity, Floor &curFloor);
 
 public:
     void playGame(std::string mapFile);

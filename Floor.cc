@@ -1,5 +1,6 @@
 #include "Floor.h"
 #include "Door.h"
+#include "Drawable.h"
 #include "EmptyTile.h"
 #include "FloorTile.h"
 #include "HorizWall.h"
@@ -9,6 +10,7 @@
 #include <algorithm>
 #include <memory>
 #include <random>
+#include <vector>
 
 static const std::string defaultLayout[Floor::FLOOR_ROWS] = {
     "|-----------------------------------------------------------------------------|",
@@ -130,6 +132,11 @@ Tile &Floor::randomTile(int chamber)
 
     Tile *t = *it;
     return *t;
+}
+
+void Floor::replaceEntity(int r, int c, std::unique_ptr<Drawable> newUpper)
+{
+    tiles[r][c].setUpperDrawable(std::move(newUpper));
 }
 
 void Floor::RemoveTileFromChamber(Tile *t, int chamber)
