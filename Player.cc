@@ -83,9 +83,9 @@ void Player::modifyStat(StatType type, float amount)
    }
    case StatType::Health:
    {
-      if (hp + amount > maxHealth)
+      if (hp + amount > maxHp)
       {
-         hp = maxHealth;
+         hp = maxHp;
       }
       else if (hp + amount < 0)
       {
