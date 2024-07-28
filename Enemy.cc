@@ -35,7 +35,6 @@ std::string Enemy::act(Player &p, Tile &playerTile)
 {
    if (shouldAttack(playerTile))
    {
-      // attack
       int damageDone = p.receiveAttack(calculateAttack());
       return (std::string(1, getChar()) + " deals " + std::to_string(damageDone) + " damage to PC.");
    }

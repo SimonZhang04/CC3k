@@ -15,7 +15,6 @@ public:
 protected:
     void useEffect() override
     {
-        std::cout << &player << std::endl;
         player.useStatPotion(stat, amount);
     };
 };

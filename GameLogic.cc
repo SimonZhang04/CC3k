@@ -20,7 +20,6 @@ void GameLogic::notify(Subject &entity)
 {
     std::cout << "Game Logic notified about death entity" << std::endl;
     Floor &curFloor = gameModel.getCurrentFloor();
-    // type cast entity
     Entity *entityPtr = dynamic_cast<Entity *>(&entity);
 
     std::pair<int, int> entityCoords = determineEntityLocation(*entityPtr, curFloor);
