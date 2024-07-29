@@ -2,5 +2,5 @@
 
 float StatViewer::getStat() const
 {
-   return baseStat;
+   return base();
 }

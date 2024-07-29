@@ -172,6 +172,7 @@ std::unique_ptr<Enemy> GameModel::instantiateEnemy(char enemy, Tile *t, std::uni
 
 void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], std::unique_ptr<Player> player, std::function<void()> onCompassPickup, std::function<void()> onStairsUsed, Observer *gameLogic)
 {
+    Player *playerPtr = player.get();
     for (int f = 0; f < 5; f++)
     {
         int compassIdx = rand() % 20;
@@ -182,7 +183,6 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], st
         std::unique_ptr<Compass> compass = std::make_unique<Compass>(onCompassPickup);
         compass->attach(gameLogic);
 
-        Player *playerPtr = player.get();
         for (int r = 0; r < Floor::FLOOR_ROWS; r++)
         {
             for (int c = 0; c < Floor::FLOOR_COLS; c++)
@@ -207,11 +207,9 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], st
                     break;
                 }
                 case Compass::CHAR:
-                    // if (compassIdx < enemyCount)
-                    // {
+                    compass->detach(gameLogic);
                     d = std::move(compass);
                     compassIdx = -1;
-                    // }
                     break;
                 case Vampire::CHAR:
                 case Werewolf::CHAR:

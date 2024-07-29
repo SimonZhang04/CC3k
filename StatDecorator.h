@@ -2,7 +2,6 @@
 #define STATDECORATOR
 
 #include "Stat.h"
-#include <memory>
 
 class StatDecorator : public Stat
 {
@@ -12,6 +11,10 @@ protected:
 public:
    StatDecorator(std::unique_ptr<Stat> s) : next{std::move(s)} {}
    virtual ~StatDecorator() = default;
+   std::unique_ptr<Stat> undecorate()
+   {
+      return std::move(next);
+   };
 };
 
 #endif

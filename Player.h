@@ -27,9 +27,12 @@ protected:
          scoreModifier{scoreModifier},
          goldModifier{goldModifier},
          race{race},
-         modifiedAttack{std::make_unique<StatViewer>(static_cast<float>(baseAtk))},
-         modifiedDefense{std::make_unique<StatViewer>(static_cast<float>(baseDef))},
-         receivedDamageMultiplier{std::make_unique<StatViewer>(1.0f)}
+         modifiedAttack{std::make_unique<StatViewer>([baseAtk]() -> float
+                                                     { return static_cast<float>(baseAtk); })},
+         modifiedDefense{std::make_unique<StatViewer>([baseDef]() -> float
+                                                      { return static_cast<float>(baseDef); })},
+         receivedDamageMultiplier{std::make_unique<StatViewer>([this]() -> float
+                                                               { return static_cast<float>(1.0f); })}
    {
    }
 
@@ -48,6 +51,7 @@ public:
    virtual void useStatPotion(StatType type, int amount);
    void modifyStat(StatType type, float amount);
    virtual int calculateDamageTaken(int attackerAtk) override;
+   void onFloorProgressed();
 };
 
 #endif

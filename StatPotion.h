@@ -3,7 +3,6 @@
 #include "PotionType.h"
 #include "StatType.h"
 #include <functional>
-#include <iostream>
 class StatPotion : public Potion
 {
     StatType stat;

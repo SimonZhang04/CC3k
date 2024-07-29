@@ -102,3 +102,20 @@ void Player::modifyStat(StatType type, float amount)
    }
    }
 }
+
+void Player::onFloorProgressed()
+{
+   std::unique_ptr<Stat> s = modifiedAttack->undecorate();
+   while (s != nullptr)
+   {
+      modifiedAttack = std::move(s);
+      s = modifiedAttack->undecorate();
+   }
+
+   s = modifiedDefense->undecorate();
+   while (s != nullptr)
+   {
+      modifiedDefense = std::move(s);
+      s = modifiedDefense->undecorate();
+   }
+}

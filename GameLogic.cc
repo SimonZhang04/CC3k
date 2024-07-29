@@ -273,6 +273,7 @@ void GameLogic::onStairsUsed()
     gameModel.currentFloor++;
     gameModel.currentTile->moveTo(*gameModel.startTiles[gameModel.currentFloor]);
     gameModel.currentTile = gameModel.startTiles[gameModel.currentFloor];
+    gameModel.getPlayer().onFloorProgressed();
 }
 
 void GameLogic::getDirectionCoords(int &r, int &c, std::string &dirstr, Floor &curFloor, Tile &curTile)

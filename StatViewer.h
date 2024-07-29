@@ -2,14 +2,18 @@
 #define STATVIEWER
 
 #include "Stat.h"
-#include <iostream>
+#include <functional>
 class StatViewer : public Stat
 {
-   const float baseStat;
+   std::function<float()> base;
 
 public:
-   StatViewer(const float baseStat) : Stat{}, baseStat{baseStat} {}
+   StatViewer(std::function<float()> base) : Stat{}, base{std::move(base)} {}
    float getStat() const override;
+   std::unique_ptr<Stat> undecorate() override
+   {
+      return nullptr;
+   }
 };
 
 #endif
