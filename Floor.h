@@ -32,6 +32,7 @@ public:
     void replaceEntity(int r, int c, std::unique_ptr<Drawable> newUpper);
     Enemy *checkForEnemy(int r, int c);
     Potion *checkForPotion(int r, int c);
+    std::vector<Tile *> getSurroundingTiles(int r, int c);
     std::map<std::string, int> directionMap = {
         {"no", 0}, // north
         {"ne", 1}, // northeast

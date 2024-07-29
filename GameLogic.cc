@@ -81,13 +81,15 @@ void GameLogic::mainLoop()
     std::string enemyActions = "";
     std::string errorMessage = "";
     Player &player = gameModel.getPlayer();
+    gameView.displayFloor(gameModel.getCurrentFloor());
+    gameView.displayData(player, gameModel.currentFloor);
+    gameView.displayAction(playerActions, enemyActions, errorMessage);
+
     while (true)
     {
         Floor &curFloor = gameModel.getCurrentFloor();
         Tile &curTile = *gameModel.currentTile;
-        gameView.displayFloor(curFloor);
-        gameView.displayData(player, gameModel.currentFloor);
-        gameView.displayAction(playerActions, enemyActions, errorMessage);
+
         playerActions = "PC ";
         enemyActions = "";
         errorMessage = "";
@@ -162,8 +164,6 @@ void GameLogic::mainLoop()
                 int enemyHp = e->getHp();
                 int damageDealt = player.useAttack(*e);
                 enemyHp -= damageDealt;
-                std::cout << enemyHp << std::endl;
-
                 // if the enemy is dead, no more access to it
                 if (enemyHp > 0)
                 {
@@ -171,8 +171,6 @@ void GameLogic::mainLoop()
                 }
                 else
                 {
-                    std::cout << "" << std::endl;
-
                     playerActions += "kills Enemy " + std::string(1, enemyType);
                 }
             }
@@ -203,7 +201,16 @@ void GameLogic::mainLoop()
                     errorMessage = "Invalid use command (not targeting a potion)";
                 }
                 // add action to player Actions
-                playerActions += "uses " + p->getPotionType();
+                std::string potionType = p->getPotionType();
+                playerActions += "uses " + potionType;
+                // Check if potion has already been used
+                auto it = std::find(gameModel.identifiedItems.begin(), gameModel.identifiedItems.end(), potionType);
+                if (it == gameModel.identifiedItems.end())
+                {
+                    // Potion has not been used, add it to the list
+                    gameModel.identifiedItems.push_back(potionType);
+                }
+
                 p->consumePotion();
             }
             else
@@ -247,6 +254,15 @@ void GameLogic::mainLoop()
                 }
             }
         }
+
+        // scan surrounding items
+        Tile &movedTile = *gameModel.currentTile;
+        std::vector<Tile *> surroundingTiles = gameModel.getCurrentFloor().getSurroundingTiles(movedTile.getRow(), movedTile.getCol());
+        playerActions += gameView.playerScan(surroundingTiles, gameModel.identifiedItems);
+
+        gameView.displayFloor(curFloor);
+        gameView.displayData(player, gameModel.currentFloor);
+        gameView.displayAction(playerActions, enemyActions, errorMessage);
 
         // game over conditions
         if (gameModel.gameOver)

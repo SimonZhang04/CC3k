@@ -5,8 +5,8 @@
 #include "FloorTile.h"
 #include "HorizWall.h"
 #include "PassageWay.h"
-#include "VertWall.h"
 #include "Potion.h"
+#include "VertWall.h"
 #include <algorithm>
 #include <memory>
 #include <random>
@@ -102,6 +102,23 @@ Floor::Floor() : tiles{std::vector<std::vector<Tile>>{}}, chambers{std::vector<s
     }
 
     setupChambers();
+}
+
+std::vector<Tile *> Floor::getSurroundingTiles(int r, int c)
+{
+    Tile &t = getTile(r, c);
+    std::vector<Tile *> surroundingTiles;
+    for (int i = 0; i < Tile::NUM_NEIGHBORS; i++)
+    {
+        int nr = t.getRow();
+        int nc = t.getCol();
+        directionToCoordinate(nr, nc, i);
+        if (inBounds(nr, nc))
+        {
+            surroundingTiles.push_back(&tiles[nr][nc]);
+        }
+    }
+    return surroundingTiles;
 }
 
 Tile &Floor::getTile(int r, int c)

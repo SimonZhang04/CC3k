@@ -35,6 +35,43 @@ int GameView::displayRaces()
     return c;
 }
 
+std::string GameView::playerScan(std::vector<Tile *> surroundingTiles, std::vector<std::string> identifiedItems)
+{
+    int seenUnknownPotions = 0;
+    int seenItems = 0;
+    std::string output = " sees ";
+    for (Tile *tile : surroundingTiles)
+    {
+        Potion *potionPtr = dynamic_cast<Potion *>(tile->getUpper());
+        if (potionPtr != nullptr)
+        {
+            std::string potionType = potionPtr->getPotionType();
+            if (std::find(identifiedItems.begin(), identifiedItems.end(), potionType) == identifiedItems.end())
+            {
+                seenUnknownPotions++;
+                seenItems++;
+            }
+            else
+            {
+                output += " potion " + potionType;
+                seenItems++;
+            }
+        }
+    }
+    if (seenUnknownPotions != 0)
+    {
+        output += std::to_string(seenUnknownPotions) + " unknown potions";
+    }
+    if (seenItems != 0)
+    {
+        return output;
+    }
+    else
+    {
+        return "";
+    }
+}
+
 void GameView::displayGameOver(const Player &p, const int &currentFloor, const int LAST_FLOOR)
 {
     std::cout << "\n \n";

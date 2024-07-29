@@ -6,7 +6,7 @@ OBJECTS=${CCFILES:.cc=.o}
 DEPENDS=${OBJECTS:.o=.d}
 
 ${EXEC}:${OBJECTS}
-	${CXX} ${OBJECTS} -o ${EXEC} -lX11
+	${CXX} ${OBJECTS} -o ${EXEC}
 -include ${DEPENDS}
 
 .PHONY : clean

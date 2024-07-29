@@ -21,6 +21,7 @@ public:
     int currentFloor;
     Tile *currentTile;
     std::vector<Floor> floors;
+    std::vector<std::string> identifiedItems;
     Stairway *stairs[5];
     Tile *startTiles[5];
     GameModel();
