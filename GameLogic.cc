@@ -19,16 +19,13 @@ const std::string GameLogic::RESTART_COMMAND = "r";
 
 void GameLogic::notify(Subject &entity)
 {
-    std::cout << "Game Logic notified about death entity" << std::endl;
     Floor &curFloor = gameModel.getCurrentFloor();
     Entity *entityPtr = dynamic_cast<Entity *>(&entity);
     Player *playerPtr = dynamic_cast<Player *>(entityPtr);
     // check if the entity that died is a Player class
-
     if (playerPtr != nullptr)
     {
         gameModel.gameOver = true;
-        std::cout << "Player has died, end the game." << std::endl;
     }
     else
     {

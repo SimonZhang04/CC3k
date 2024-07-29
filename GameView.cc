@@ -37,13 +37,14 @@ int GameView::displayRaces()
 
 void GameView::displayGameOver(const Player &p, const int &currentFloor)
 {
-    float score = p.getGold();
-    if (p.race == PlayerRace::Human)
-    {
-        score *= 1.5;
-    }
-    std::cout << "Player made it to floor: " << currentFloor << std::endl;
-    std::cout << "Score: " << score << std::endl;
+    std::cout << "\n \n";
+    std::cout << "================================== GAME OVER ==================================" << std::endl;
+    std::cout << "\n";
+    std::cout << "Player made it to floor: " << currentFloor + 1 << std::endl;
+    std::cout << "Score: " << p.getScore() << std::endl;
+    std::cout << "\n";
+    std::cout << "===============================================================================" << std::endl;
+    std::cout << "\n \n";
 }
 
 std::string GameView::playerRaceToString(PlayerRace race)
