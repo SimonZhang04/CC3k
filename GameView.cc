@@ -36,7 +36,7 @@ int GameView::displayRaces()
     return c;
 }
 
-std::string GameView::playerScan(std::vector<Tile *> surroundingTiles, std::vector<std::string> identifiedItems)
+void GameView::playerScan(std::vector<Tile *> surroundingTiles, std::vector<std::string> identifiedItems)
 {
     int seenUnknownPotions = 0;
     int seenItems = 0;
@@ -65,11 +65,7 @@ std::string GameView::playerScan(std::vector<Tile *> surroundingTiles, std::vect
     }
     if (seenItems != 0)
     {
-        return output;
-    }
-    else
-    {
-        return "";
+        playerActions.push_back(output);
     }
 }
 
@@ -94,6 +90,28 @@ void GameView::displayGameOver(const Player &p, const int &currentFloor, const i
     std::cout << "\n";
     std::cout << "===============================================================================" << std::endl;
     std::cout << "\n \n";
+}
+
+void GameView::addPlayerAction(std::string action)
+{
+    playerActions.push_back(action);
+}
+
+void GameView::addEnemyAction(std::string action)
+{
+    enemyActions.push_back(action);
+}
+
+void GameView::addErrorMessage(std::string action)
+{
+    errorMessage = action;
+}
+
+void GameView::resetMessages()
+{
+    playerActions.clear();
+    enemyActions.clear();
+    errorMessage = "";
 }
 
 std::string GameView::playerRaceToString(PlayerRace race)
@@ -127,18 +145,26 @@ void GameView::displayData(const Player &p, const int &currentFloor)
     std::cout << "Def: " + std::to_string(p.getDefense()) << std::endl;
 };
 
-void GameView::displayAction(std::string playerActions, std::string enemyActions, std::string errorMessage)
+void GameView::displayActions()
 {
     if (errorMessage.length() != 0)
     {
         std::cout << errorMessage << std::endl;
         return;
     }
-    std::cout << "Action: " << playerActions << ". ";
-    if (enemyActions.length() != 0)
+    std::cout << "Action: PC ";
+
+    for (const auto &action : playerActions) // Changed the loop variable name to 'action'
     {
-        std::cout << enemyActions;
+        std::cout << action << " and ";
     }
+    std::cout << std::endl;
+
+    for (const auto &action : enemyActions) // Changed the loop variable name to 'action'
+    {
+        std::cout << action << " and ";
+    }
+
     std::cout << std::endl;
 }
 

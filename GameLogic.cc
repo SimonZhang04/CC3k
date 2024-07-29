@@ -36,7 +36,7 @@ void GameLogic::notifyDeath(Subject &entity)
 
 void GameLogic::notifyAction(std::string &action)
 {
-    std::cout << action << std::endl;
+    gameView.addPlayerAction(action);
 }
 
 std::pair<int, int> GameLogic::determineEntityLocation(Entity &entity, Floor &curFloor)
@@ -82,22 +82,18 @@ void GameLogic::playGame(std::string mapFile)
 void GameLogic::mainLoop()
 {
     std::string action;
-    std::string playerActions = "Player character has spawned";
-    std::string enemyActions = "";
-    std::string errorMessage = "";
+    gameView.addPlayerAction("Player character has spawned");
     Player &player = gameModel.getPlayer();
-    gameView.displayFloor(gameModel.getCurrentFloor());
-    gameView.displayData(player, gameModel.currentFloor);
-    gameView.displayAction(playerActions, enemyActions, errorMessage);
-
     while (true)
     {
         Floor &curFloor = gameModel.getCurrentFloor();
         Tile &curTile = *gameModel.currentTile;
 
-        playerActions = "PC ";
-        enemyActions = "";
-        errorMessage = "";
+        gameView.displayFloor(gameModel.getCurrentFloor());
+        gameView.displayData(player, gameModel.currentFloor);
+        gameView.displayActions();
+        gameView.resetMessages();
+
         // Accept an action
         std::cin >> action;
         if (isDirection(action))
@@ -113,6 +109,7 @@ void GameLogic::mainLoop()
             }
             // check if tile is valid
             Tile &t = curFloor.getTile(r, c);
+            bool shouldMove = true;
             if (!t.isValidPlayer())
             {
                 // check if occupied by walkEffectObject
@@ -128,7 +125,7 @@ void GameLogic::mainLoop()
                     // If tile is now valid after effect, move to it
                     if (!t.isValidPlayer())
                     {
-                        continue;
+                        shouldMove = false;
                     }
                 }
                 else
@@ -137,12 +134,15 @@ void GameLogic::mainLoop()
                 }
             }
 
-            // move to the tile (update gameModel and currentTile)
-            curTile.moveTo(t);
-            gameModel.currentTile = &t;
+            if (shouldMove)
+            {
+                // move to the tile (update gameModel and currentTile)
+                curTile.moveTo(t);
+                gameModel.currentTile = &t;
 
-            // add action to playerActions
-            playerActions += "moves " + curFloor.stringDirectionMap[action];
+                // add action to playerActions
+                gameView.addPlayerAction("moves " + curFloor.stringDirectionMap[action]);
+            }
         }
         else if (action == ATTACK_COMMAND)
         {
@@ -162,7 +162,7 @@ void GameLogic::mainLoop()
                 Enemy *e = curFloor.checkForEnemy(r, c);
                 if (e == nullptr)
                 {
-                    errorMessage = "Invalid attack command (attacking non-enemy)";
+                    gameView.addErrorMessage("Invalid attack command (attacking non-enemy)");
                     continue;
                 }
                 char enemyType = e->getChar();
@@ -172,16 +172,16 @@ void GameLogic::mainLoop()
                 // if the enemy is dead, no more access to it
                 if (enemyHp > 0)
                 {
-                    playerActions += "deals " + std::to_string(damageDealt) + " damage to Enemy " + enemyType + " (" + std::to_string(enemyHp) + ")";
+                    gameView.addPlayerAction("deals " + std::to_string(damageDealt) + " damage to Enemy " + enemyType + " (" + std::to_string(enemyHp) + ")");
                 }
                 else
                 {
-                    playerActions += "kills Enemy " + std::string(1, enemyType);
+                    gameView.addPlayerAction("kills Enemy " + std::string(1, enemyType));
                 }
             }
             else
             {
-                errorMessage = "Invalid attack command (invalid direction)"; // Error trying to attack invalid direction
+                gameView.addErrorMessage("Invalid attack command (invalid direction)"); // Error trying to attack invalid direction
             }
         }
         else if (action == USE_POTION_COMMAND)
@@ -202,12 +202,10 @@ void GameLogic::mainLoop()
                 Potion *p = curFloor.checkForPotion(r, c);
                 if (p == nullptr)
                 {
+                    gameView.addErrorMessage("Invalid use command (not targeting a potion)");
                     continue;
-                    errorMessage = "Invalid use command (not targeting a potion)";
                 }
-                // add action to player Actions
                 std::string potionType = p->getPotionType();
-                playerActions += "uses " + potionType;
                 // Check if potion has already been used
                 auto it = std::find(gameModel.identifiedItems.begin(), gameModel.identifiedItems.end(), potionType);
                 if (it == gameModel.identifiedItems.end())
@@ -221,7 +219,7 @@ void GameLogic::mainLoop()
             else
             {
                 // Error trying to attack invalid direction
-                errorMessage = "Invalid attack command";
+                gameView.addErrorMessage("Invalid attack command");
             }
         }
         else if (action == RESTART_COMMAND)
@@ -234,7 +232,7 @@ void GameLogic::mainLoop()
         }
         else
         { // no valid action
-            errorMessage = "Invalid action.";
+            gameView.addErrorMessage("Invalid action.");
         }
 
         // Enemies act
@@ -253,21 +251,20 @@ void GameLogic::mainLoop()
                     // check if the Enemy is in Hashset
                     if (actedEnemies.find(enemy) == actedEnemies.end())
                     {
-                        enemyActions += enemy->act(player, *gameModel.currentTile);
+                        std::string enemyAction = enemy->act(player, *gameModel.currentTile);
+                        if (enemyAction != "")
+                        {
+                            gameView.addEnemyAction(enemyAction);
+                        }
                         actedEnemies.insert(enemy);
                     }
                 }
             }
         }
-
         // scan surrounding items
         Tile &movedTile = *gameModel.currentTile;
         std::vector<Tile *> surroundingTiles = gameModel.getCurrentFloor().getSurroundingTiles(movedTile.getRow(), movedTile.getCol());
-        playerActions += gameView.playerScan(surroundingTiles, gameModel.identifiedItems);
-
-        gameView.displayFloor(curFloor);
-        gameView.displayData(player, gameModel.currentFloor);
-        gameView.displayAction(playerActions, enemyActions, errorMessage);
+        gameView.playerScan(surroundingTiles, gameModel.identifiedItems);
 
         // game over conditions
         if (gameModel.gameOver)
