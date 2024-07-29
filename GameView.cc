@@ -40,7 +40,9 @@ void GameView::playerScan(std::vector<Tile *> surroundingTiles, std::vector<std:
 {
     int seenUnknownPotions = 0;
     int seenItems = 0;
-    std::string output = "sees ";
+    std::string scan = "sees ";
+    std::vector<std::string> seenIdentifiedItems;
+
     for (Tile *tile : surroundingTiles)
     {
         Potion *potionPtr = dynamic_cast<Potion *>(tile->getUpper());
@@ -54,18 +56,37 @@ void GameView::playerScan(std::vector<Tile *> surroundingTiles, std::vector<std:
             }
             else
             {
-                output += " potion " + potionType;
+                seenIdentifiedItems.push_back(potionType);
                 seenItems++;
             }
         }
     }
+
     if (seenUnknownPotions != 0)
     {
-        output += std::to_string(seenUnknownPotions) + " unknown potions";
+        scan += std::to_string(seenUnknownPotions) + " unknown potions";
     }
-    if (seenItems != 0)
+
+    if (!seenIdentifiedItems.empty())
     {
-        playerActions.push_back(output);
+        if (seenUnknownPotions != 0)
+        {
+            scan += " and ";
+        }
+
+        for (auto it = seenIdentifiedItems.begin(); it != seenIdentifiedItems.end(); ++it)
+        {
+            scan += *it;
+            if (it + 1 != seenIdentifiedItems.end())
+            {
+                scan += " and ";
+            }
+        }
+    }
+
+    if (seenItems > 0)
+    {
+        playerActions.push_back(scan);
     }
 }
 
@@ -160,7 +181,7 @@ void GameView::displayActions()
             std::cout << " and ";
         }
     }
-    std::cout << std::endl;
+    std::cout << "." << std::endl;
 
     if (enemyActions.size() != 0)
     {

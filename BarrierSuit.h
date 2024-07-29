@@ -12,7 +12,7 @@ class BarrierSuit : public ProtectedTreasure
       StatType stat = StatType::ReceivedDamageMultiplier;
       float value = 0.5;
       onUse(stat, value);
-      notifyActionObservers("Barrier suit picked up!");
+      notifyActionObservers("equipped Barrier Suit");
       notifyDeathObservers();
    };
 

@@ -84,6 +84,7 @@ void GameLogic::mainLoop()
     std::string action;
     gameView.addPlayerAction("has spawned");
     Player &player = gameModel.getPlayer();
+    bool invalidAction = false;
     while (true)
     {
         Floor &curFloor = gameModel.getCurrentFloor();
@@ -109,7 +110,6 @@ void GameLogic::mainLoop()
             }
             // check if tile is valid
             Tile &t = curFloor.getTile(r, c);
-            bool shouldMove = true;
             if (!t.isValidPlayer())
             {
                 // check if occupied by walkEffectObject
@@ -125,24 +125,20 @@ void GameLogic::mainLoop()
                     // If tile is now valid after effect, move to it
                     if (!t.isValidPlayer())
                     {
-                        shouldMove = false;
+                        continue;
                     }
                 }
                 else
                 {
+                    gameView.addErrorMessage("Cannot walk to specified tile.");
                     continue;
                 }
             }
 
-            if (shouldMove)
-            {
-                // move to the tile (update gameModel and currentTile)
-                curTile.moveTo(t);
-                gameModel.currentTile = &t;
-
-                // add action to playerActions
-                gameView.addPlayerAction("moves " + curFloor.stringDirectionMap[action]);
-            }
+            // move to the tile (update gameModel and currentTile)
+            curTile.moveTo(t);
+            gameModel.currentTile = &t;
+            gameView.addPlayerAction("moves " + curFloor.stringDirectionMap[action]);
         }
         else if (action == ATTACK_COMMAND)
         {
@@ -178,6 +174,7 @@ void GameLogic::mainLoop()
             else
             {
                 gameView.addErrorMessage("Invalid attack command (invalid direction)"); // Error trying to attack invalid direction
+                continue;
             }
         }
         else if (action == USE_POTION_COMMAND)
@@ -216,6 +213,7 @@ void GameLogic::mainLoop()
             {
                 // Error trying to attack invalid direction
                 gameView.addErrorMessage("Invalid attack command");
+                continue;
             }
         }
         else if (action == RESTART_COMMAND)
@@ -229,6 +227,7 @@ void GameLogic::mainLoop()
         else
         { // no valid action
             gameView.addErrorMessage("Invalid action.");
+            continue;
         }
 
         // Enemies act
