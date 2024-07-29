@@ -190,7 +190,7 @@ std::unique_ptr<Enemy> GameModel::instantiateEnemy(char enemy, Tile *t, std::uni
         else
         {
             std::unique_ptr<Treasure> merchantLoot = std::make_unique<Treasure>(TreasureType::MerchantsHoard, [this](int g)
-                                                                                { this->player->collectGold(g); });
+                                                                                { return this->player->collectGold(g); });
             merchantLoot->attach(gameLogic);
             e = std::make_unique<Merchant>(t, std::move(merchantLoot));
         }
@@ -336,15 +336,15 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], st
                         break;
                     }
                     d = std::make_unique<Treasure>(t, [this](int g)
-                                                   { this->player->collectGold(g); });
+                                                   { return this->player->collectGold(g); });
                     break;
                 case '8':
                     d = std::make_unique<Treasure>(TreasureType::MerchantsHoard, [this](int g)
-                                                   { this->player->collectGold(g); });
+                                                   { return this->player->collectGold(g); });
                     break;
                 case '9':
                     d = std::make_unique<DragonHoard>(TreasureType::DragonHoard, [this](int g)
-                                                      { this->player->collectGold(g); });
+                                                      { return this->player->collectGold(g); });
                     break;
                 default:
                     continue;

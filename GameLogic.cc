@@ -218,6 +218,7 @@ void GameLogic::mainLoop()
         else if (action == RESTART_COMMAND)
         {
             playGame("");
+            return;
         }
         else if (action == QUIT_COMMAND)
         {

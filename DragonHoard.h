@@ -4,11 +4,11 @@
 #include <iostream>
 class DragonHoard : public virtual ProtectedTreasure, public virtual Treasure
 {
-   std::function<void(int)> onUse;
+   std::function<float(int)> onUse;
    void unlockedEffect() { Treasure::useEffect(); };
 
 public:
-   DragonHoard(TreasureType treasureType, std::function<void(int)> func) : ProtectedTreasure{}, Treasure{treasureType, func}
+   DragonHoard(TreasureType treasureType, std::function<float(int)> func) : ProtectedTreasure{}, Treasure{treasureType, func}
    {
    }
 

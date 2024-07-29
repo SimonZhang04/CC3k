@@ -1,26 +1,15 @@
 #include "Floor.h"
 #include "Treasure.h"
-
-enum class Color
-{
-    Red,
-    Yellow,
-    Blue,
-    Green,
-    Cyan,
-    Magenta,
-    None
-};
+#include "Color.h"
 
 class GameView
 {
-    std::string formatColor(char c);
-    Color charToColor(char c);
     std::vector<std::string> playerActions;
     std::vector<std::string> enemyActions;
     std::string errorMessage;
 
 public:
+    static std::string formatFloat(float f);
     int displayRaces();
     void displayData(const Player &p, const int &currentFloor);
     void displayActions();

@@ -1,17 +1,5 @@
 #include "GameView.h"
-#include "BarrierSuit.h"
-#include "Compass.h"
-#include "Dragon.h"
-#include "Goblin.h"
-#include "Merchant.h"
-#include "Phoenix.h"
-#include "Potion.h"
-#include "Stairway.h"
-#include "Tile.h"
-#include "Treasure.h"
-#include "Troll.h"
-#include "Vampire.h"
-#include "Werewolf.h"
+#include "StringFormatter.h"
 #include <iomanip>
 #include <iostream>
 #include <vector>
@@ -201,68 +189,8 @@ void GameView::displayFloor(Floor &f)
         for (int c = 0; c < Floor::FLOOR_COLS; c++)
         {
             Tile &t{f.getTile(r, c)};
-            std::cout << formatColor(t.draw());
+            std::cout << StringFormatter::formatColor(t.draw());
         }
         std::cout << std::endl;
     }
-}
-
-std::string GameView::formatColor(char c)
-{
-    Color col = charToColor(c);
-    std::string colorCode = "";
-    switch (col)
-    {
-    case Color::None:
-        return std::string{c};
-    case Color::Red:
-        colorCode = "31";
-        break;
-    case Color::Green:
-        colorCode = "32";
-        break;
-    case Color::Yellow:
-        colorCode = "33";
-        break;
-    case Color::Blue:
-        colorCode = "34";
-        break;
-    case Color::Magenta:
-        colorCode = "35";
-        break;
-    case Color::Cyan:
-        colorCode = "36";
-        break;
-    }
-    std::string s = "\033[" + colorCode + "m";
-    s += c;
-    s += "\033[0m";
-    return s;
-}
-
-Color GameView::charToColor(char c)
-{
-    switch (c)
-    {
-    case Player::CHAR:
-        return Color::Green;
-    case Compass::CHAR:
-    case Stairway::CHAR:
-        return Color::Cyan;
-    case BarrierSuit::CHAR:
-        return Color::Blue;
-    case Treasure::CHAR:
-        return Color::Yellow;
-    case Potion::CHAR:
-        return Color::Magenta;
-    case Vampire::CHAR:
-    case Werewolf::CHAR:
-    case Goblin::CHAR:
-    case Merchant::CHAR:
-    case Phoenix::CHAR:
-    case Troll::CHAR:
-    case Dragon::CHAR:
-        return Color::Red;
-    }
-    return Color::None;
 }

@@ -2,12 +2,15 @@
 #include "Enemy.h"
 #include "StatIncrementer.h"
 #include "StatMultiplier.h"
+#include "StringFormatter.h"
 #include <cmath>
 #include <iostream>
 
-void Player::collectGold(int goldPickedUp)
+float Player::collectGold(int goldPickedUp)
 {
-   gold += goldPickedUp * goldModifier;
+   float amountGained = goldPickedUp * goldModifier;
+   gold += amountGained;
+   return amountGained;
 };
 
 char Player::getChar() const
@@ -32,9 +35,8 @@ void Player::didKill(Player *p) {
 
 void Player::didKill(Enemy *e)
 {
-   int goldCollected = e->getDeathRewardGold();
-   collectGold(goldCollected);
-   notifyActionObservers("gained " + std::to_string(goldCollected) + " gold from killing enemy " + std::string(1, e->getChar()));
+   float goldGained = collectGold(e->getDeathRewardGold());
+   notifyActionObservers("gained " + StringFormatter::formatFloat(goldGained) + " gold from killing enemy " + std::string(1, e->getChar()));
 };
 
 float Player::getGold() const

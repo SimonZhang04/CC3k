@@ -42,7 +42,7 @@ protected:
 public:
    static const char CHAR = '@';
    const PlayerRace race;
-   void collectGold(int goldPickedUp);
+   float collectGold(int goldPickedUp);
    char getChar() const override;
    int getScore() const;
    float getGold() const;

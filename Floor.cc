@@ -69,6 +69,7 @@ Floor::Floor() : tiles{std::vector<std::vector<Tile>>{}}, chambers{std::vector<s
                 break;
             case ' ':
                 lower = std::make_unique<EmptyTile>();
+                upper = std::make_unique<EmptyTile>();
             }
 
             tiles[r].push_back(Tile{r, c, std::move(lower), std::move(upper)});
