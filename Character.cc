@@ -4,7 +4,7 @@
 
 int Character::calculateDamageTaken(int attackerAtk)
 {
-   int takenDamage = std::ceil(100.0 / (100.0 + baseDef)) * attackerAtk;
+   int takenDamage = std::ceil(100.0 / (100.0 + calculateDefense())) * attackerAtk;
    return takenDamage;
 }
 

@@ -10,13 +10,11 @@ class Player;
 class Character : public Entity
 {
    virtual void onDeath(Character &attacker) = 0;
+   virtual int calculateAttack() const = 0;
+   virtual int calculateDefense() const = 0;
 
 protected:
-   // virtual void onDeath() = 0;
-   // virtual void attack(Character &c) = 0;
-
    Character(int maxHp, int baseAtk, int baseDef) : hp{maxHp}, maxHp{maxHp}, baseAtk{baseAtk}, baseDef{baseDef} {};
-   virtual int calculateAttack() const = 0;
 
 public:
    int hp, maxHp, baseAtk, baseDef;

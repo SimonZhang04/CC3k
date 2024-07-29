@@ -72,6 +72,11 @@ int Enemy::calculateAttack() const
    return baseAtk;
 };
 
+int Enemy::calculateDefense() const
+{
+   return baseDef;
+};
+
 int Enemy::getHp() const
 {
    return hp;

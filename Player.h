@@ -16,6 +16,8 @@ class Player : public Character
    std::unique_ptr<Stat> modifiedDefense;
    std::unique_ptr<Stat> receivedDamageMultiplier;
    void onDeath(Character &attacker) override;
+   virtual int calculateAttack() const;
+   virtual int calculateDefense() const;
 
 protected:
    float gold;
@@ -23,20 +25,19 @@ protected:
    float goldModifier;
    Player(int maxHp, int baseAtk, int baseDef, float scoreModifier, float goldModifier, PlayerRace race)
        : Character{maxHp, baseAtk, baseDef},
-         gold{0},
-         scoreModifier{scoreModifier},
-         goldModifier{goldModifier},
-         race{race},
          modifiedAttack{std::make_unique<StatViewer>([baseAtk]() -> float
                                                      { return static_cast<float>(baseAtk); })},
          modifiedDefense{std::make_unique<StatViewer>([baseDef]() -> float
                                                       { return static_cast<float>(baseDef); })},
-         receivedDamageMultiplier{std::make_unique<StatViewer>([this]() -> float
-                                                               { return static_cast<float>(1.0f); })}
+         receivedDamageMultiplier{
+             std::make_unique<StatViewer>([this]() -> float
+                                          { return static_cast<float>(1.0f); })},
+         gold{0},
+         scoreModifier{scoreModifier},
+         goldModifier{goldModifier},
+         race{race}
    {
    }
-
-   virtual int calculateAttack() const;
 
 public:
    static const char CHAR = '@';

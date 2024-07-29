@@ -44,7 +44,7 @@ float Player::getGold() const
 
 int Player::calculateAttack() const
 {
-   return static_cast<int>(modifiedAttack->getStat());
+   return std::max(static_cast<int>(modifiedAttack->getStat()), 0);
 };
 
 int Player::getAttack() const
@@ -52,9 +52,14 @@ int Player::getAttack() const
    return calculateAttack();
 };
 
+int Player::calculateDefense() const
+{
+   return std::max(static_cast<int>(modifiedDefense->getStat()), 0);
+};
+
 int Player::getDefense() const
 {
-   return static_cast<int>(modifiedDefense->getStat());
+   return calculateDefense();
 };
 
 int Player::calculateDamageTaken(int attackerAtk)
