@@ -76,7 +76,6 @@ void GameLogic::playGame(std::string mapFile)
 
 void GameLogic::mainLoop()
 {
-    // Game loop
     std::string action;
     std::string playerActions = "Player character has spawned";
     std::string enemyActions = "";
@@ -96,7 +95,6 @@ void GameLogic::mainLoop()
         std::cin >> action;
         if (isDirection(action))
         {
-
             int r, c;
             try
             {
@@ -161,15 +159,21 @@ void GameLogic::mainLoop()
                     continue;
                 }
                 char enemyType = e->getChar();
+                int enemyHp = e->getHp();
                 int damageDealt = player.useAttack(*e);
+                enemyHp -= damageDealt;
+                std::cout << enemyHp << std::endl;
+
                 // if the enemy is dead, no more access to it
-                if (curFloor.checkForEnemy(r, c))
+                if (enemyHp > 0)
                 {
-                    playerActions += "deals " + std::to_string(damageDealt) + " damage to Enemy " + enemyType + " (" + std::to_string(e->getHp()) + ")";
+                    playerActions += "deals " + std::to_string(damageDealt) + " damage to Enemy " + enemyType + " (" + std::to_string(enemyHp) + ")";
                 }
                 else
                 {
-                    playerActions += "kills Enemy " + enemyType; // this doesn't run for some reason
+                    std::cout << "" << std::endl;
+
+                    playerActions += "kills Enemy " + std::string(1, enemyType);
                 }
             }
             else
@@ -196,8 +200,7 @@ void GameLogic::mainLoop()
                 if (p == nullptr)
                 {
                     continue;
-                    // Error: trying to attack something that isn't an enemy
-                    errorMessage = "Invalid attack command (not targeting an enemy)";
+                    errorMessage = "Invalid use command (not targeting a potion)";
                 }
                 // add action to player Actions
                 playerActions += "uses " + p->getPotionType();
@@ -219,7 +222,7 @@ void GameLogic::mainLoop()
         }
         else
         { // no valid action
-            errorMessage = "Invalid action";
+            errorMessage = "Invalid action.";
         }
 
         // Enemies act
