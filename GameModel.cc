@@ -105,7 +105,7 @@ void GameModel::generateMap(std::unique_ptr<Player> player, std::function<void()
             dragonCount++;
         }
 
-        for (int i = 0; i < GameModel::ENEMIES_PER_FLOOR; i++)
+        for (int i = 0; i < GameModel::TREASURE_PER_FLOOR; i++)
         {
             char treasure = Randomizer<char>::determineRandom(TREASURE_SPAWN_WEIGHTS);
             Tile &t = floor.popRandomTile(rand() % 5);
@@ -119,7 +119,7 @@ void GameModel::generateMap(std::unique_ptr<Player> player, std::function<void()
             map[f][t.getRow()][t.getCol()] = treasure;
         }
 
-        for (int i = 0; i < GameModel::ENEMIES_PER_FLOOR; i++)
+        for (int i = 0; i < GameModel::ENEMIES_PER_FLOOR - dragonCount; i++)
         {
             placeInChamber(Randomizer<char>::determineRandom(ENEMY_SPAWN_WEIGHTS), rand() % 5, floor, map[f]);
         }
@@ -175,9 +175,30 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], st
     Player *playerPtr = player.get();
     for (int f = 0; f < 5; f++)
     {
-        int compassIdx = rand() % 20;
+        // Count number of enemies on the floor so that we know bounds for compass index
+        int totalEnemies = 0;
+        for (int r = 0; r < Floor::FLOOR_ROWS; r++)
+        {
+            for (int c = 0; c < Floor::FLOOR_COLS; c++)
+            {
+                switch (map[f][r][c])
+                {
+                case Vampire::CHAR:
+                case Werewolf::CHAR:
+                case Goblin::CHAR:
+                case Merchant::CHAR:
+                case Phoenix::CHAR:
+                case Troll::CHAR:
+                case Dragon::CHAR:
+                    totalEnemies++;
+                    break;
+                }
+            }
+        }
+
+        int compassIdx = rand() % totalEnemies;
         int enemyCount = 0;
-        // std::cout << "COMPASS IDX " << compassIdx << std::endl;
+        std::cout << "COMPASS IDX " << compassIdx << " TOTAL ENEMIES: " << totalEnemies << std::endl;
         std::vector<std::tuple<Tile &, int, int>> dragons;
 
         std::unique_ptr<Compass> compass = std::make_unique<Compass>(onCompassPickup);
