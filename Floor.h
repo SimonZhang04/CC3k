@@ -8,7 +8,7 @@
 #include <set>
 #include <string>
 #include <vector>
-
+#include <unordered_set>
 class Potion;
 
 class Floor
@@ -27,12 +27,14 @@ public:
     Floor();
 
     Tile &popRandomTile(int chamber);
+    Tile &peekRandomTile(int chamber);
     Tile &getTile(int r, int c);
-    void RemoveTileFromChamber(Tile *t, int chamber);
+    void removeTileFromChamber(Tile *t, int chamber);
     void replaceEntity(int r, int c, std::unique_ptr<Drawable> newUpper);
     Enemy *checkForEnemy(int r, int c);
     Potion *checkForPotion(int r, int c);
     std::vector<Tile *> getSurroundingTiles(int r, int c);
+    bool surroundingTilesContains(int r, int c, std::unordered_set<char> charsToCheck);
     std::map<std::string, int> directionMap = {
         {"no", 0}, // north
         {"ne", 1}, // northeast

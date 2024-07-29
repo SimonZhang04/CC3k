@@ -121,6 +121,18 @@ std::vector<Tile *> Floor::getSurroundingTiles(int r, int c)
     return surroundingTiles;
 }
 
+bool Floor::surroundingTilesContains(int r, int c, std::unordered_set<char> charsToCheck)
+{
+    for (Tile *t : getSurroundingTiles(r, c))
+    {
+        if (charsToCheck.count(tiles[r][c].draw()))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 Tile &Floor::getTile(int r, int c)
 {
     return tiles[r][c];
@@ -140,6 +152,14 @@ Potion *Floor::checkForPotion(int r, int c)
 
 Tile &Floor::popRandomTile(int chamber)
 {
+
+    Tile *t = &peekRandomTile(chamber);
+    removeTileFromChamber(t, chamber);
+    return *t;
+}
+
+Tile &Floor::peekRandomTile(int chamber)
+{
     int idx = rand() % chambers[chamber].size();
     auto it = chambers[chamber].begin();
     for (int i = 0; i < idx; i++)
@@ -148,7 +168,7 @@ Tile &Floor::popRandomTile(int chamber)
     }
 
     Tile *t = *it;
-    chambers[chamber].erase(t);
+
     return *t;
 }
 
@@ -157,7 +177,7 @@ void Floor::replaceEntity(int r, int c, std::unique_ptr<Drawable> newUpper)
     tiles[r][c].setUpperDrawable(std::move(newUpper));
 }
 
-void Floor::RemoveTileFromChamber(Tile *t, int chamber)
+void Floor::removeTileFromChamber(Tile *t, int chamber)
 {
     chambers[chamber].erase(t);
 }

@@ -16,12 +16,16 @@
 #include "Troll.h"
 #include "Vampire.h"
 #include "Werewolf.h"
+#include "FloorTile.h"
 #include <exception>
 #include <iostream>
+#include <unordered_set>
 
 const std::map<char, int> GameModel::ENEMY_SPAWN_WEIGHTS = {{Werewolf::CHAR, 4}, {Vampire::CHAR, 3}, {Goblin::CHAR, 5}, {Troll::CHAR, 2}, {Phoenix::CHAR, 2}, {Merchant::CHAR, 2}};
 const std::map<char, int> GameModel::TREASURE_SPAWN_WEIGHTS = {{'6', 5}, {'7', 2}, {'8', 0}, {'9', 1}};
 const std::map<char, int> GameModel::POTION_SPAWN_WEIGHTS = {{'0', 1}, {'1', 1}, {'2', 1}, {'3', 1}, {'4', 1}, {'5', 1}};
+
+const std::unordered_set<char> GameModel::PROTECTED_TREASURE_CHARS = {BarrierSuit::CHAR, DragonHoard::CHAR};
 
 GameModel::GameModel() : currentFloor{0},
                          floors{std::vector<Floor>{}}
@@ -78,45 +82,31 @@ void GameModel::generateMap(std::unique_ptr<Player> player, std::function<void()
 
         int playerChamber = rand() % 5;
         placeInChamber(Player::CHAR, playerChamber, floor, map[f]);
-        // Tile &playerTile = floor.popRandomTile(playerChamber);
-        // map[f][playerTile.getRow()][playerTile.getCol()] = Player::CHAR;
-
-        // int stairChamber = randomStairChamber(playerChamber);
-        // Tile &stairTile = floor.popRandomTile(stairChamber);
-        // map[f][stairTile.getRow()][stairTile.getCol()] = Stairway::CHAR;
         placeInChamber(Stairway::CHAR, randomStairChamber(playerChamber), floor, map[f]);
 
         for (int i = 0; i < GameModel::POTIONS_PER_FLOOR; i++)
         {
             char potion = Randomizer<char>::determineRandom(POTION_SPAWN_WEIGHTS);
-            // Tile &t = floor.popRandomTile(rand() % 5);
-            // map[f][t.getRow()][t.getCol()] = potion;
             placeInChamber(potion, randomStairChamber(playerChamber), floor, map[f]);
         }
 
         if (f == barrierFloor)
         {
-            Tile &barrierSuitTile = floor.popRandomTile(rand() % 5);
-            map[f][barrierSuitTile.getRow()][barrierSuitTile.getCol()] = BarrierSuit::CHAR;
-
-            std::vector<Tile *> neighbors = barrierSuitTile.getValidNeighbors();
-            Tile &dragonTile = *neighbors[rand() % neighbors.size()];
-            map[f][dragonTile.getRow()][dragonTile.getCol()] = Dragon::CHAR;
-            dragonCount++;
+            genProtectedTreasure(BarrierSuit::CHAR, floor, map[f], dragonCount);
         }
 
         for (int i = 0; i < GameModel::TREASURE_PER_FLOOR; i++)
         {
             char treasure = Randomizer<char>::determineRandom(TREASURE_SPAWN_WEIGHTS);
-            Tile &t = floor.popRandomTile(rand() % 5);
             if (treasure == '9')
             {
-                std::vector<Tile *> neighbors = t.getValidNeighbors();
-                Tile &dragonTile = *neighbors[rand() % neighbors.size()];
-                map[f][dragonTile.getRow()][dragonTile.getCol()] = Dragon::CHAR;
-                dragonCount++;
+                genProtectedTreasure('9', floor, map[f], dragonCount);
             }
-            map[f][t.getRow()][t.getCol()] = treasure;
+            else
+            {
+                Tile &t = floor.popRandomTile(rand() % 5);
+                map[f][t.getRow()][t.getCol()] = treasure;
+            }
         }
 
         for (int i = 0; i < GameModel::ENEMIES_PER_FLOOR - dragonCount; i++)
@@ -126,6 +116,50 @@ void GameModel::generateMap(std::unique_ptr<Player> player, std::function<void()
     }
 
     createFloorsFromString(map, std::move(player), onCompassUsed, onStairsUsed, gameLogic);
+}
+
+void GameModel::genProtectedTreasure(char protectedTreasure, Floor &floor, std::string (&map)[Floor::FLOOR_ROWS], int &dragonCount)
+{
+    std::unordered_set<Tile *> checkedTiles{};
+
+    while (true)
+    {
+        int randChamber = rand() % 5;
+        Tile &ptTile = floor.peekRandomTile(randChamber);
+        auto in = checkedTiles.insert(&ptTile);
+        if (!in.second)
+        {
+            continue;
+        }
+
+        if (floor.surroundingTilesContains(ptTile.getRow(), ptTile.getCol(), std::unordered_set<char>{Dragon::CHAR}))
+        {
+            continue;
+        }
+
+        map[ptTile.getRow()][ptTile.getCol()] = protectedTreasure;
+
+        std::vector<Tile *> validNeighbors = ptTile.getValidNeighbors();
+        while (!validNeighbors.empty())
+        {
+            Tile *dragonTile = validNeighbors[rand() % validNeighbors.size()];
+            if (floor.surroundingTilesContains(dragonTile->getRow(), dragonTile->getCol(), PROTECTED_TREASURE_CHARS))
+            {
+                validNeighbors.erase(std::remove(validNeighbors.begin(), validNeighbors.end(), dragonTile));
+                continue;
+            }
+            else
+            {
+                map[dragonTile->getRow()][dragonTile->getCol()] = Dragon::CHAR;
+                dragonCount++;
+                floor.removeTileFromChamber(dragonTile, randChamber);
+                floor.removeTileFromChamber(&ptTile, randChamber);
+                return;
+            }
+        }
+
+        map[ptTile.getRow()][ptTile.getCol()] = FloorTile::CHAR;
+    }
 }
 
 void GameModel::placeInChamber(char c, int chamber, Floor &floor, std::string (&map)[Floor::FLOOR_ROWS])
