@@ -35,8 +35,16 @@ std::string Enemy::act(Player &p, Tile &playerTile)
 {
    if (shouldAttack(playerTile))
    {
-      int damageDone = p.receiveAttack(calculateAttack());
-      return (std::string(1, getChar()) + " deals " + std::to_string(damageDone) + " damage to PC.");
+      int coinflip = rand() % 2;
+      if (coinflip == 1)
+      {
+         int damageDone = p.receiveAttack(calculateAttack());
+         return (std::string(1, getChar()) + " deals " + std::to_string(damageDone) + " damage to PC.");
+      }
+      else
+      {
+         return (std::string(1, getChar()) + " missed attack on PC.");
+      }
    }
    else if (shouldMove())
    {
