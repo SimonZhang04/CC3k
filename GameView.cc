@@ -15,28 +15,57 @@
 #include <iostream>
 #include <string>
 
-char GameView::displayRaces()
+int GameView::displayRaces()
 {
     std::cout << "Choose a race: h - human, e - elf, d - dwarf, o - orc" << std::endl;
     char c;
-    std::cin >> c;
-
-    switch (c)
+    while (std::cin >> c)
     {
-    case 'h':
-    case 'e':
-    case 'd':
-    case 'o':
-        return c;
+        switch (c)
+        {
+        case 'h':
+        case 'e':
+        case 'd':
+        case 'o':
+            return c;
+        default:
+            std::cout << "Invalid race." << std::endl;
+        }
+    }
+    return c;
+}
+
+void GameView::displayGameOver(const Player &p, const int &currentFloor)
+{
+    float score = p.getGold();
+    if (p.race == PlayerRace::Human)
+    {
+        score *= 1.5;
+    }
+    std::cout << "Player made it to floor: " << currentFloor << std::endl;
+    std::cout << "Score: " << score << std::endl;
+}
+
+std::string GameView::playerRaceToString(PlayerRace race)
+{
+    switch (race)
+    {
+    case PlayerRace::Human:
+        return "Human";
+    case PlayerRace::Elf:
+        return "Elf";
+    case PlayerRace::Dwarf:
+        return "Dwarf";
+    case PlayerRace::Orc:
+        return "Orc";
     default:
-        std::cout << "Invalid race, terminating.";
-        return INVALID_PLAYER_RACE;
+        return "Unknown";
     }
 }
 
-void GameView::displayData(const Player &p, const int currentFloor)
+void GameView::displayData(const Player &p, const int &currentFloor)
 {
-    std::cout << "Race: " + p.race + " Gold: " + std::to_string(p.getGold()) + "                                                  Floor " + std::to_string(currentFloor) << std::endl;
+    std::cout << "Race: " + playerRaceToString(p.race) + " Gold: " + std::to_string(p.getGold()) + "                                                  Floor " + std::to_string(currentFloor + 1) << std::endl;
     std::cout << "HP: " + std::to_string(p.hp) << std::endl;
     std::cout << "Atk: " + std::to_string(p.getAttack()) << std::endl;
     std::cout << "Def: " + std::to_string(p.getDefense()) << std::endl;

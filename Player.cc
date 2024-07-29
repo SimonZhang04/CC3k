@@ -21,7 +21,9 @@ int Player::getScore() const
 
 int Player::useAttack(Character &c)
 {
-   return c.receiveAttack(calculateAttack());
+   int damageDone = c.calculateDamageTaken(calculateAttack());
+   c.receiveAttack(damageDone);
+   return damageDone;
 }
 
 int Player::getGold() const
@@ -44,14 +46,9 @@ int Player::getDefense() const
    return static_cast<int>(modifiedDefense->getStat());
 };
 
-int Player::receiveAttack(int attackerAtk)
+int Player::calculateDamageTaken(int attackerAtk)
 {
-   int takenDamage = std::ceil(100.0 / (100.0 + baseDef)) * attackerAtk * receivedDamageMultiplier->getStat();
-   hp -= takenDamage;
-   if (hp <= 0)
-   {
-      onDeath();
-   }
+   int takenDamage = Character::calculateDamageTaken(attackerAtk) * receivedDamageMultiplier->getStat();
    return takenDamage;
 }
 

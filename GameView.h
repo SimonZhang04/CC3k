@@ -18,9 +18,11 @@ class GameView
     Color charToColor(char c);
 
 public:
-    char displayRaces();
-    void displayData(const Player &p, const int currentFloor);
+    int displayRaces();
+    void displayData(const Player &p, const int &currentFloor);
     void displayAction(std::string playerActions, std::string enemyActions);
     void displayFloor(Floor &f);
+    void displayGameOver(const Player &p, const int &currentFloor);
     const char INVALID_PLAYER_RACE = ' ';
+    std::string playerRaceToString(PlayerRace race);
 };

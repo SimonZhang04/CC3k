@@ -10,5 +10,5 @@ class Dwarf : public Player
    static constexpr float GOLD_MODIFIER = 2;
 
 public:
-   Dwarf() : Player(BASE_HP, BASE_ATK, BASE_DEF, SCORE_MODIFIER, GOLD_MODIFIER, "Dwarf") {}
+   Dwarf() : Player(BASE_HP, BASE_ATK, BASE_DEF, SCORE_MODIFIER, GOLD_MODIFIER, PlayerRace::Dwarf) {}
 };

@@ -15,6 +15,7 @@ public:
     static const std::map<char, int> ENEMY_SPAWN_WEIGHTS;
     static const std::map<char, int> TREASURE_SPAWN_WEIGHTS;
     static const std::map<char, int> POTION_SPAWN_WEIGHTS;
+    bool gameOver = false;
 
     int currentFloor;
     Tile *currentTile;

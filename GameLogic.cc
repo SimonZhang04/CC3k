@@ -16,14 +16,25 @@ const std::string GameLogic::ATTACK_COMMAND = "a";
 const std::string GameLogic::USE_POTION_COMMAND = "u";
 const std::string GameLogic::QUIT_COMMAND = "q";
 const std::string GameLogic::RESTART_COMMAND = "r";
+
 void GameLogic::notify(Subject &entity)
 {
     std::cout << "Game Logic notified about death entity" << std::endl;
     Floor &curFloor = gameModel.getCurrentFloor();
     Entity *entityPtr = dynamic_cast<Entity *>(&entity);
+    Player *playerPtr = dynamic_cast<Player *>(entityPtr);
+    // check if the entity that died is a Player class
 
-    std::pair<int, int> entityCoords = determineEntityLocation(*entityPtr, curFloor);
-    curFloor.replaceEntity(entityCoords.first, entityCoords.second, entityPtr->drawableToReplace());
+    if (playerPtr != nullptr)
+    {
+        gameModel.gameOver = true;
+        std::cout << "Player has died, end the game." << std::endl;
+    }
+    else
+    {
+        std::pair<int, int> entityCoords = determineEntityLocation(*entityPtr, curFloor);
+        curFloor.replaceEntity(entityCoords.first, entityCoords.second, entityPtr->drawableToReplace());
+    }
 }
 
 std::pair<int, int> GameLogic::determineEntityLocation(Entity &entity, Floor &curFloor)
@@ -50,11 +61,6 @@ void GameLogic::playGame(std::string mapFile)
 {
     gameModel = GameModel{};
     char race = gameView.displayRaces();
-    if (race == gameView.INVALID_PLAYER_RACE)
-    {
-        return;
-    }
-
     std::unique_ptr<Player> player{gameModel.setupPlayer(race)};
 
     if (!mapFile.empty())
@@ -77,13 +83,13 @@ void GameLogic::mainLoop()
     std::string action;
     std::string playerActions = "Player character has spawned";
     std::string enemyActions = "";
+    Player &player = gameModel.getPlayer();
     while (true)
     {
         Floor &curFloor = gameModel.getCurrentFloor();
         Tile &curTile = *gameModel.currentTile;
-
         gameView.displayFloor(curFloor);
-        gameView.displayData(gameModel.getPlayer(), gameModel.currentFloor);
+        gameView.displayData(player, gameModel.currentFloor);
         gameView.displayAction(playerActions, enemyActions);
         playerActions = "PC ";
         enemyActions = "";
@@ -152,7 +158,7 @@ void GameLogic::mainLoop()
                     // Error: trying to attack something that isn't an enemy
                 }
                 char enemyType = e->getChar();
-                int damageDealt = gameModel.getPlayer().useAttack(*e);
+                int damageDealt = player.useAttack(*e);
                 // if the enemy is dead, no more access to it
                 if (curFloor.checkForEnemy(r, c))
                 {
@@ -206,6 +212,10 @@ void GameLogic::mainLoop()
         {
             return;
         }
+        else
+        { // no valid action
+            playerActions = "Invalid action!";
+        }
 
         // Enemies act
         // Hash set to keep track of enemies that have acted
@@ -223,13 +233,19 @@ void GameLogic::mainLoop()
                     // check if the Enemy is in Hashset
                     if (actedEnemies.find(enemy) == actedEnemies.end())
                     {
-                        enemyActions += enemy->act(gameModel.getPlayer(), *gameModel.currentTile);
+                        enemyActions += enemy->act(player, *gameModel.currentTile);
                         actedEnemies.insert(enemy);
                     }
                 }
             }
         }
+
+        if (gameModel.gameOver)
+        {
+            break;
+        }
     }
+    gameView.displayGameOver(player, gameModel.currentFloor);
 }
 
 void GameLogic::parseMapFile(std::string mapFile, std::unique_ptr<Player> player)

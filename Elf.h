@@ -10,6 +10,6 @@ class Elf : public Player
    static constexpr float GOLD_MODIFIER = 1;
 
 public:
-   Elf() : Player{BASE_HP, BASE_ATK, BASE_DEF, SCORE_MODIFIER, GOLD_MODIFIER, "Elf"} {}
+   Elf() : Player{BASE_HP, BASE_ATK, BASE_DEF, SCORE_MODIFIER, GOLD_MODIFIER, PlayerRace::Elf} {}
    virtual void useStatPotion(StatType type, int amount) override;
 };

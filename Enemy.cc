@@ -38,7 +38,8 @@ std::string Enemy::act(Player &p, Tile &playerTile)
       int coinflip = rand() % 2;
       if (coinflip == 1)
       {
-         int damageDone = p.receiveAttack(calculateAttack());
+         int damageDone = p.calculateDamageTaken(calculateAttack());
+         p.receiveAttack(damageDone);
          return (std::string(1, getChar()) + " deals " + std::to_string(damageDone) + " damage to PC.");
       }
       else

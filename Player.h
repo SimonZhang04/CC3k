@@ -2,6 +2,7 @@
 #define PLAYER
 
 #include "Character.h"
+#include "PlayerRace.h"
 #include "PotionType.h"
 #include "Stat.h"
 #include "StatType.h"
@@ -20,7 +21,7 @@ protected:
    int gold;
    float scoreModifier;
    float goldModifier;
-   Player(int maxHp, int baseAtk, int baseDef, float scoreModifier, float goldModifier, std::string race)
+   Player(int maxHp, int baseAtk, int baseDef, float scoreModifier, float goldModifier, PlayerRace race)
        : Character{maxHp, baseAtk, baseDef},
          gold{0},
          scoreModifier{scoreModifier},
@@ -36,7 +37,7 @@ protected:
 
 public:
    static const char CHAR = '@';
-   const std::string race;
+   const PlayerRace race;
    void collectGold(int goldPickedUp);
    char getChar() const override;
    int getScore() const;
@@ -46,7 +47,7 @@ public:
    int useAttack(Character &c); // Return the damage dealt
    virtual void useStatPotion(StatType type, int amount);
    void modifyStat(StatType type, float amount);
-   virtual int receiveAttack(int attackerAtk) override;
+   virtual int calculateDamageTaken(int attackerAtk) override;
 };
 
 #endif

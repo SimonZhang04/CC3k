@@ -9,10 +9,9 @@ bool Merchant::shouldAttack(Tile &playerTile)
    }
 };
 
-int Merchant::receiveAttack(int attackerAtk)
+void Merchant::onReceiveAttack()
 {
    isAggro = true;
-   return Enemy::receiveAttack(attackerAtk);
 }
 
 bool Merchant::isAggro = false;
