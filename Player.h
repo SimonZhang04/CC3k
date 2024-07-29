@@ -15,10 +15,10 @@ class Player : public Character
    std::unique_ptr<Stat> modifiedAttack;
    std::unique_ptr<Stat> modifiedDefense;
    std::unique_ptr<Stat> receivedDamageMultiplier;
-   void onDeath() override;
+   void onDeath(Character &attacker) override;
 
 protected:
-   int gold;
+   float gold;
    float scoreModifier;
    float goldModifier;
    Player(int maxHp, int baseAtk, int baseDef, float scoreModifier, float goldModifier, PlayerRace race)
@@ -44,7 +44,7 @@ public:
    void collectGold(int goldPickedUp);
    char getChar() const override;
    int getScore() const;
-   int getGold() const;
+   float getGold() const;
    int getAttack() const;
    int getDefense() const;
    int useAttack(Character &c); // Return the damage dealt
@@ -52,6 +52,8 @@ public:
    void modifyStat(StatType type, float amount);
    virtual int calculateDamageTaken(int attackerAtk) override;
    void onFloorProgressed();
+   void didKill(Player *p) override;
+   void didKill(Enemy *e) override;
 };
 
 #endif

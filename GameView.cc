@@ -14,6 +14,7 @@
 #include "Werewolf.h"
 #include <iostream>
 #include <string>
+#include <iomanip>
 
 int GameView::displayRaces()
 {
@@ -114,8 +115,14 @@ std::string GameView::playerRaceToString(PlayerRace race)
 
 void GameView::displayData(const Player &p, const int &currentFloor)
 {
-    std::cout << "Race: " + playerRaceToString(p.race) + " Gold: " + std::to_string(p.getGold()) + "                                                  Floor " + std::to_string(currentFloor + 1) << std::endl;
-    std::cout << "HP: " + std::to_string(p.hp) << std::endl;
+    std::cout << std::fixed;
+    std::cout << std::setprecision(1);
+    std::cout << "Race: " + playerRaceToString(p.race) + " Gold: ";
+    std::cout << p.getGold();
+    std::cout << "                                                  Floor " + std::to_string(currentFloor + 1) << std::endl;
+
+    std::cout
+        << "HP: " + std::to_string(p.hp) << std::endl;
     std::cout << "Atk: " + std::to_string(p.getAttack()) << std::endl;
     std::cout << "Def: " + std::to_string(p.getDefense()) << std::endl;
 };

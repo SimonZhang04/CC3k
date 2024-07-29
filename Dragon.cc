@@ -4,7 +4,6 @@ bool Dragon::shouldMove()
    return false;
 };
 
-// update later
 bool Dragon::shouldAttack(Tile &playerTile)
 {
    int rDiff = abs(playerTile.getRow() - protectedTreasureRow);
@@ -13,8 +12,8 @@ bool Dragon::shouldAttack(Tile &playerTile)
    return rDiff <= 1 && cDiff <= 1;
 }
 
-// update later
-void Dragon::onDeath()
+void Dragon::onDeath(Character &attacker)
 {
+   Enemy::onDeath(attacker);
    protectedTreasure->unlock();
 };

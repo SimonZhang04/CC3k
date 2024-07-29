@@ -8,13 +8,13 @@ int Character::calculateDamageTaken(int attackerAtk)
    return takenDamage;
 }
 
-void Character::receiveAttack(int damageTaken)
+void Character::receiveAttack(int damageTaken, Character &attacker)
 {
    hp -= damageTaken;
    onReceiveAttack();
    if (hp <= 0)
    {
-      onDeath();
+      onDeath(attacker);
       notifyDeathObservers();
    }
 }

@@ -39,7 +39,7 @@ std::string Enemy::act(Player &p, Tile &playerTile)
       if (coinflip == 1)
       {
          int damageDone = p.calculateDamageTaken(calculateAttack());
-         p.receiveAttack(damageDone);
+         p.receiveAttack(damageDone, *this);
          return (std::string(1, getChar()) + " deals " + std::to_string(damageDone) + " damage to PC.");
       }
       else
@@ -56,8 +56,15 @@ std::string Enemy::act(Player &p, Tile &playerTile)
    return "";
 };
 
-void Enemy::onDeath()
+void Enemy::didKill(Player *p) {
+};
+
+void Enemy::didKill(Enemy *e) {
+};
+
+void Enemy::onDeath(Character &attacker)
 {
+   attacker.didKill(this);
 }
 
 int Enemy::calculateAttack() const

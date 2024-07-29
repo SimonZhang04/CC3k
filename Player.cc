@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "StatIncrementer.h"
 #include "StatMultiplier.h"
+#include "Enemy.h"
 #include <cmath>
 #include <iostream>
 
@@ -22,11 +23,19 @@ int Player::getScore() const
 int Player::useAttack(Character &c)
 {
    int damageDone = c.calculateDamageTaken(calculateAttack());
-   c.receiveAttack(damageDone);
+   c.receiveAttack(damageDone, *this);
    return damageDone;
 }
 
-int Player::getGold() const
+void Player::didKill(Player *p) {
+};
+
+void Player::didKill(Enemy *e)
+{
+   collectGold(e->getDeathRewardGold());
+};
+
+float Player::getGold() const
 {
    return gold;
 }
@@ -52,7 +61,7 @@ int Player::calculateDamageTaken(int attackerAtk)
    return takenDamage;
 }
 
-void Player::onDeath()
+void Player::onDeath(Character &attacker)
 {
 }
 
