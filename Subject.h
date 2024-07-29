@@ -3,6 +3,7 @@
 
 #include "Observer.h"
 #include <algorithm>
+#include <string>
 #include <vector>
 
 class Subject
@@ -20,11 +21,19 @@ public:
       observers.erase(std::remove(observers.begin(), observers.end(), o), observers.end());
    }
 
-   void notifyObservers()
+   void notifyDeathObservers()
    {
       for (auto p : observers)
       {
-         p->notify(*this);
+         p->notifyDeath(*this);
+      }
+   }
+
+   void notifyActionObservers(std::string action)
+   {
+      for (auto p : observers)
+      {
+         p->notifyAction(action);
       }
    }
 

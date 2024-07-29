@@ -34,6 +34,7 @@ public:
    void consumePotion()
    {
       useEffect();
-      notifyObservers();
+      notifyActionObservers("uses " + getPotionType());
+      notifyDeathObservers();
    };
 };

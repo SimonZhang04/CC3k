@@ -17,7 +17,7 @@ const std::string GameLogic::USE_POTION_COMMAND = "u";
 const std::string GameLogic::QUIT_COMMAND = "q";
 const std::string GameLogic::RESTART_COMMAND = "r";
 
-void GameLogic::notify(Subject &entity)
+void GameLogic::notifyDeath(Subject &entity)
 {
     Floor &curFloor = gameModel.getCurrentFloor();
     Entity *entityPtr = dynamic_cast<Entity *>(&entity);
@@ -32,6 +32,11 @@ void GameLogic::notify(Subject &entity)
         std::pair<int, int> entityCoords = determineEntityLocation(*entityPtr, curFloor);
         curFloor.replaceEntity(entityCoords.first, entityCoords.second, entityPtr->drawableToReplace());
     }
+}
+
+void GameLogic::notifyAction(std::string &action)
+{
+    std::cout << action << std::endl;
 }
 
 std::pair<int, int> GameLogic::determineEntityLocation(Entity &entity, Floor &curFloor)

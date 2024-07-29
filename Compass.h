@@ -16,6 +16,7 @@ protected:
    void useEffect() override
    {
       onUse();
-      notifyObservers();
+      notifyActionObservers("Compass picked up! Staircase is now revealed on the map.");
+      notifyDeathObservers();
    };
 };

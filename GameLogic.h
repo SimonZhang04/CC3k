@@ -21,7 +21,8 @@ class GameLogic : public Observer
     void getDirectionCoords(int &r, int &c, std::string &dir, Floor &curFloor, Tile &curTile);
     void onCompassUsed();
     void onStairsUsed();
-    void notify(Subject &entity) override;
+    void notifyDeath(Subject &entity) override;
+    void notifyAction(std::string &action) override;
     std::pair<int, int> determineEntityLocation(Entity &entity, Floor &curFloor);
     void mainLoop();
 

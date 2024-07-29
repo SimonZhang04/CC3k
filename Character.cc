@@ -15,7 +15,7 @@ void Character::receiveAttack(int damageTaken)
    if (hp <= 0)
    {
       onDeath();
-      notifyObservers();
+      notifyDeathObservers();
    }
 }
 

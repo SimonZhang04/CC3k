@@ -5,6 +5,7 @@
 #include "WalkEffectObject.h"
 #include <functional>
 #include <map>
+#include <string>
 
 class Treasure : public virtual WalkEffectObject
 {
@@ -16,7 +17,8 @@ protected:
    void useEffect() override
    {
       onUse(gold);
-      notifyObservers();
+      notifyActionObservers(std::to_string(gold) + " gold picked up!");
+      notifyDeathObservers();
    };
 
 public:

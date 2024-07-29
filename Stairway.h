@@ -25,6 +25,7 @@ public:
 protected:
    void useEffect() override
    {
+      // notifyActionObservers(" moved to the next floor!");
       onUse();
    };
 };
