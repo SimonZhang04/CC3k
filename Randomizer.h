@@ -17,7 +17,7 @@ public:
         }
         int r = rand() % sum;
 
-        for (int i = 0; i < weights.size(); i++)
+        for (size_t i = 0; i < weights.size(); i++)
         {
             if (r < lookup[i].second)
             {

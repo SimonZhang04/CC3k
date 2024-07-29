@@ -200,21 +200,8 @@ void GameView::displayFloor(Floor &f)
     {
         for (int c = 0; c < Floor::FLOOR_COLS; c++)
         {
-            bool didPrint = false;
             Tile &t{f.getTile(r, c)};
-            for (int i = 0; i < 5; i++)
-            {
-                // if (f.chambers[i].count(&t))
-                // {
-                //     std::cout << formatColor(f.getTile(r, c).draw());
-                //     didPrint = true;
-                //     break;
-                // }
-            }
-            if (!didPrint)
-            {
-                std::cout << formatColor(f.getTile(r, c).draw());
-            }
+            std::cout << formatColor(t.draw());
         }
         std::cout << std::endl;
     }

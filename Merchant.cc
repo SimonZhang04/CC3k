@@ -7,6 +7,7 @@ bool Merchant::shouldAttack(Tile &playerTile)
    {
       return Enemy::shouldAttack(playerTile);
    }
+   return false;
 };
 
 void Merchant::onReceiveAttack()

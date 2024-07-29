@@ -8,7 +8,7 @@ class DragonHoard : public virtual ProtectedTreasure, public virtual Treasure
    void unlockedEffect() { Treasure::useEffect(); };
 
 public:
-   DragonHoard(TreasureType treasureType, std::function<void(int)> func) : Treasure{treasureType, func}, ProtectedTreasure{}
+   DragonHoard(TreasureType treasureType, std::function<void(int)> func) : ProtectedTreasure{}, Treasure{treasureType, func}
    {
    }
 

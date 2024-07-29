@@ -125,7 +125,7 @@ bool Floor::surroundingTilesContains(int r, int c, std::unordered_set<char> char
 {
     for (Tile *t : getSurroundingTiles(r, c))
     {
-        if (charsToCheck.count(tiles[r][c].draw()))
+        if (charsToCheck.count(tiles[t->getRow()][t->getCol()].draw()))
         {
             return true;
         }

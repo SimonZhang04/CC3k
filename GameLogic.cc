@@ -84,7 +84,6 @@ void GameLogic::mainLoop()
     std::string action;
     gameView.addPlayerAction("has spawned");
     Player &player = gameModel.getPlayer();
-    bool invalidAction = false;
     while (true)
     {
         Floor &curFloor = gameModel.getCurrentFloor();
@@ -150,7 +149,7 @@ void GameLogic::mainLoop()
                 {
                     getDirectionCoords(r, c, action, curFloor, curTile);
                 }
-                catch (std::exception e)
+                catch (const std::exception &e)
                 {
                     continue;
                 }
@@ -187,7 +186,7 @@ void GameLogic::mainLoop()
                 {
                     getDirectionCoords(r, c, action, curFloor, curTile);
                 }
-                catch (std::exception e)
+                catch (const std::exception &e)
                 {
                     continue;
                 }
