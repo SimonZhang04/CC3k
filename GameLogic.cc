@@ -80,6 +80,7 @@ void GameLogic::mainLoop()
     std::string action;
     std::string playerActions = "Player character has spawned";
     std::string enemyActions = "";
+    std::string errorMessage = "";
     Player &player = gameModel.getPlayer();
     while (true)
     {
@@ -87,9 +88,10 @@ void GameLogic::mainLoop()
         Tile &curTile = *gameModel.currentTile;
         gameView.displayFloor(curFloor);
         gameView.displayData(player, gameModel.currentFloor);
-        gameView.displayAction(playerActions, enemyActions);
+        gameView.displayAction(playerActions, enemyActions, errorMessage);
         playerActions = "PC ";
         enemyActions = "";
+        errorMessage = "";
         // Accept an action
         std::cin >> action;
         if (isDirection(action))
@@ -155,8 +157,8 @@ void GameLogic::mainLoop()
                 Enemy *e = curFloor.checkForEnemy(r, c);
                 if (e == nullptr)
                 {
+                    errorMessage = "Invalid attack command (attacking non-enemy)";
                     continue;
-                    // Error: trying to attack something that isn't an enemy
                 }
                 char enemyType = e->getChar();
                 int damageDealt = player.useAttack(*e);
@@ -172,7 +174,7 @@ void GameLogic::mainLoop()
             }
             else
             {
-                // Error trying to attack invalid direction
+                errorMessage = "Invalid attack command (invalid direction)"; // Error trying to attack invalid direction
             }
         }
         else if (action == USE_POTION_COMMAND)
@@ -195,6 +197,7 @@ void GameLogic::mainLoop()
                 {
                     continue;
                     // Error: trying to attack something that isn't an enemy
+                    errorMessage = "Invalid attack command (not targeting an enemy)";
                 }
                 // add action to player Actions
                 playerActions += "uses " + p->getPotionType();
@@ -203,6 +206,7 @@ void GameLogic::mainLoop()
             else
             {
                 // Error trying to attack invalid direction
+                errorMessage = "Invalid attack command";
             }
         }
         else if (action == RESTART_COMMAND)
@@ -215,7 +219,7 @@ void GameLogic::mainLoop()
         }
         else
         { // no valid action
-            playerActions = "Invalid action!";
+            errorMessage = "Invalid action";
         }
 
         // Enemies act

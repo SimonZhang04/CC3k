@@ -83,8 +83,13 @@ void GameView::displayData(const Player &p, const int &currentFloor)
     std::cout << "Def: " + std::to_string(p.getDefense()) << std::endl;
 };
 
-void GameView::displayAction(std::string playerActions, std::string enemyActions)
+void GameView::displayAction(std::string playerActions, std::string enemyActions, std::string errorMessage)
 {
+    if (errorMessage.length() != 0)
+    {
+        std::cout << errorMessage << std::endl;
+        return;
+    }
     std::cout << "Action: " << playerActions << ". ";
     if (enemyActions.length() != 0)
     {
