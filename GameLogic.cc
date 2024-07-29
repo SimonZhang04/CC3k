@@ -113,7 +113,11 @@ void GameLogic::mainLoop()
                 if (wo != nullptr)
                 {
                     wo->onWalkedOn();
-
+                    // If the player reaches the last staircase
+                    if (gameModel.gameOver)
+                    {
+                        break;
+                    }
                     // If tile is now valid after effect, move to it
                     if (!t.isValidPlayer())
                     {
@@ -237,12 +241,13 @@ void GameLogic::mainLoop()
             }
         }
 
+        // game over conditions
         if (gameModel.gameOver)
         {
             break;
         }
     }
-    gameView.displayGameOver(player, gameModel.currentFloor);
+    gameView.displayGameOver(player, gameModel.currentFloor, gameModel.LAST_FLOOR);
 }
 
 void GameLogic::parseMapFile(std::string mapFile, std::unique_ptr<Player> player)
@@ -270,7 +275,12 @@ void GameLogic::onCompassUsed()
 
 void GameLogic::onStairsUsed()
 {
-    gameModel.currentFloor++;
+    int nextFloor = ++gameModel.currentFloor;
+    if (nextFloor == gameModel.LAST_FLOOR)
+    {
+        gameModel.gameOver = true;
+        return;
+    }
     gameModel.currentTile->moveTo(*gameModel.startTiles[gameModel.currentFloor]);
     gameModel.currentTile = gameModel.startTiles[gameModel.currentFloor];
     gameModel.getPlayer().onFloorProgressed();

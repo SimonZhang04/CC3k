@@ -22,7 +22,7 @@ public:
     void displayData(const Player &p, const int &currentFloor);
     void displayAction(std::string playerActions, std::string enemyActions);
     void displayFloor(Floor &f);
-    void displayGameOver(const Player &p, const int &currentFloor);
+    void displayGameOver(const Player &p, const int &currentFloor, const int LAST_FLOOR);
     const char INVALID_PLAYER_RACE = ' ';
     std::string playerRaceToString(PlayerRace race);
 };

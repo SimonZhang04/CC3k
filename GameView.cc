@@ -35,12 +35,23 @@ int GameView::displayRaces()
     return c;
 }
 
-void GameView::displayGameOver(const Player &p, const int &currentFloor)
+void GameView::displayGameOver(const Player &p, const int &currentFloor, const int LAST_FLOOR)
 {
     std::cout << "\n \n";
     std::cout << "================================== GAME OVER ==================================" << std::endl;
     std::cout << "\n";
-    std::cout << "Player made it to floor: " << currentFloor + 1 << std::endl;
+    if (p.hp <= 0)
+    {
+        std::cout << "Player died. " << std::endl;
+    }
+    if (currentFloor == LAST_FLOOR)
+    {
+        std::cout << "Player reached the end of the dungeon! " << std::endl;
+    }
+    else
+    {
+        std::cout << "Player made it to floor: " << currentFloor + 1 << std::endl;
+    }
     std::cout << "Score: " << p.getScore() << std::endl;
     std::cout << "\n";
     std::cout << "===============================================================================" << std::endl;

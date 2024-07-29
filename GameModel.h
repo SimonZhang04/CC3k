@@ -12,6 +12,7 @@ public:
     static const int ENEMIES_PER_FLOOR = 10;
     static const int POTIONS_PER_FLOOR = 10;
     static const int TREASURE_PER_FLOOR = 10;
+    static const int LAST_FLOOR = 5;
     static const std::map<char, int> ENEMY_SPAWN_WEIGHTS;
     static const std::map<char, int> TREASURE_SPAWN_WEIGHTS;
     static const std::map<char, int> POTION_SPAWN_WEIGHTS;
