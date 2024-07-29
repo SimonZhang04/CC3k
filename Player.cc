@@ -1,7 +1,7 @@
 #include "Player.h"
+#include "Enemy.h"
 #include "StatIncrementer.h"
 #include "StatMultiplier.h"
-#include "Enemy.h"
 #include <cmath>
 #include <iostream>
 
@@ -32,7 +32,9 @@ void Player::didKill(Player *p) {
 
 void Player::didKill(Enemy *e)
 {
-   collectGold(e->getDeathRewardGold());
+   int goldCollected = e->getDeathRewardGold();
+   collectGold(goldCollected);
+   notifyActionObservers("gained " + std::to_string(goldCollected) + " gold from killing enemy " + std::string(1, e->getChar()));
 };
 
 float Player::getGold() const

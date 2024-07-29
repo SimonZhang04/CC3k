@@ -82,7 +82,7 @@ void GameLogic::playGame(std::string mapFile)
 void GameLogic::mainLoop()
 {
     std::string action;
-    gameView.addPlayerAction("Player character has spawned");
+    gameView.addPlayerAction("has spawned");
     Player &player = gameModel.getPlayer();
     while (true)
     {
@@ -173,10 +173,6 @@ void GameLogic::mainLoop()
                 if (enemyHp > 0)
                 {
                     gameView.addPlayerAction("deals " + std::to_string(damageDealt) + " damage to Enemy " + enemyType + " (" + std::to_string(enemyHp) + ")");
-                }
-                else
-                {
-                    gameView.addPlayerAction("kills Enemy " + std::string(1, enemyType));
                 }
             }
             else

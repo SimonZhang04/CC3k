@@ -12,9 +12,9 @@
 #include "Troll.h"
 #include "Vampire.h"
 #include "Werewolf.h"
-#include <iostream>
-#include <string>
 #include <iomanip>
+#include <iostream>
+#include <vector>
 
 int GameView::displayRaces()
 {
@@ -40,7 +40,7 @@ void GameView::playerScan(std::vector<Tile *> surroundingTiles, std::vector<std:
 {
     int seenUnknownPotions = 0;
     int seenItems = 0;
-    std::string output = " sees ";
+    std::string output = "sees ";
     for (Tile *tile : surroundingTiles)
     {
         Potion *potionPtr = dynamic_cast<Potion *>(tile->getUpper());
@@ -138,9 +138,7 @@ void GameView::displayData(const Player &p, const int &currentFloor)
     std::cout << "Race: " + playerRaceToString(p.race) + " Gold: ";
     std::cout << p.getGold();
     std::cout << "                                                  Floor " + std::to_string(currentFloor + 1) << std::endl;
-
-    std::cout
-        << "HP: " + std::to_string(p.hp) << std::endl;
+    std::cout << "HP: " + std::to_string(p.hp) << std::endl;
     std::cout << "Atk: " + std::to_string(p.getAttack()) << std::endl;
     std::cout << "Def: " + std::to_string(p.getDefense()) << std::endl;
 };
@@ -152,20 +150,27 @@ void GameView::displayActions()
         std::cout << errorMessage << std::endl;
         return;
     }
-    std::cout << "Action: PC ";
+    std::cout << "Player actions: PC ";
 
-    for (const auto &action : playerActions) // Changed the loop variable name to 'action'
+    for (auto it = playerActions.begin(); it != playerActions.end(); ++it)
     {
-        std::cout << action << " and ";
+        std::cout << *it;
+        if (it + 1 != playerActions.end())
+        {
+            std::cout << " and ";
+        }
     }
     std::cout << std::endl;
 
-    for (const auto &action : enemyActions) // Changed the loop variable name to 'action'
+    if (enemyActions.size() != 0)
     {
-        std::cout << action << " and ";
+        std::cout << "Enemy actions: ";
+        for (auto it = enemyActions.begin(); it != enemyActions.end(); ++it)
+        {
+            std::cout << *it;
+        }
+        std::cout << std::endl;
     }
-
-    std::cout << std::endl;
 }
 
 void GameView::displayFloor(Floor &f)
