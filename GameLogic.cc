@@ -266,7 +266,11 @@ void GameLogic::mainLoop()
             break;
         }
     }
-    gameView.displayGameOver(player, gameModel.currentFloor, gameModel.LAST_FLOOR);
+    bool playAgain = gameView.displayGameOver(player, gameModel.currentFloor, gameModel.LAST_FLOOR);
+    if (playAgain)
+    {
+        playGame("");
+    }
 }
 
 void GameLogic::parseMapFile(std::string mapFile, std::unique_ptr<Player> player)

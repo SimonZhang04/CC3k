@@ -79,7 +79,7 @@ void GameView::playerScan(std::vector<Tile *> surroundingTiles, std::vector<std:
     }
 }
 
-void GameView::displayGameOver(const Player &p, const int &currentFloor, const int LAST_FLOOR)
+bool GameView::displayGameOver(const Player &p, const int &currentFloor, const int LAST_FLOOR)
 {
     std::cout << "\n \n";
     std::cout << "================================== GAME OVER ==================================" << std::endl;
@@ -96,10 +96,15 @@ void GameView::displayGameOver(const Player &p, const int &currentFloor, const i
     {
         std::cout << "Player made it to floor: " << currentFloor + 1 << std::endl;
     }
-    std::cout << "Score: " << p.getScore() << std::endl;
+    std::cout << "Score: " << StringFormatter::formatFloat(p.getScore()) << std::endl;
     std::cout << "\n";
+    std::cout << "Play again? (y/n)\n";
     std::cout << "===============================================================================" << std::endl;
     std::cout << "\n \n";
+
+    char resp;
+    std::cin >> resp;
+    return resp == 'Y' || resp == 'y';
 }
 
 void GameView::addPlayerAction(std::string action)
@@ -177,7 +182,7 @@ void GameView::displayActions()
         std::cout << "Enemy actions: ";
         for (auto it = enemyActions.begin(); it != enemyActions.end(); ++it)
         {
-            std::cout << *it;
+            std::cout << *it << " ";
         }
         std::cout << std::endl;
     }

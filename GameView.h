@@ -14,7 +14,7 @@ public:
     void displayData(const Player &p, const int &currentFloor);
     void displayActions();
     void displayFloor(Floor &f);
-    void displayGameOver(const Player &p, const int &currentFloor, const int LAST_FLOOR);
+    bool displayGameOver(const Player &p, const int &currentFloor, const int LAST_FLOOR);
     void addPlayerAction(std::string action);
     void addEnemyAction(std::string action);
     void addErrorMessage(std::string action);

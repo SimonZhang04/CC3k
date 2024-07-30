@@ -1,3 +1,6 @@
+#ifndef STRINGFORMATTER
+#define STRINGFORMATTER
+
 #include "Color.h"
 #include <iomanip>
 
@@ -8,3 +11,5 @@ public:
     static std::string formatColor(char c);
     static Color charToColor(char c);
 };
+
+#endif
