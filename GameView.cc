@@ -1,4 +1,5 @@
 #include "GameView.h"
+#include "Potion.h"
 #include "StringFormatter.h"
 #include <iomanip>
 #include <iostream>
