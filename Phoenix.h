@@ -7,7 +7,7 @@ class Phoenix : public Enemy
    static const int BASE_DEF = 20;
 
 public:
-   Phoenix(Tile *occupyingTile, std::unique_ptr<Drawable> loot) : Enemy{BASE_HP, BASE_ATK, BASE_DEF, occupyingTile, std::move(loot)} {};
+   Phoenix(bool bonusActive, Tile *occupyingTile, std::unique_ptr<Drawable> loot) : Enemy{bonusActive, BASE_HP, BASE_ATK, BASE_DEF, occupyingTile, std::move(loot)} {};
    char getChar() const override { return CHAR; };
    static const char CHAR = 'X';
 };

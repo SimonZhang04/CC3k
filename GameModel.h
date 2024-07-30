@@ -17,6 +17,7 @@ class GameModel
 
 public:
     static const int LAST_FLOOR = 5;
+    bool bonusActive;
     bool gameOver = false;
 
     int currentFloor;
@@ -25,7 +26,7 @@ public:
     std::vector<std::string> identifiedItems;
     Stairway *stairs[5];
     Tile *startTiles[5];
-    GameModel();
+    GameModel(bool bonusActive);
     std::unique_ptr<Player> setupPlayer(char c);
     Floor &getCurrentFloor();
     Player &getPlayer();

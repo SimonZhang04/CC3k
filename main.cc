@@ -10,11 +10,16 @@ char *getOption(char **begin, char **end, const std::string &flag)
     return 0;
 }
 
+bool hasFlag(char **begin, char **end, const std::string &flag)
+{
+    return std::find(begin, end, flag) != end;
+}
+
 int main(int argc, char *argv[])
 {
-    GameLogic gl;
 
     std::string floorFile = "";
+    bool bonusActive = false;
     if (argc > 1)
     {
         char *map = getOption(argv, argv + argc, "-f");
@@ -28,7 +33,11 @@ int main(int argc, char *argv[])
         {
             srand(std::stoi(seed));
         }
+
+        bonusActive = hasFlag(argv, argv + argc, "-b");
     }
+
+    GameLogic gl{bonusActive};
     gl.playGame(floorFile);
     return 0;
 }

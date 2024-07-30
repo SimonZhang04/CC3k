@@ -22,3 +22,10 @@ void Character::receiveAttack(int damageTaken, Character &attacker)
 void Character::onReceiveAttack()
 {
 }
+
+int Character::healHp(int amount)
+{
+   int actualHeal = std::min(maxHp - hp, amount);
+   hp += actualHeal;
+   return actualHeal;
+}

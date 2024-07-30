@@ -42,9 +42,10 @@ protected:
 public:
    static const char CHAR = '@';
    const PlayerRace race;
-   float collectGold(int goldPickedUp);
+   float collectGold(float goldPickedUp);
+   float loseGold(float goldLost);
    char getChar() const override;
-   int getScore() const;
+   float getScore() const;
    float getGold() const;
    int getAttack() const;
    int getDefense() const;

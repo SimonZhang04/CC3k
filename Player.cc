@@ -6,19 +6,26 @@
 #include <cmath>
 #include <iostream>
 
-float Player::collectGold(int goldPickedUp)
+float Player::collectGold(float goldPickedUp)
 {
    float amountGained = goldPickedUp * goldModifier;
    gold += amountGained;
    return amountGained;
 };
 
+float Player::loseGold(float goldLost)
+{
+   float actualLoss = std::min(gold, goldLost);
+   gold -= actualLoss;
+   return actualLoss;
+}
+
 char Player::getChar() const
 {
    return CHAR;
 };
 
-int Player::getScore() const
+float Player::getScore() const
 {
    return gold * scoreModifier;
 };

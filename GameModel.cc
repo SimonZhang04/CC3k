@@ -27,8 +27,7 @@ const std::map<char, int> GameModel::POTION_SPAWN_WEIGHTS = {{'0', 1}, {'1', 1},
 
 const std::unordered_set<char> GameModel::PROTECTED_TREASURE_CHARS = {BarrierSuit::CHAR, DragonHoard::CHAR};
 
-GameModel::GameModel() : currentFloor{0},
-                         floors{std::vector<Floor>{}}
+GameModel::GameModel(bool bonusActive) : bonusActive{bonusActive}, currentFloor{0}, floors{std::vector<Floor>{}}
 {
     for (int i = 0; i < 5; i++)
     {
@@ -174,32 +173,32 @@ std::unique_ptr<Enemy> GameModel::instantiateEnemy(char enemy, Tile *t, std::uni
     switch (enemy)
     {
     case Vampire::CHAR:
-        e = std::make_unique<Vampire>(t, compass ? std::move(compass) : nullptr);
+        e = std::make_unique<Vampire>(bonusActive, t, compass ? std::move(compass) : nullptr);
         break;
     case Werewolf::CHAR:
-        e = std::make_unique<Werewolf>(t, compass ? std::move(compass) : nullptr);
+        e = std::make_unique<Werewolf>(bonusActive, t, compass ? std::move(compass) : nullptr);
         break;
     case Goblin::CHAR:
-        e = std::make_unique<Goblin>(t, compass ? std::move(compass) : nullptr);
+        e = std::make_unique<Goblin>(bonusActive, t, compass ? std::move(compass) : nullptr);
         break;
     case Merchant::CHAR:
         if (compass)
         {
-            e = std::make_unique<Merchant>(t, compass ? std::move(compass) : nullptr);
+            e = std::make_unique<Merchant>(bonusActive, t, compass ? std::move(compass) : nullptr);
         }
         else
         {
             std::unique_ptr<Treasure> merchantLoot = std::make_unique<Treasure>(TreasureType::MerchantsHoard, [this](int g)
                                                                                 { return this->player->collectGold(g); });
             merchantLoot->attach(gameLogic);
-            e = std::make_unique<Merchant>(t, std::move(merchantLoot));
+            e = std::make_unique<Merchant>(bonusActive, t, std::move(merchantLoot));
         }
         break;
     case Phoenix::CHAR:
-        e = std::make_unique<Phoenix>(t, compass ? std::move(compass) : nullptr);
+        e = std::make_unique<Phoenix>(bonusActive, t, compass ? std::move(compass) : nullptr);
         break;
     case Troll::CHAR:
-        e = std::make_unique<Troll>(t, compass ? std::move(compass) : nullptr);
+        e = std::make_unique<Troll>(bonusActive, t, compass ? std::move(compass) : nullptr);
     }
     return e;
 }
@@ -365,7 +364,7 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], st
             int treasurer = std::get<1>(dragonData);
             int treasurec = std::get<2>(dragonData);
             ProtectedTreasure *pt = dynamic_cast<ProtectedTreasure *>(floors[f].getTile(treasurer, treasurec).getUpper());
-            std::unique_ptr<Dragon> d = std::make_unique<Dragon>(&t, compassIdx == enemyCount ? std::move(compass) : nullptr, pt, treasurer, treasurec);
+            std::unique_ptr<Dragon> d = std::make_unique<Dragon>(bonusActive, &t, compassIdx == enemyCount ? std::move(compass) : nullptr, pt, treasurer, treasurec);
             d->attach(gameLogic);
             t.setUpperDrawable(std::move(d));
             enemyCount++;

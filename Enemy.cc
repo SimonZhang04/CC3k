@@ -31,12 +31,26 @@ Tile &Enemy::determineMoveTile()
    return *selectedTile;
 }
 
-void Enemy::onAttack(Character &target, int damageDealt)
+void Enemy::appendAction(std::string &oldAction, std::string &&newAction)
 {
+   if (!newAction.empty())
+   {
+      if (!oldAction.empty())
+      {
+         oldAction += " and";
+      }
+      oldAction += newAction;
+   }
+}
+
+std::string Enemy::onAttack(Player &target, int damageDealt)
+{
+   return "";
 }
 
 std::string Enemy::act(Player &p, Tile &playerTile)
 {
+   std::string actionStr = onAct();
    if (shouldAttack(playerTile))
    {
       int coinflip = rand() % 2;
@@ -44,21 +58,24 @@ std::string Enemy::act(Player &p, Tile &playerTile)
       {
          int damageDone = p.calculateDamageTaken(calculateAttack());
          p.receiveAttack(damageDone, *this);
-         onAttack(p, damageDone);
-         return (std::string(1, getChar()) + " deals " + std::to_string(damageDone) + " damage to PC.");
+         appendAction(actionStr, " deals " + std::to_string(damageDone) + " damage to PC");
+         appendAction(actionStr, onAttack(p, damageDone));
       }
       else
       {
-         return (std::string(1, getChar()) + " missed attack on PC.");
+         appendAction(actionStr, " missed attack on PC");
       }
    }
    else if (shouldMove())
    {
       Tile &moveTile = determineMoveTile();
-      occupyingTile->moveTo(moveTile);
-      occupyingTile = &moveTile;
+      if (&moveTile != occupyingTile)
+      {
+         occupyingTile->moveTo(moveTile);
+         occupyingTile = &moveTile;
+      }
    }
-   return "";
+   return actionStr.empty() ? "" : actionStr + ".";
 };
 
 void Enemy::didKill(Player *p) {

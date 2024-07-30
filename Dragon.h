@@ -16,8 +16,8 @@ protected:
    virtual bool shouldAttack(Tile &playerTile) override;
 
 public:
-   Dragon(Tile *occupyingTile, std::unique_ptr<Drawable> loot, ProtectedTreasure *protectedTreasure, int ptrow, int ptcol)
-       : Enemy{BASE_HP, BASE_ATK, BASE_DEF, occupyingTile, std::move(loot), 0},
+   Dragon(bool bonusActive, Tile *occupyingTile, std::unique_ptr<Drawable> loot, ProtectedTreasure *protectedTreasure, int ptrow, int ptcol)
+       : Enemy{bonusActive, BASE_HP, BASE_ATK, BASE_DEF, occupyingTile, std::move(loot), 0},
          protectedTreasure{protectedTreasure},
          protectedTreasureRow{ptrow},
          protectedTreasureCol{ptcol} {};

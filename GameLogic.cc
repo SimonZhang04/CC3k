@@ -60,7 +60,7 @@ const bool GameLogic::isDirection(const std::string &direction)
 
 void GameLogic::playGame(std::string mapFile)
 {
-    gameModel = GameModel{};
+    gameModel = GameModel{gameModel.bonusActive};
     char race = gameView.displayRaces();
     std::unique_ptr<Player> player{gameModel.setupPlayer(race)};
 
@@ -248,7 +248,7 @@ void GameLogic::mainLoop()
                         std::string enemyAction = enemy->act(player, *gameModel.currentTile);
                         if (enemyAction != "")
                         {
-                            gameView.addEnemyAction(enemyAction);
+                            gameView.addEnemyAction(std::string(1, enemy->getChar()) + enemyAction);
                         }
                         actedEnemies.insert(enemy);
                     }

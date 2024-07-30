@@ -28,4 +28,5 @@ class GameLogic : public Observer
 
 public:
     void playGame(std::string mapFile);
+    GameLogic(bool bonusActive) : gameModel{bonusActive} {}
 };

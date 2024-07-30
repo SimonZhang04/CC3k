@@ -15,6 +15,7 @@ class Character : public Entity
 
 protected:
    Character(int maxHp, int baseAtk, int baseDef) : hp{maxHp}, maxHp{maxHp}, baseAtk{baseAtk}, baseDef{baseDef} {};
+   int healHp(int amount);
 
 public:
    int hp, maxHp, baseAtk, baseDef;
