@@ -11,6 +11,10 @@ class Dragon : public Enemy
    int protectedTreasureRow;
    int protectedTreasureCol;
 
+protected:
+   virtual bool shouldMove() override;
+   virtual bool shouldAttack(Tile &playerTile) override;
+
 public:
    Dragon(Tile *occupyingTile, std::unique_ptr<Drawable> loot, ProtectedTreasure *protectedTreasure, int ptrow, int ptcol)
        : Enemy{BASE_HP, BASE_ATK, BASE_DEF, occupyingTile, std::move(loot), 0},
@@ -19,6 +23,4 @@ public:
          protectedTreasureCol{ptcol} {};
    static const char CHAR = 'D';
    char getChar() const override { return CHAR; };
-   virtual bool shouldMove() override;
-   virtual bool shouldAttack(Tile &playerTile) override;
 };
