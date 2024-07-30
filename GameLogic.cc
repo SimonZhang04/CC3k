@@ -21,9 +21,8 @@ void GameLogic::notifyDeath(Subject &entity)
 {
     Floor &curFloor = gameModel.getCurrentFloor();
     Entity *entityPtr = dynamic_cast<Entity *>(&entity);
-    Player *playerPtr = dynamic_cast<Player *>(entityPtr);
     // check if the entity that died is a Player class
-    if (playerPtr != nullptr)
+    if (&entity == &gameModel.getPlayer())
     {
         gameModel.gameOver = true;
     }
