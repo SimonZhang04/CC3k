@@ -31,6 +31,10 @@ Tile &Enemy::determineMoveTile()
    return *selectedTile;
 }
 
+void Enemy::onAttack(Character &target, int damageDealt)
+{
+}
+
 std::string Enemy::act(Player &p, Tile &playerTile)
 {
    if (shouldAttack(playerTile))
@@ -40,6 +44,7 @@ std::string Enemy::act(Player &p, Tile &playerTile)
       {
          int damageDone = p.calculateDamageTaken(calculateAttack());
          p.receiveAttack(damageDone, *this);
+         onAttack(p, damageDone);
          return (std::string(1, getChar()) + " deals " + std::to_string(damageDone) + " damage to PC.");
       }
       else

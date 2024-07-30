@@ -6,7 +6,6 @@
 
 class Enemy : public Character
 {
-   virtual bool shouldMove();
    Tile &determineMoveTile();
    Tile *occupyingTile;
    std::unique_ptr<Drawable> loot = nullptr;
@@ -18,6 +17,7 @@ protected:
    virtual int calculateDefense() const override;
    virtual bool shouldMove();
    virtual bool shouldAttack(Tile &playerTile);
+   virtual void onAttack(Character &target, int damageDealt);
    void onDeath(Character &attacker) override;
 
 public:
