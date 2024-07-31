@@ -93,6 +93,12 @@ void GameLogic::mainLoop()
         gameView.displayActions();
         gameView.resetMessages();
 
+        // game over conditions
+        if (gameModel.gameOver)
+        {
+            break;
+        }
+
         // Accept an action
         std::cin >> action;
         if (isDirection(action))
@@ -259,12 +265,6 @@ void GameLogic::mainLoop()
         Tile &movedTile = *gameModel.currentTile;
         std::vector<Tile *> surroundingTiles = gameModel.getCurrentFloor().getSurroundingTiles(movedTile.getRow(), movedTile.getCol());
         gameView.playerScan(surroundingTiles, gameModel.identifiedItems);
-
-        // game over conditions
-        if (gameModel.gameOver)
-        {
-            break;
-        }
     }
     bool playAgain = gameView.displayGameOver(player, gameModel.currentFloor, gameModel.LAST_FLOOR);
     if (playAgain)
