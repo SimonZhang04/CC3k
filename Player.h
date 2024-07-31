@@ -18,11 +18,11 @@ class Player : public Character
    void onDeath(Character &attacker) override;
    virtual int calculateAttack() const;
    virtual int calculateDefense() const;
-
-protected:
    float gold;
    float scoreModifier;
    float goldModifier;
+
+protected:
    Player(int maxHp, int baseAtk, int baseDef, float scoreModifier, float goldModifier, PlayerRace race)
        : Character{maxHp, baseAtk, baseDef},
          modifiedAttack{std::make_unique<StatViewer>([baseAtk]() -> float
