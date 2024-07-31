@@ -10,7 +10,6 @@ class GameLogic : public Observer
 {
     GameView gameView;
     GameModel gameModel;
-    void generateFloor(Floor &f);
     void parseMapFile(std::string mapFile, std::unique_ptr<Player> player);
     static const std::vector<std::string> DIRECTIONS;
     static const std::string ATTACK_COMMAND;
