@@ -15,7 +15,6 @@ protected:
 public:
    void unlock()
    {
-      std::cout << "UNLOCK" << std::endl;
       isLocked = false;
    }
 };

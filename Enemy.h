@@ -35,7 +35,6 @@ public:
    int getHp() const;
    float getDeathRewardGold()
    {
-      std::cout << "DEATH GOLD:" << deathGold << std::endl;
       return deathGold;
    };
    void didKill(Player *p) override;

@@ -231,7 +231,6 @@ void GameModel::createFloorsFromString(std::string map[5][Floor::FLOOR_ROWS], st
 
         int compassIdx = rand() % totalEnemies;
         int enemyCount = 0;
-        std::cout << "COMPASS IDX " << compassIdx << " TOTAL ENEMIES: " << totalEnemies << std::endl;
         std::vector<std::tuple<Tile &, int, int>> dragons;
 
         std::unique_ptr<Compass> compass = std::make_unique<Compass>(onCompassPickup);

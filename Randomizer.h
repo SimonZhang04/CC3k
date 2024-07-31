@@ -21,7 +21,6 @@ public:
         {
             if (r < lookup[i].second)
             {
-                std::cout << r << " " << lookup[i].first << std::endl;
                 return lookup[i].first;
             }
         }
