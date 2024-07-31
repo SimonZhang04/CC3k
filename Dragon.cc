@@ -9,7 +9,7 @@ bool Dragon::shouldAttack(Tile &playerTile)
    int rDiff = abs(playerTile.getRow() - protectedTreasureRow);
    int cDiff = abs(playerTile.getCol() - protectedTreasureCol);
 
-   return rDiff <= 1 && cDiff <= 1 || Enemy::shouldAttack(playerTile);
+   return (rDiff <= 1 && cDiff <= 1) || Enemy::shouldAttack(playerTile);
 }
 
 void Dragon::onDeath(Character &attacker)

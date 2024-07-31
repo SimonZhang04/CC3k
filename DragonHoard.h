@@ -4,7 +4,6 @@
 #include <iostream>
 class DragonHoard : public virtual ProtectedTreasure, public virtual Treasure
 {
-   std::function<float(int)> onUse;
    void unlockedEffect() { Treasure::useEffect(); };
 
 public:
