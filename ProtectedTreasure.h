@@ -11,6 +11,13 @@ class ProtectedTreasure : public virtual WalkEffectObject
 protected:
    bool isLocked;
    ProtectedTreasure() : isLocked{true} {};
+   void useEffect() override
+   {
+      if (!isLocked)
+      {
+         unlockedEffect();
+      }
+   };
 
 public:
    void unlock()

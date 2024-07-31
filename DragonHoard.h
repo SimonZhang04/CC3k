@@ -15,9 +15,6 @@ public:
 protected:
    void useEffect() override
    {
-      if (!isLocked)
-      {
-         unlockedEffect();
-      }
-   };
+      ProtectedTreasure::useEffect();
+   }
 };

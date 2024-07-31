@@ -20,13 +20,4 @@ public:
    BarrierSuit(std::function<void(StatType, float)> func) : ProtectedTreasure{}, onUse{func} {}
    static const char CHAR = 'B';
    char getChar() const override { return CHAR; };
-
-protected:
-   void useEffect() override
-   {
-      if (!isLocked)
-      {
-         unlockedEffect();
-      }
-   };
 };
